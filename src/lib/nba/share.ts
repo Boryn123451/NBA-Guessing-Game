@@ -1,13 +1,15 @@
-import { CLUE_KEYS } from './comparison'
 import {
   formatClueModeLabel,
   formatDifficultyLabel,
+  formatEventModeLabel,
   formatModeLabel,
   formatThemeLabel,
 } from './format'
+import { CLUE_KEYS } from './comparison'
 import type {
   ClueMode,
   DifficultyId,
+  EventModeId,
   GameMode,
   GuessResult,
   PlayerThemeId,
@@ -30,14 +32,25 @@ export function buildShareSummary(options: {
   clueMode: ClueMode
   themeId: PlayerThemeId
   difficultyId: DifficultyId
+  eventId: EventModeId | null
   maxGuesses: number
   session: StoredGameSession
   guesses: GuessResult[]
   guessCount: number
   dateKey: string
 }): string {
-  const { clueMode, dateKey, difficultyId, guessCount, guesses, maxGuesses, mode, session, themeId } =
-    options
+  const {
+    clueMode,
+    dateKey,
+    difficultyId,
+    eventId,
+    guessCount,
+    guesses,
+    maxGuesses,
+    mode,
+    session,
+    themeId,
+  } = options
   const title = `Full Court Cipher ${formatModeLabel(mode)}`
   const score =
     session.status === 'won'
@@ -47,6 +60,7 @@ export function buildShareSummary(options: {
         : `${session.guessIds.length}/${maxGuesses}`
   const modeLine = mode === 'daily' ? `${title} ${dateKey}` : title
   const variantLine = `${formatClueModeLabel(clueMode)} | ${formatThemeLabel(themeId)}`
+  const eventLine = eventId ? `Event | ${formatEventModeLabel(eventId)}` : null
   const difficultyLine = formatDifficultyLabel(difficultyId)
   const board =
     clueMode === 'career'
@@ -57,6 +71,8 @@ export function buildShareSummary(options: {
           )
           .join('\n')
 
-  return `${modeLine}\n${variantLine}\n${difficultyLine}\n${score}\n${board}`.trim()
+  return [modeLine, variantLine, eventLine, difficultyLine, score, board]
+    .filter(Boolean)
+    .join('\n')
+    .trim()
 }
-

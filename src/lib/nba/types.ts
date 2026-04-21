@@ -23,6 +23,16 @@ export type DifficultyId =
   | 'impossible'
   | 'elite-ball-knowledge'
 
+export type EventModeId =
+  | 'opening-week'
+  | 'christmas-games'
+  | 'all-star-weekend'
+  | 'trade-deadline-week'
+  | 'playoff-mode'
+  | 'finals-mode'
+  | 'awards-season'
+  | 'draft-week'
+
 export type PlayerThemeId =
   | 'classic'
   | 'rookies'
@@ -49,6 +59,29 @@ export type ClueState = 'exact' | 'close' | 'miss' | 'unknown'
 export type NumericDirection = 'up' | 'down' | null
 
 export type BonusClueId = 'country' | 'draftTeam' | 'debutWindow'
+
+export type BadgeId =
+  | 'first-win'
+  | 'three-day-streak'
+  | 'seven-day-streak'
+  | 'perfect-solve'
+  | 'easy-crusher'
+  | 'medium-grinder'
+  | 'hard-winner'
+  | 'impossible-solver'
+  | 'elite-ball-knowledge-winner'
+  | 'weekly-quest-completed'
+  | 'event-mode-winner'
+
+export type WeeklyQuestTemplateId =
+  | 'win-three-games'
+  | 'hard-or-above-win'
+  | 'finish-two-dailies'
+  | 'solve-in-five'
+  | 'play-five-practice-rounds'
+  | 'win-using-metric'
+  | 'complete-event-round'
+  | 'two-wins-in-a-row'
 
 export interface TeamMetadata {
   id: number
@@ -215,6 +248,7 @@ export interface GuessResult {
 export interface GameVariant {
   clueMode: ClueMode
   themeId: PlayerThemeId
+  eventId: EventModeId | null
 }
 
 export interface StoredGameSession {
@@ -241,18 +275,84 @@ export interface DifficultyStats {
   byDifficulty: Record<DifficultyId, ModeStats>
 }
 
+export interface LocalProfile {
+  profileId: string
+  displayName: string
+  createdAt: string
+  reputationPoints: number
+}
+
+export interface BadgeUnlock {
+  unlockedAt: string
+}
+
+export interface WeeklyQuestProgress {
+  id: string
+  templateId: WeeklyQuestTemplateId
+  title: string
+  description: string
+  target: number
+  rewardPoints: number
+  progress: number
+  completedAt: string | null
+  claimedAt: string | null
+}
+
+export interface WeeklyQuestBoard {
+  weekId: string
+  generatedAt: string
+  currentWinStreak: number
+  quests: WeeklyQuestProgress[]
+}
+
+export interface LocalRecords {
+  bestSolveByDifficulty: Record<DifficultyId, number | null>
+  longestWinStreak: number
+  bestDailyStreak: number
+  bestEventSolveByEvent: Partial<Record<EventModeId, number>>
+  eventWinsByEvent: Partial<Record<EventModeId, number>>
+}
+
+export interface LocalStreaks {
+  currentOverall: number
+  maxOverall: number
+  currentDaily: number
+  maxDaily: number
+  lastDailyWinDate: string | null
+}
+
+export interface Celebration {
+  id: string
+  type: 'badge' | 'quest' | 'record'
+  title: string
+  body: string
+  createdAt: string
+}
+
+export interface ProgressionState {
+  badges: Partial<Record<BadgeId, BadgeUnlock>>
+  weeklyQuests: WeeklyQuestBoard
+  records: LocalRecords
+  streaks: LocalStreaks
+  dailyWinDateKeys: string[]
+  pendingCelebrations: Celebration[]
+}
+
 export interface PersistedState {
-  version: 3
+  version: 4
   preferences: {
     mode: GameMode
     clueMode: ClueMode
     themeId: PlayerThemeId
     difficulty: DifficultyId
+    eventId: EventModeId | null
   }
   settings: {
     units: UnitSystem
     theme: ThemeMode
   }
+  profile: LocalProfile
+  progression: ProgressionState
   dailySessions: Record<string, StoredGameSession>
   practiceSessions: Record<string, StoredGameSession>
   stats: Record<GameMode, DifficultyStats>

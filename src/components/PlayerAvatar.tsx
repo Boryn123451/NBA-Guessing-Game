@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import type { PlayerRecord } from '../lib/nba/types'
 
-const FALLBACK_SRC = '/player-silhouette.svg'
+const FALLBACK_SRC = `${import.meta.env.BASE_URL}player-silhouette.svg`
 
 interface PlayerAvatarProps {
   player: PlayerRecord

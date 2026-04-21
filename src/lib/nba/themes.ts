@@ -1,3 +1,4 @@
+import { filterPlayersForEvent } from './events'
 import type { GameVariant, PlayerRecord, PlayerThemeId } from './types'
 
 export interface ThemeDefinition {
@@ -65,7 +66,10 @@ export function getVariantPlayerPool(
   players: PlayerRecord[],
   variant: GameVariant,
 ): PlayerRecord[] {
-  return players.filter((player) => matchesTheme(player, variant.themeId))
+  return filterPlayersForEvent(
+    players.filter((player) => matchesTheme(player, variant.themeId)),
+    variant.eventId,
+  )
 }
 
 export function getThemeOptions(players: PlayerRecord[]): ThemeOption[] {

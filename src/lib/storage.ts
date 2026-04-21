@@ -1,3 +1,4 @@
+import { getDetectedTimeZone } from './nba/daily'
 import { DEFAULT_DIFFICULTY_ID, sanitizeDifficultyId } from './nba/difficulty'
 import {
   DEFAULT_GAME_VARIANT,
@@ -8,17 +9,23 @@ import type {
   ClueMode,
   DifficultyId,
   DifficultyStats,
+  EventModeId,
   GameMode,
+  LocalProfile,
   ModeStats,
   PersistedState,
   PlayerThemeId,
+  ProgressionState,
   StoredGameSession,
   ThemeMode,
   UnitSystem,
 } from './nba/types'
+import { createLocalProfile, sanitizeDisplayName } from './profile/profile'
+import { createDefaultProgressionState } from './profile/progression'
 
-const STORAGE_KEY = 'full-court-cipher:v3'
-const LEGACY_STORAGE_KEY = 'full-court-cipher:v2'
+const STORAGE_KEY = 'full-court-cipher:v4'
+const LEGACY_STORAGE_KEY_V3 = 'full-court-cipher:v3'
+const LEGACY_STORAGE_KEY_V2 = 'full-court-cipher:v2'
 const LEGACY_STORAGE_KEY_V1 = 'full-court-cipher:v1'
 const LEGACY_MAX_GUESSES = 8
 
@@ -29,6 +36,7 @@ interface LegacyModeStats {
   currentStreak?: unknown
   maxStreak?: unknown
   totalWinningGuesses?: unknown
+  totalCompletedGuesses?: unknown
 }
 
 interface LegacyPersistedStateV1 {
@@ -62,6 +70,26 @@ interface LegacyPersistedStateV2 {
   stats?: {
     daily?: LegacyModeStats
     practice?: LegacyModeStats
+  }
+}
+
+interface LegacyPersistedStateV3 {
+  version?: unknown
+  preferences?: {
+    mode?: unknown
+    clueMode?: unknown
+    themeId?: unknown
+    difficulty?: unknown
+  }
+  settings?: {
+    units?: unknown
+    theme?: unknown
+  }
+  dailySessions?: Record<string, unknown>
+  practiceSessions?: Record<string, unknown>
+  stats?: {
+    daily?: unknown
+    practice?: unknown
   }
 }
 
@@ -126,6 +154,22 @@ function sanitizeThemeId(themeId: unknown): PlayerThemeId {
       return themeId
     default:
       return 'classic'
+  }
+}
+
+function sanitizeEventId(eventId: unknown): EventModeId | null {
+  switch (eventId) {
+    case 'opening-week':
+    case 'christmas-games':
+    case 'all-star-weekend':
+    case 'trade-deadline-week':
+    case 'playoff-mode':
+    case 'finals-mode':
+    case 'awards-season':
+    case 'draft-week':
+      return eventId
+    default:
+      return null
   }
 }
 
@@ -227,8 +271,139 @@ function sanitizeSessions(
   )
 }
 
-function migrateSessionKey(sessionKey: string): string {
-  return `${sessionKey}:${DEFAULT_DIFFICULTY_ID}`
+function sanitizeProfile(profile: unknown, now: Date): LocalProfile {
+  if (!profile || typeof profile !== 'object') {
+    return createLocalProfile(now.toISOString())
+  }
+
+  const value = profile as Partial<LocalProfile>
+
+  return {
+    profileId:
+      typeof value.profileId === 'string' && value.profileId.trim().length > 0
+        ? value.profileId
+        : createLocalProfile(now.toISOString()).profileId,
+    displayName: sanitizeDisplayName(value.displayName),
+    createdAt:
+      typeof value.createdAt === 'string' && value.createdAt.length > 0
+        ? value.createdAt
+        : now.toISOString(),
+    reputationPoints:
+      typeof value.reputationPoints === 'number' ? value.reputationPoints : 0,
+  }
+}
+
+function sanitizeProgression(
+  progression: unknown,
+  now: Date,
+  timeZone: string,
+): ProgressionState {
+  const fallback = createDefaultProgressionState(now, timeZone)
+
+  if (!progression || typeof progression !== 'object') {
+    return fallback
+  }
+
+  const value = progression as Partial<ProgressionState>
+  const records = value.records ?? fallback.records
+  const streaks = value.streaks ?? fallback.streaks
+
+  return {
+    badges:
+      value.badges && typeof value.badges === 'object'
+        ? (value.badges as ProgressionState['badges'])
+        : fallback.badges,
+    weeklyQuests:
+      value.weeklyQuests &&
+      typeof value.weeklyQuests === 'object' &&
+      typeof value.weeklyQuests.weekId === 'string' &&
+      Array.isArray(value.weeklyQuests.quests)
+        ? {
+            weekId: value.weeklyQuests.weekId,
+            generatedAt:
+              typeof value.weeklyQuests.generatedAt === 'string'
+                ? value.weeklyQuests.generatedAt
+                : fallback.weeklyQuests.generatedAt,
+            currentWinStreak:
+              typeof value.weeklyQuests.currentWinStreak === 'number'
+                ? value.weeklyQuests.currentWinStreak
+                : 0,
+            quests: value.weeklyQuests.quests.filter(
+              (quest): quest is ProgressionState['weeklyQuests']['quests'][number] =>
+                Boolean(quest) &&
+                typeof quest.id === 'string' &&
+                typeof quest.title === 'string' &&
+                typeof quest.description === 'string' &&
+                typeof quest.target === 'number' &&
+                typeof quest.rewardPoints === 'number' &&
+                typeof quest.progress === 'number',
+            ),
+          }
+        : fallback.weeklyQuests,
+    records: {
+      bestSolveByDifficulty: {
+        easy:
+          typeof records.bestSolveByDifficulty?.easy === 'number'
+            ? records.bestSolveByDifficulty.easy
+            : null,
+        medium:
+          typeof records.bestSolveByDifficulty?.medium === 'number'
+            ? records.bestSolveByDifficulty.medium
+            : null,
+        hard:
+          typeof records.bestSolveByDifficulty?.hard === 'number'
+            ? records.bestSolveByDifficulty.hard
+            : null,
+        impossible:
+          typeof records.bestSolveByDifficulty?.impossible === 'number'
+            ? records.bestSolveByDifficulty.impossible
+            : null,
+        'elite-ball-knowledge':
+          typeof records.bestSolveByDifficulty?.['elite-ball-knowledge'] === 'number'
+            ? records.bestSolveByDifficulty['elite-ball-knowledge']
+            : null,
+      },
+      longestWinStreak:
+        typeof records.longestWinStreak === 'number' ? records.longestWinStreak : 0,
+      bestDailyStreak:
+        typeof records.bestDailyStreak === 'number' ? records.bestDailyStreak : 0,
+      bestEventSolveByEvent:
+        records.bestEventSolveByEvent && typeof records.bestEventSolveByEvent === 'object'
+          ? records.bestEventSolveByEvent
+          : {},
+      eventWinsByEvent:
+        records.eventWinsByEvent && typeof records.eventWinsByEvent === 'object'
+          ? records.eventWinsByEvent
+          : {},
+    },
+    streaks: {
+      currentOverall:
+        typeof streaks.currentOverall === 'number' ? streaks.currentOverall : 0,
+      maxOverall: typeof streaks.maxOverall === 'number' ? streaks.maxOverall : 0,
+      currentDaily: typeof streaks.currentDaily === 'number' ? streaks.currentDaily : 0,
+      maxDaily: typeof streaks.maxDaily === 'number' ? streaks.maxDaily : 0,
+      lastDailyWinDate:
+        typeof streaks.lastDailyWinDate === 'string' ? streaks.lastDailyWinDate : null,
+    },
+    dailyWinDateKeys: Array.isArray(value.dailyWinDateKeys)
+      ? value.dailyWinDateKeys.filter(
+          (dateKey): dateKey is string => typeof dateKey === 'string',
+        )
+      : [],
+    pendingCelebrations: Array.isArray(value.pendingCelebrations)
+      ? value.pendingCelebrations.filter(
+          (celebration): celebration is ProgressionState['pendingCelebrations'][number] =>
+            Boolean(celebration) &&
+            typeof celebration.id === 'string' &&
+            typeof celebration.title === 'string' &&
+            typeof celebration.body === 'string' &&
+            typeof celebration.createdAt === 'string' &&
+            (celebration.type === 'badge' ||
+              celebration.type === 'quest' ||
+              celebration.type === 'record'),
+        )
+      : [],
+  }
 }
 
 function migrateLegacyStats(stats: LegacyModeStats | undefined): DifficultyStats {
@@ -246,19 +421,41 @@ function migrateLegacyStats(stats: LegacyModeStats | undefined): DifficultyStats
   }
 }
 
-export function createDefaultState(): PersistedState {
+function migrateV3SessionKey(sessionKey: string): string {
+  const parts = sessionKey.split(':')
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(parts[0] ?? '')) {
+    const [dateKey, clueMode, themeId, difficultyId] = parts
+    return [dateKey, clueMode, themeId, 'none', difficultyId].join(':')
+  }
+
+  if (parts.length === 3) {
+    const [clueMode, themeId, difficultyId] = parts
+    return [clueMode, themeId, 'none', difficultyId].join(':')
+  }
+
+  return sessionKey
+}
+
+export function createDefaultState(
+  now: Date = new Date(),
+  timeZone = getDetectedTimeZone(),
+): PersistedState {
   return {
-    version: 3,
+    version: 4,
     preferences: {
       mode: 'daily',
       clueMode: DEFAULT_GAME_VARIANT.clueMode,
       themeId: DEFAULT_GAME_VARIANT.themeId,
       difficulty: DEFAULT_DIFFICULTY_ID,
+      eventId: null,
     },
     settings: {
       units: 'imperial',
       theme: 'system',
     },
+    profile: createLocalProfile(now.toISOString()),
+    progression: createDefaultProgressionState(now, timeZone),
     dailySessions: {},
     practiceSessions: {},
     stats: {
@@ -268,7 +465,11 @@ export function createDefaultState(): PersistedState {
   }
 }
 
-function migrateLegacyStateV1(parsed: LegacyPersistedStateV1): PersistedState {
+function migrateLegacyStateV1(
+  parsed: LegacyPersistedStateV1,
+  now: Date,
+  timeZone: string,
+): PersistedState {
   const dailySessions = Object.fromEntries(
     Object.entries(parsed.dailySessions ?? {})
       .map(([dateKey, session]) => [
@@ -280,17 +481,20 @@ function migrateLegacyStateV1(parsed: LegacyPersistedStateV1): PersistedState {
   const practiceSession = sanitizeSession(parsed.practiceSession)
 
   return {
-    version: 3,
+    version: 4,
     preferences: {
       mode: sanitizeMode(parsed.preferredMode),
       clueMode: DEFAULT_GAME_VARIANT.clueMode,
       themeId: DEFAULT_GAME_VARIANT.themeId,
       difficulty: DEFAULT_DIFFICULTY_ID,
+      eventId: null,
     },
     settings: {
       units: sanitizeUnits(parsed.settings?.units),
       theme: sanitizeTheme(parsed.settings?.theme),
     },
+    profile: createLocalProfile(now.toISOString()),
+    progression: createDefaultProgressionState(now, timeZone),
     dailySessions,
     practiceSessions: practiceSession
       ? { [getVariantKey(DEFAULT_GAME_VARIANT) + `:${DEFAULT_DIFFICULTY_ID}`]: practiceSession }
@@ -302,28 +506,35 @@ function migrateLegacyStateV1(parsed: LegacyPersistedStateV1): PersistedState {
   }
 }
 
-function migrateLegacyStateV2(parsed: LegacyPersistedStateV2): PersistedState {
+function migrateLegacyStateV2(
+  parsed: LegacyPersistedStateV2,
+  now: Date,
+  timeZone: string,
+): PersistedState {
   return {
-    version: 3,
+    version: 4,
     preferences: {
       mode: sanitizeMode(parsed.preferences?.mode),
       clueMode: sanitizeClueMode(parsed.preferences?.clueMode),
       themeId: sanitizeThemeId(parsed.preferences?.themeId),
       difficulty: DEFAULT_DIFFICULTY_ID,
+      eventId: null,
     },
     settings: {
       units: sanitizeUnits(parsed.settings?.units),
       theme: sanitizeTheme(parsed.settings?.theme),
     },
+    profile: createLocalProfile(now.toISOString()),
+    progression: createDefaultProgressionState(now, timeZone),
     dailySessions: Object.fromEntries(
       Object.entries(sanitizeSessions(parsed.dailySessions)).map(([sessionKey, session]) => [
-        migrateSessionKey(sessionKey),
+        `${sessionKey}:${DEFAULT_DIFFICULTY_ID}`,
         session,
       ]),
     ),
     practiceSessions: Object.fromEntries(
       Object.entries(sanitizeSessions(parsed.practiceSessions)).map(([sessionKey, session]) => [
-        migrateSessionKey(sessionKey),
+        `${sessionKey}:${DEFAULT_DIFFICULTY_ID}`,
         session,
       ]),
     ),
@@ -334,21 +545,38 @@ function migrateLegacyStateV2(parsed: LegacyPersistedStateV2): PersistedState {
   }
 }
 
-function sanitizePersistedState(parsed: Partial<PersistedState>): PersistedState {
+function migrateLegacyStateV3(
+  parsed: LegacyPersistedStateV3,
+  now: Date,
+  timeZone: string,
+): PersistedState {
   return {
-    version: 3,
+    version: 4,
     preferences: {
       mode: sanitizeMode(parsed.preferences?.mode),
       clueMode: sanitizeClueMode(parsed.preferences?.clueMode),
       themeId: sanitizeThemeId(parsed.preferences?.themeId),
       difficulty: sanitizeDifficultyId(parsed.preferences?.difficulty),
+      eventId: null,
     },
     settings: {
       units: sanitizeUnits(parsed.settings?.units),
       theme: sanitizeTheme(parsed.settings?.theme),
     },
-    dailySessions: sanitizeSessions(parsed.dailySessions),
-    practiceSessions: sanitizeSessions(parsed.practiceSessions),
+    profile: createLocalProfile(now.toISOString()),
+    progression: createDefaultProgressionState(now, timeZone),
+    dailySessions: Object.fromEntries(
+      Object.entries(sanitizeSessions(parsed.dailySessions)).map(([sessionKey, session]) => [
+        migrateV3SessionKey(sessionKey),
+        session,
+      ]),
+    ),
+    practiceSessions: Object.fromEntries(
+      Object.entries(sanitizeSessions(parsed.practiceSessions)).map(([sessionKey, session]) => [
+        migrateV3SessionKey(sessionKey),
+        session,
+      ]),
+    ),
     stats: {
       daily: sanitizeDifficultyStats(parsed.stats?.daily),
       practice: sanitizeDifficultyStats(parsed.stats?.practice),
@@ -356,41 +584,105 @@ function sanitizePersistedState(parsed: Partial<PersistedState>): PersistedState
   }
 }
 
-export function loadPersistedState(): PersistedState {
+export function coercePersistedState(
+  parsed: unknown,
+  now: Date = new Date(),
+  timeZone = getDetectedTimeZone(),
+): PersistedState {
+  if (!parsed || typeof parsed !== 'object') {
+    return createDefaultState(now, timeZone)
+  }
+
+  const value = parsed as Partial<PersistedState> &
+    LegacyPersistedStateV1 &
+    LegacyPersistedStateV2 &
+    LegacyPersistedStateV3
+
+  if (value.version === 4) {
+    return {
+      version: 4,
+      preferences: {
+        mode: sanitizeMode(value.preferences?.mode),
+        clueMode: sanitizeClueMode(value.preferences?.clueMode),
+        themeId: sanitizeThemeId(value.preferences?.themeId),
+        difficulty: sanitizeDifficultyId(value.preferences?.difficulty),
+        eventId: sanitizeEventId(value.preferences?.eventId),
+      },
+      settings: {
+        units: sanitizeUnits(value.settings?.units),
+        theme: sanitizeTheme(value.settings?.theme),
+      },
+      profile: sanitizeProfile(value.profile, now),
+      progression: sanitizeProgression(value.progression, now, timeZone),
+      dailySessions: sanitizeSessions(value.dailySessions),
+      practiceSessions: sanitizeSessions(value.practiceSessions),
+      stats: {
+        daily: sanitizeDifficultyStats(value.stats?.daily),
+        practice: sanitizeDifficultyStats(value.stats?.practice),
+      },
+    }
+  }
+
+  if (value.version === 3) {
+    return migrateLegacyStateV3(value as LegacyPersistedStateV3, now, timeZone)
+  }
+
+  if (value.version === 2) {
+    return migrateLegacyStateV2(value as LegacyPersistedStateV2, now, timeZone)
+  }
+
+  if (value.version === 1) {
+    return migrateLegacyStateV1(value as LegacyPersistedStateV1, now, timeZone)
+  }
+
+  return createDefaultState(now, timeZone)
+}
+
+function safeStorageGet(key: string): string | null {
+  try {
+    return typeof window === 'undefined' ? null : window.localStorage.getItem(key)
+  } catch {
+    return null
+  }
+}
+
+export function isStorageAvailable(): boolean {
   if (typeof window === 'undefined') {
-    return createDefaultState()
+    return false
+  }
+
+  try {
+    const probeKey = '__fcc-storage-probe__'
+    window.localStorage.setItem(probeKey, '1')
+    window.localStorage.removeItem(probeKey)
+    return true
+  } catch {
+    return false
+  }
+}
+
+export function loadPersistedState(): PersistedState {
+  const now = new Date()
+  const timeZone = getDetectedTimeZone()
+
+  if (typeof window === 'undefined') {
+    return createDefaultState(now, timeZone)
   }
 
   try {
     const rawValue =
-      window.localStorage.getItem(STORAGE_KEY) ??
-      window.localStorage.getItem(LEGACY_STORAGE_KEY) ??
-      window.localStorage.getItem(LEGACY_STORAGE_KEY_V1)
+      safeStorageGet(STORAGE_KEY) ??
+      safeStorageGet(LEGACY_STORAGE_KEY_V3) ??
+      safeStorageGet(LEGACY_STORAGE_KEY_V2) ??
+      safeStorageGet(LEGACY_STORAGE_KEY_V1)
 
     if (!rawValue) {
-      return createDefaultState()
+      return createDefaultState(now, timeZone)
     }
 
-    const parsed = JSON.parse(rawValue) as
-      | Partial<PersistedState>
-      | LegacyPersistedStateV1
-      | LegacyPersistedStateV2
-
-    if (parsed.version === 3) {
-      return sanitizePersistedState(parsed as Partial<PersistedState>)
-    }
-
-    if (parsed.version === 2) {
-      return migrateLegacyStateV2(parsed as LegacyPersistedStateV2)
-    }
-
-    if (parsed.version === 1) {
-      return migrateLegacyStateV1(parsed as LegacyPersistedStateV1)
-    }
-
-    return createDefaultState()
+    return coercePersistedState(JSON.parse(rawValue), now, timeZone)
   } catch {
-    return createDefaultState()
+    return createDefaultState(now, timeZone)
   }
 }
 
@@ -399,7 +691,11 @@ export function savePersistedState(state: PersistedState): void {
     return
   }
 
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+  } catch {
+    // Storage can be blocked on GitHub Pages or in strict browser modes.
+  }
 }
 
 function recordModeStats(stats: ModeStats, session: StoredGameSession): ModeStats {
@@ -432,11 +728,11 @@ export function recordCompletedGame(
 }
 
 export function getAverageGuesses(stats: ModeStats): string {
-  if (stats.gamesPlayed === 0) {
+  if (stats.wins === 0) {
     return 'N/A'
   }
 
-  return (stats.totalCompletedGuesses / stats.gamesPlayed).toFixed(1)
+  return (stats.totalWinningGuesses / stats.wins).toFixed(1)
 }
 
 export function getWinRate(stats: ModeStats): string {

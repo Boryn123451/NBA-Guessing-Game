@@ -4,7 +4,7 @@ import type { CSSProperties } from 'react'
 import type { DifficultyConfig } from '../lib/nba/difficulty'
 import type { GameOutcome, PlayerRecord } from '../lib/nba/types'
 
-const FALLBACK_SRC = '/player-silhouette.svg'
+const FALLBACK_SRC = `${import.meta.env.BASE_URL}player-silhouette.svg`
 
 interface MysteryPortraitProps {
   player: PlayerRecord
@@ -69,20 +69,20 @@ export function MysteryPortrait({
         style={
           {
             '--portrait-progress': silhouetteOnly ? 0.12 : revealAmount,
-            '--portrait-blur': `${status === 'in_progress' ? (silhouetteOnly ? 0 : (1 - revealAmount) * difficulty.image.maxBlurPx) : 0}px`,
+            '--portrait-blur': `${status === 'in_progress' ? (silhouetteOnly ? Math.max(difficulty.image.maxBlurPx * 0.72, 18) : (1 - revealAmount) * difficulty.image.maxBlurPx) : 0}px`,
             '--portrait-brightness':
               status === 'in_progress'
                 ? silhouetteOnly
-                  ? 0.04
+                  ? 0.02
                   : 0.1 + revealAmount * 0.72
                 : 1,
             '--portrait-grayscale':
               status === 'in_progress' ? (silhouetteOnly ? 1 : 1 - revealAmount * 0.55) : 0,
-            '--portrait-scale': status === 'in_progress' ? 1.1 - revealAmount * 0.08 : 1,
+            '--portrait-scale': status === 'in_progress' ? (silhouetteOnly ? 1.16 : 1.1 - revealAmount * 0.08) : 1,
             '--portrait-overlay':
               status === 'in_progress'
                 ? silhouetteOnly
-                  ? 0.82
+                  ? 0.92
                   : 0.94 - revealAmount * 0.38
                 : 0.08,
           } as CSSProperties
@@ -113,4 +113,3 @@ export function MysteryPortrait({
     </section>
   )
 }
-

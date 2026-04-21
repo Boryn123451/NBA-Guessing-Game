@@ -23,8 +23,11 @@ Original NBA player deduction game built with React, TypeScript, and Vite.
 - Real NBA headshots with fallback silhouette and progressive reveal
 - Season snapshot clues that unlock later in the round
 - Local stats with wins, losses, streaks, win rate, and per-difficulty average guesses
+- Guest-first local profile with editable display name, badges, weekly quests, and personal records
+- Calendar-driven event modes with local countdowns and filtered player pools
 - Metric / imperial height toggle and light / dark / system display theme
 - Dynamic exclusion of players on active 10-day contracts during refresh
+- Mobile-aware interface that auto-switches into a reduced-density layout on smaller touch devices
 
 ## Scripts
 
@@ -35,6 +38,8 @@ Original NBA player deduction game built with React, TypeScript, and Vite.
 - `npm run test`
 - `npm run typecheck`
 - `npm run build`
+
+`npm run test` uses a single-process threads pool and `npm run build` uses Vite's native config loader to avoid Windows sandbox spawn failures.
 
 ## Data refresh
 
@@ -66,3 +71,4 @@ Eligibility rules applied during refresh:
 - Difficulty is part of the saved round state; after the first guess, the current round keeps its locked rules
 - Elite Ball Knowledge disables portrait reveal, season snapshot clues, bonus clues, and Career Path mode
 - The generated player pool is bundled into the client build, so the production build still emits a chunk-size warning
+- The app is static-host friendly: user progression lives only in browser storage, asset paths are relative for GitHub Pages, and there is no backend or authenticated account system

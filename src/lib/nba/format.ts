@@ -1,10 +1,12 @@
 import { getAgeBucketIndex, getPlayerAge } from './comparison'
 import { getDifficultyDefinition } from './difficulty'
+import { getEventDefinition } from './events'
 import { getThemeDefinition } from './themes'
 import type {
   ClueKey,
   ClueMode,
   DifficultyId,
+  EventModeId,
   GameMode,
   PlayerRecord,
   PlayerThemeId,
@@ -36,6 +38,10 @@ export function formatDifficultyLabel(difficultyId: DifficultyId): string {
 
 export function formatThemeLabel(themeId: PlayerThemeId): string {
   return getThemeDefinition(themeId).label
+}
+
+export function formatEventModeLabel(eventId: EventModeId | null): string {
+  return eventId ? getEventDefinition(eventId).title : 'No event'
 }
 
 export function formatHeight(player: PlayerRecord, units: UnitSystem): string {
@@ -93,4 +99,20 @@ export function formatRefreshDate(isoDate: string): string {
         dateStyle: 'medium',
         timeStyle: 'short',
       }).format(date)
+}
+
+export function formatDurationCompact(totalMilliseconds: number): string {
+  const totalSeconds = Math.max(Math.floor(totalMilliseconds / 1000), 0)
+  const days = Math.floor(totalSeconds / 86400)
+  const hours = Math.floor((totalSeconds % 86400) / 3600)
+  const minutes = Math.floor((totalSeconds % 3600) / 60)
+  const seconds = totalSeconds % 60
+
+  if (days > 0) {
+    return `${days}d ${hours}h`
+  }
+
+  return [hours, minutes, seconds]
+    .map((value) => value.toString().padStart(2, '0'))
+    .join(':')
 }

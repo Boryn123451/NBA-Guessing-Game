@@ -7,6 +7,7 @@ import type { GameVariant } from './types'
 const defaultVariant: GameVariant = {
   clueMode: 'standard',
   themeId: 'classic',
+  eventId: null,
 }
 
 function buildPlayer(id: number) {

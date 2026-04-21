@@ -31,6 +31,7 @@ describe('theme filtering', () => {
     const result = getVariantPlayerPool(players, {
       clueMode: 'standard',
       themeId: 'all-stars',
+      eventId: null,
     })
 
     expect(result.map((player) => player.id)).toEqual([2])
@@ -49,4 +50,3 @@ describe('theme filtering', () => {
     expect(options.find((option) => option.id === 'under-25')?.count).toBe(1)
   })
 })
-
