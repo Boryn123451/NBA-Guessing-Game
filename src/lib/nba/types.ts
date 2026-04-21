@@ -1,0 +1,259 @@
+export type Conference = 'East' | 'West'
+
+export type Division =
+  | 'Atlantic'
+  | 'Central'
+  | 'Southeast'
+  | 'Northwest'
+  | 'Pacific'
+  | 'Southwest'
+
+export type UnitSystem = 'imperial' | 'metric'
+
+export type ThemeMode = 'system' | 'light' | 'dark'
+
+export type GameMode = 'daily' | 'practice'
+
+export type ClueMode = 'standard' | 'career'
+
+export type DifficultyId =
+  | 'easy'
+  | 'medium'
+  | 'hard'
+  | 'impossible'
+  | 'elite-ball-knowledge'
+
+export type PlayerThemeId =
+  | 'classic'
+  | 'rookies'
+  | 'international'
+  | 'all-stars'
+  | 'under-25'
+
+export type GameOutcome = 'in_progress' | 'won' | 'lost'
+
+export type PositionToken = 'G' | 'F' | 'C'
+
+export type ClueKey =
+  | 'player'
+  | 'team'
+  | 'conference'
+  | 'division'
+  | 'position'
+  | 'height'
+  | 'age'
+  | 'jerseyNumber'
+
+export type ClueState = 'exact' | 'close' | 'miss' | 'unknown'
+
+export type NumericDirection = 'up' | 'down' | null
+
+export type BonusClueId = 'country' | 'draftTeam' | 'debutWindow'
+
+export interface TeamMetadata {
+  id: number
+  abbreviation: string
+  city: string
+  name: string
+  slug: string
+  conference: Conference
+  division: Division
+  colors: {
+    primary: string
+    accent: string
+  }
+}
+
+export interface DraftDetails {
+  year: number | null
+  round: number | null
+  pick: number | null
+  teamId: number | null
+  teamAbbreviation: string | null
+  teamName: string | null
+  isUndrafted: boolean
+}
+
+export interface CareerProfile {
+  debutYear: number | null
+  preNbaPath: string | null
+  careerTeamIds: number[]
+  careerTeamAbbreviations: string[]
+  careerTeamNames: string[]
+  previousTeamIds: number[]
+  previousTeamAbbreviations: string[]
+  previousTeamNames: string[]
+  allStarAppearances: number
+}
+
+export interface SeasonSnapshot {
+  pointsPerGame: number | null
+  reboundsPerGame: number | null
+  assistsPerGame: number | null
+  playoffPicture: boolean | null
+  playoffRank: number | null
+  accoladeLabel: string | null
+}
+
+export interface ThemeFlags {
+  isRookie: boolean
+  isInternational: boolean
+  isAllStar: boolean
+  isUnder25: boolean
+}
+
+export interface PlayerRecord {
+  id: number
+  slug: string
+  displayName: string
+  firstName: string
+  lastName: string
+  teamId: number
+  teamAbbreviation: string
+  teamName: string
+  conference: Conference
+  division: Division
+  position: string
+  positionTokens: PositionToken[]
+  heightInInches: number | null
+  heightCm: number | null
+  currentAge: number | null
+  birthDate: string | null
+  jerseyNumber: number | null
+  headshotUrl: string | null
+  country: string | null
+  college: string | null
+  draft: DraftDetails
+  career: CareerProfile
+  snapshot: SeasonSnapshot
+  flags: ThemeFlags
+  searchText: string
+}
+
+export interface ExcludedTenDayPlayer {
+  id: number
+  displayName: string
+  teamId: number
+  teamName: string
+  contractStartDate: string
+  contractEndDate: string
+}
+
+export interface RosterFreshnessMetadata {
+  refreshedAt: string
+  asOfDate: string
+  season: string
+}
+
+export interface EligibilityMetadata {
+  rosterStatusRequired: boolean
+  transactionAwareTenDayExclusion: boolean
+  rosterPlayerCount: number
+  eligiblePlayerCount: number
+  excludedActiveTenDayCount: number
+  rules: string[]
+}
+
+export interface PlayerPoolData {
+  schemaVersion: 2
+  season: string
+  refreshedAt: string
+  asOfDate: string
+  rosterFreshness: RosterFreshnessMetadata
+  eligibility: EligibilityMetadata
+  sources: {
+    rosters: string
+    bioStats: string
+    transactions: string
+    schedule: string
+    standings: string
+    draftHistory: string
+    franchisePlayers: string
+    allStarRoster: string
+  }
+  excludedTenDayPlayers: ExcludedTenDayPlayer[]
+  players: PlayerRecord[]
+}
+
+export interface PlayerMovementRow {
+  Transaction_Type: string
+  TRANSACTION_DATE: string
+  TRANSACTION_DESCRIPTION: string
+  TEAM_ID: number
+  TEAM_SLUG: string
+  PLAYER_ID: number
+  PLAYER_SLUG: string
+  Additional_Sort: number
+  GroupSort: string
+}
+
+export interface ScheduledGameTeam {
+  teamId: number
+  teamTricode?: string
+}
+
+export interface ScheduledGame {
+  gameId: string
+  gameDateTimeUTC?: string
+  gameDateUTC: string
+  gameLabel?: string
+  homeTeam: ScheduledGameTeam
+  awayTeam: ScheduledGameTeam
+}
+
+export interface GuessFeedback {
+  status: ClueState
+  direction: NumericDirection
+}
+
+export interface GuessResult {
+  guess: PlayerRecord
+  isCorrect: boolean
+  clues: Record<ClueKey, GuessFeedback>
+}
+
+export interface GameVariant {
+  clueMode: ClueMode
+  themeId: PlayerThemeId
+}
+
+export interface StoredGameSession {
+  targetPlayerId: number
+  guessIds: number[]
+  status: GameOutcome
+  completedAt: string | null
+  revealedBonusClueIds: BonusClueId[]
+  silhouetteRevealed: boolean
+}
+
+export interface ModeStats {
+  gamesPlayed: number
+  wins: number
+  losses: number
+  currentStreak: number
+  maxStreak: number
+  totalCompletedGuesses: number
+  totalWinningGuesses: number
+}
+
+export interface DifficultyStats {
+  overall: ModeStats
+  byDifficulty: Record<DifficultyId, ModeStats>
+}
+
+export interface PersistedState {
+  version: 3
+  preferences: {
+    mode: GameMode
+    clueMode: ClueMode
+    themeId: PlayerThemeId
+    difficulty: DifficultyId
+  }
+  settings: {
+    units: UnitSystem
+    theme: ThemeMode
+  }
+  dailySessions: Record<string, StoredGameSession>
+  practiceSessions: Record<string, StoredGameSession>
+  stats: Record<GameMode, DifficultyStats>
+}
