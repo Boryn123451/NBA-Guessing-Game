@@ -27,6 +27,10 @@ import {
   DIFFICULTY_DEFINITIONS,
   getDifficultyDefinition,
 } from '../lib/nba/difficulty'
+import {
+  getBlockedTeamIdForNextGuess,
+  shouldBlockConsecutiveSameTeamGuess,
+} from '../lib/nba/guessRules'
 import { getPlayablePlayerPool } from '../lib/nba/pools'
 import { resolvePostseasonRule } from '../lib/nba/postseason'
 import { buildShareSummary } from '../lib/nba/share'
@@ -416,10 +420,13 @@ export function useGameSession() {
     activeSession.status === 'won'
       ? Math.max(activeSession.guessIds.length - 1, 0)
       : activeSession.guessIds.length
-  const blockedTeamId =
-    activeDifficulty.blockConsecutiveSameTeam && activeSession.status === 'in_progress'
-      ? lastGuessedPlayer?.teamId ?? null
-      : null
+  const lastStandardGuess = standardGuessResults.at(-1) ?? null
+  const blockedTeamId = getBlockedTeamIdForNextGuess({
+    difficultyId: activeDifficultyId,
+    lastGuessResult: lastStandardGuess,
+    lastGuessedPlayer,
+    status: activeSession.status,
+  })
   const themeOptions = getThemeOptions(allPlayers)
   const dailyCompletionEntry = findDailyCompletionEntry(hydratedState, dailyDateKey)
   const dailyLockedOut =
@@ -444,7 +451,6 @@ export function useGameSession() {
       wrongGuessCount,
       activeSession.revealedBonusClueIds,
     )
-  const lastStandardGuess = standardGuessResults.at(-1) ?? null
   const closeGuessFeedback =
     activeVariant.clueMode === 'standard' &&
     activeDifficulty.ui.showCloseGuessFeedback &&
@@ -501,8 +507,17 @@ export function useGameSession() {
         const lastGuessId = session.guessIds.at(-1)
         const priorGuess = lastGuessId ? playerById.get(lastGuessId) : null
         const nextGuess = playerById.get(playerId)
+        const target = playerById.get(session.targetPlayerId) ?? null
 
-        if (priorGuess && nextGuess && priorGuess.teamId === nextGuess.teamId) {
+        if (
+          shouldBlockConsecutiveSameTeamGuess({
+            difficultyId,
+            priorGuess: priorGuess ?? null,
+            nextGuess: nextGuess ?? null,
+            target,
+            referenceDate: dailyDateKey,
+          })
+        ) {
           return preparedState
         }
       }
