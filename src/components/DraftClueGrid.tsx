@@ -1,6 +1,6 @@
 import { DRAFT_CLUE_KEYS, DRAFT_CLUE_LABELS, getDraftPickBucketLabel } from '../lib/nba/draftMode'
 import type { DraftGuessResult } from '../lib/nba/draftMode'
-import { formatJerseyNumber } from '../lib/nba/format'
+import { formatJerseyNumber, formatNumericDirectionSymbol } from '../lib/nba/format'
 import { PlayerAvatar } from './PlayerAvatar'
 
 interface DraftClueGridProps {
@@ -69,8 +69,12 @@ export function DraftClueGrid({
                     <span className="clue-grid__label">{DRAFT_CLUE_LABELS[key]}</span>
                     <span className="clue-grid__value">{getCellValue(result, key)}</span>
                     {showNumericArrows && isNumeric && clue.direction ? (
-                      <span className="clue-grid__direction" aria-hidden="true">
-                        {clue.direction === 'up' ? 'up' : 'down'}
+                      <span
+                        className="clue-grid__direction"
+                        aria-label={clue.direction === 'up' ? 'Target is higher' : 'Target is lower'}
+                        role="img"
+                      >
+                        {formatNumericDirectionSymbol(clue.direction)}
                       </span>
                     ) : null}
                   </div>

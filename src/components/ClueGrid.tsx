@@ -4,6 +4,7 @@ import {
   formatAge,
   formatHeight,
   formatJerseyNumber,
+  formatNumericDirectionSymbol,
 } from '../lib/nba/format'
 import type { DifficultyId, GuessResult, UnitSystem } from '../lib/nba/types'
 import { PlayerAvatar } from './PlayerAvatar'
@@ -90,8 +91,12 @@ export function ClueGrid({
                       {getCellValue(result, key, units, referenceDate, difficultyId)}
                     </span>
                     {showNumericArrows && isNumeric && clue.direction ? (
-                      <span className="clue-grid__direction" aria-hidden="true">
-                        {clue.direction === 'up' ? 'up' : 'down'}
+                      <span
+                        className="clue-grid__direction"
+                        aria-label={clue.direction === 'up' ? 'Target is higher' : 'Target is lower'}
+                        role="img"
+                      >
+                        {formatNumericDirectionSymbol(clue.direction)}
                       </span>
                     ) : null}
                   </div>

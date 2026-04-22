@@ -8,6 +8,7 @@ import type {
   DifficultyId,
   EventModeId,
   GameMode,
+  NumericDirection,
   PlayerRecord,
   PlayerThemeId,
   UnitSystem,
@@ -96,6 +97,17 @@ export function formatAge(
 
 export function formatJerseyNumber(jerseyNumber: number | null): string {
   return jerseyNumber === null ? 'N/A' : `${jerseyNumber}`
+}
+
+export function formatNumericDirectionSymbol(direction: NumericDirection): string {
+  switch (direction) {
+    case 'up':
+      return '↑'
+    case 'down':
+      return '↓'
+    default:
+      return ''
+  }
 }
 
 export function formatRefreshDate(isoDate: string): string {
