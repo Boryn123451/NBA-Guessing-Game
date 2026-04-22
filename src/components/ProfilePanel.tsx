@@ -12,7 +12,6 @@ import type {
   GameMode,
   LocalProfile,
   ProgressionState,
-  RetroThemeId,
 } from '../lib/nba/types'
 import { BADGE_DEFINITIONS } from '../lib/profile/badges'
 import {
@@ -21,7 +20,6 @@ import {
 } from '../lib/profile/selectors'
 import { getAverageGuesses, getWinRate } from '../lib/storage'
 import { DailyHistoryCalendar } from './DailyHistoryCalendar'
-import { ThemeStorePanel } from './ThemeStorePanel'
 
 interface ProfilePanelProps {
   profile: LocalProfile
@@ -31,23 +29,17 @@ interface ProfilePanelProps {
   nextWeeklyResetCountdown: string
   isStorageAvailable: boolean
   isCompact?: boolean
-  activeRetroThemeId: RetroThemeId
   onDisplayNameChange: (displayName: string) => void
   onImport: (rawValue: string) => { ok: true } | { ok: false; error: string }
-  onRetroThemeActivate: (themeId: RetroThemeId) => void
-  onRetroThemeUnlock: (themeId: RetroThemeId) => void
 }
 
 export function ProfilePanel({
-  activeRetroThemeId,
   exportPayload,
   isCompact = false,
   isStorageAvailable,
   nextWeeklyResetCountdown,
   onDisplayNameChange,
   onImport,
-  onRetroThemeActivate,
-  onRetroThemeUnlock,
   profile,
   progression,
   stats,
@@ -253,13 +245,6 @@ export function ProfilePanel({
           </article>
         </div>
       </section>
-
-      <ThemeStorePanel
-        activeThemeId={activeRetroThemeId}
-        profile={profile}
-        onActivate={onRetroThemeActivate}
-        onUnlock={onRetroThemeUnlock}
-      />
 
       <DailyHistoryCalendar entries={progression.dailyHistory} />
 

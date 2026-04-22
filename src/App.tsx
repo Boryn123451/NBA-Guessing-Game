@@ -11,8 +11,7 @@ import { GuessLedger } from './components/GuessLedger'
 import { LateRoundCluesPanel } from './components/LateRoundCluesPanel'
 import { MysteryPortrait } from './components/MysteryPortrait'
 import { PostGameExplainer } from './components/PostGameExplainer'
-import { ProfilePanel } from './components/ProfilePanel'
-import { SettingsPanel } from './components/SettingsPanel'
+import { ProfileHubPanel } from './components/ProfileHubPanel'
 import { VariantControls } from './components/VariantControls'
 import { WeeklyQuestPanel } from './components/WeeklyQuestPanel'
 import { useGameSession } from './hooks/useGameSession'
@@ -163,13 +162,15 @@ export default function App() {
   }
 
   const profileContent = (
-    <ProfilePanel
+    <ProfileHubPanel
       key={`${game.profile.profileId}:${game.profile.displayName}`}
       activeRetroThemeId={game.settings.retroThemeId}
       exportPayload={game.exportPayload}
       isCompact={isMobileLayout}
       isStorageAvailable={game.isStorageAvailable}
       nextWeeklyResetCountdown={game.nextWeeklyResetCountdown}
+      theme={game.settings.theme}
+      units={game.settings.units}
       profile={game.profile}
       progression={game.progression}
       stats={game.stats}
@@ -177,6 +178,8 @@ export default function App() {
       onImport={game.importProfileData}
       onRetroThemeActivate={game.setRetroThemeId}
       onRetroThemeUnlock={game.unlockRetroTheme}
+      onThemeChange={game.setTheme}
+      onUnitsChange={game.setUnits}
     />
   )
 
@@ -313,12 +316,6 @@ export default function App() {
               onPracticeIncludePostseasonChange={game.setPracticeIncludePostseason}
               onThemeChange={game.setThemeId}
             />
-            <SettingsPanel
-              theme={game.settings.theme}
-              units={game.settings.units}
-              onThemeChange={game.setTheme}
-              onUnitsChange={game.setUnits}
-            />
           </details>
         ) : (
           <VariantControls
@@ -433,17 +430,6 @@ export default function App() {
             units={game.settings.units}
           />
         ) : null}
-
-        {!isMobileLayout ? (
-          <div className="workspace__footer">
-            <SettingsPanel
-              theme={game.settings.theme}
-              units={game.settings.units}
-              onThemeChange={game.setTheme}
-              onUnitsChange={game.setUnits}
-            />
-          </div>
-        ) : null}
       </section>
     </>
   )
@@ -489,7 +475,7 @@ export default function App() {
             type="button"
             onClick={openProfileSurface}
           >
-            {isMobileLayout ? 'Open profile' : 'Profile & Records'}
+            {isMobileLayout ? 'Open hub' : 'Profile, Shop & Settings'}
           </button>
         </div>
       </header>
