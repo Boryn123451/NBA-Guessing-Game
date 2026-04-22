@@ -23,6 +23,10 @@ describe('theme filtering', () => {
         previousTeamAbbreviations: ['SAS'],
         previousTeamNames: ['San Antonio Spurs'],
         allStarAppearances: 2,
+        championships: 0,
+        accolades: ['All-Star x2'],
+        primaryAccolade: 'All-Star x2',
+        hasRichMetadata: true,
       },
     }),
   ]
@@ -32,6 +36,7 @@ describe('theme filtering', () => {
       clueMode: 'standard',
       themeId: 'all-stars',
       eventId: null,
+      includePostseason: false,
     })
 
     expect(result.map((player) => player.id)).toEqual([2])

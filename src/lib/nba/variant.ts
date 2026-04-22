@@ -4,6 +4,7 @@ export const DEFAULT_GAME_VARIANT: GameVariant = {
   clueMode: 'standard',
   themeId: 'classic',
   eventId: null,
+  includePostseason: false,
 }
 
 export function normalizeVariant(variant: GameVariant): GameVariant {
@@ -11,6 +12,7 @@ export function normalizeVariant(variant: GameVariant): GameVariant {
     clueMode: variant.clueMode,
     themeId: variant.themeId,
     eventId: variant.eventId,
+    includePostseason: variant.includePostseason,
   }
 }
 
@@ -21,6 +23,7 @@ export function getVariantKey(variant: GameVariant): string {
     normalizedVariant.clueMode,
     normalizedVariant.themeId,
     normalizedVariant.eventId ?? 'none',
+    normalizedVariant.includePostseason ? 'post' : 'reg',
   ].join(':')
 }
 
@@ -30,10 +33,12 @@ export function getVariantSessionKey(variant: GameVariant, difficulty: Difficult
 
 export function getDailySessionKey(
   dateKey: string,
-  variant: GameVariant,
-  difficulty: DifficultyId,
+  _variant?: GameVariant,
+  _difficulty?: DifficultyId,
 ): string {
-  return `${dateKey}:${getVariantSessionKey(variant, difficulty)}`
+  void _variant
+  void _difficulty
+  return `${dateKey}:daily`
 }
 
 export function describeModeScope(mode: GameMode): string {

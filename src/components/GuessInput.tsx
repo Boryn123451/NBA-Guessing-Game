@@ -8,6 +8,7 @@ import type { KeyboardEvent } from 'react'
 import type { DifficultyConfig } from '../lib/nba/difficulty'
 import { searchPlayers } from '../lib/nba/search'
 import type { PlayerRecord } from '../lib/nba/types'
+import { PlayerAvatar } from './PlayerAvatar'
 
 interface GuessInputProps {
   players: PlayerRecord[]
@@ -156,13 +157,18 @@ export function GuessInput({
                     onMouseEnter={() => setHighlightedIndex(index)}
                     onClick={() => commitGuess(player)}
                   >
-                    <span className="guess-box__option-name">
-                      {player.displayName}
-                      {isGuessed ? <em className="guess-box__badge">Guessed</em> : null}
-                      {isBlocked ? <em className="guess-box__badge">Blocked</em> : null}
-                    </span>
-                    <span className="guess-box__option-meta">
-                      {player.teamAbbreviation} | {player.position}
+                    <span className="guess-box__option-player">
+                      <PlayerAvatar player={player} />
+                      <span className="guess-box__option-copy">
+                        <span className="guess-box__option-name">
+                          {player.displayName}
+                          {isGuessed ? <em className="guess-box__badge">Guessed</em> : null}
+                          {isBlocked ? <em className="guess-box__badge">Blocked</em> : null}
+                        </span>
+                        <span className="guess-box__option-meta">
+                          {player.teamAbbreviation} | {player.position}
+                        </span>
+                      </span>
                     </span>
                   </button>
                 </li>
@@ -176,4 +182,3 @@ export function GuessInput({
     </div>
   )
 }
-

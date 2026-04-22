@@ -1,16 +1,20 @@
 import { DateTime } from 'luxon'
 
 import type {
+  ClueMode,
   DifficultyId,
   EventModeId,
   GameMode,
   LocalRecords,
   LocalStreaks,
+  PlayerThemeId,
 } from '../nba/types'
 
 export interface RecordContext {
   mode: GameMode
   difficultyId: DifficultyId
+  clueMode: ClueMode
+  themeId: PlayerThemeId
   eventId: EventModeId | null
   didWin: boolean
   guessCount: number

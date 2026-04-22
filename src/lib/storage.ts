@@ -1,10 +1,6 @@
 import { getDetectedTimeZone } from './nba/daily'
 import { DEFAULT_DIFFICULTY_ID, sanitizeDifficultyId } from './nba/difficulty'
-import {
-  DEFAULT_GAME_VARIANT,
-  getDailySessionKey,
-  getVariantKey,
-} from './nba/variant'
+import { DEFAULT_GAME_VARIANT, getDailySessionKey, getVariantKey } from './nba/variant'
 import type {
   ClueMode,
   DifficultyId,
@@ -16,6 +12,7 @@ import type {
   PersistedState,
   PlayerThemeId,
   ProgressionState,
+  RetroThemeId,
   StoredGameSession,
   ThemeMode,
   UnitSystem,
@@ -23,7 +20,8 @@ import type {
 import { createLocalProfile, sanitizeDisplayName } from './profile/profile'
 import { createDefaultProgressionState } from './profile/progression'
 
-const STORAGE_KEY = 'full-court-cipher:v4'
+const STORAGE_KEY = 'full-court-cipher:v5'
+const LEGACY_STORAGE_KEY_V4 = 'full-court-cipher:v4'
 const LEGACY_STORAGE_KEY_V3 = 'full-court-cipher:v3'
 const LEGACY_STORAGE_KEY_V2 = 'full-court-cipher:v2'
 const LEGACY_STORAGE_KEY_V1 = 'full-court-cipher:v1'
@@ -93,6 +91,34 @@ interface LegacyPersistedStateV3 {
   }
 }
 
+interface LegacyPersistedStateV4 {
+  version?: unknown
+  preferences?: {
+    mode?: unknown
+    clueMode?: unknown
+    themeId?: unknown
+    difficulty?: unknown
+    eventId?: unknown
+  }
+  settings?: {
+    units?: unknown
+    theme?: unknown
+  }
+  profile?: {
+    profileId?: unknown
+    displayName?: unknown
+    createdAt?: unknown
+    reputationPoints?: unknown
+  }
+  progression?: unknown
+  dailySessions?: Record<string, unknown>
+  practiceSessions?: Record<string, unknown>
+  stats?: {
+    daily?: unknown
+    practice?: unknown
+  }
+}
+
 function createEmptyStats(): ModeStats {
   return {
     gamesPlayed: 0,
@@ -137,12 +163,46 @@ function sanitizeTheme(theme: unknown): ThemeMode {
   return theme === 'light' || theme === 'dark' ? theme : 'system'
 }
 
+function sanitizeRetroThemeId(value: unknown): RetroThemeId {
+  switch (value) {
+    case '1950s':
+    case '1960s':
+    case '1970s':
+    case '1980s':
+    case '1990s':
+    case '2000s':
+    case '2010s':
+    case '2020s':
+      return value
+    case 'newsprint':
+      return '1950s'
+    case 'retro-scoreboard':
+      return '1960s'
+    case 'old-broadcast':
+      return '1970s'
+    case 'arcade':
+      return '1980s'
+    case 'vhs-crt':
+      return '1990s'
+    case 'default':
+      return '2020s'
+    default:
+      return '2020s'
+  }
+}
+
 function sanitizeMode(mode: unknown): GameMode {
   return mode === 'practice' ? 'practice' : 'daily'
 }
 
 function sanitizeClueMode(clueMode: unknown): ClueMode {
-  return clueMode === 'career' ? 'career' : 'standard'
+  switch (clueMode) {
+    case 'career':
+    case 'draft':
+      return clueMode
+    default:
+      return 'standard'
+  }
 }
 
 function sanitizeThemeId(themeId: unknown): PlayerThemeId {
@@ -272,25 +332,130 @@ function sanitizeSessions(
 }
 
 function sanitizeProfile(profile: unknown, now: Date): LocalProfile {
+  const fallbackProfile = createLocalProfile(now.toISOString())
+
   if (!profile || typeof profile !== 'object') {
-    return createLocalProfile(now.toISOString())
+    return fallbackProfile
   }
 
-  const value = profile as Partial<LocalProfile>
+  const value = profile as Partial<LocalProfile> & { reputationPoints?: unknown }
+  const unlockedRetroThemeIds = Array.isArray(value.unlockedRetroThemeIds)
+    ? value.unlockedRetroThemeIds
+        .map((themeId) => sanitizeRetroThemeId(themeId))
+        .filter((themeId, index, array) => array.indexOf(themeId) === index)
+    : (['2020s'] as RetroThemeId[])
 
   return {
     profileId:
       typeof value.profileId === 'string' && value.profileId.trim().length > 0
         ? value.profileId
-        : createLocalProfile(now.toISOString()).profileId,
+        : fallbackProfile.profileId,
     displayName: sanitizeDisplayName(value.displayName),
     createdAt:
       typeof value.createdAt === 'string' && value.createdAt.length > 0
         ? value.createdAt
         : now.toISOString(),
-    reputationPoints:
-      typeof value.reputationPoints === 'number' ? value.reputationPoints : 0,
+    points:
+      typeof value.points === 'number'
+        ? value.points
+        : typeof value.reputationPoints === 'number'
+          ? value.reputationPoints
+          : 0,
+    unlockedRetroThemeIds:
+      unlockedRetroThemeIds.length > 0
+        ? unlockedRetroThemeIds
+        : (['2020s'] as RetroThemeId[]),
   }
+}
+
+function sanitizeDailyHistoryEntries(
+  dailyHistory: unknown,
+): ProgressionState['dailyHistory'] {
+  if (!Array.isArray(dailyHistory)) {
+    return []
+  }
+
+  const entryByDateKey = new Map<string, ProgressionState['dailyHistory'][number]>()
+
+  for (const rawEntry of dailyHistory) {
+    if (!rawEntry || typeof rawEntry !== 'object') {
+      continue
+    }
+
+    const entry = rawEntry as Partial<ProgressionState['dailyHistory'][number]>
+
+    if (
+      typeof entry.dateKey !== 'string' ||
+      typeof entry.completedAt !== 'string' ||
+      typeof entry.didWin !== 'boolean' ||
+      typeof entry.guessCount !== 'number'
+    ) {
+      continue
+    }
+
+    const normalizedEntry: ProgressionState['dailyHistory'][number] = {
+      dateKey: entry.dateKey,
+      completedAt: entry.completedAt,
+      didWin: entry.didWin,
+      guessCount: entry.guessCount,
+      difficultyId: sanitizeDifficultyId(entry.difficultyId),
+      clueMode: sanitizeClueMode(entry.clueMode),
+      themeId: sanitizeThemeId(entry.themeId),
+      eventId: sanitizeEventId(entry.eventId),
+    }
+    const existingEntry = entryByDateKey.get(normalizedEntry.dateKey)
+
+    if (!existingEntry || normalizedEntry.completedAt >= existingEntry.completedAt) {
+      entryByDateKey.set(normalizedEntry.dateKey, normalizedEntry)
+    }
+  }
+
+  return [...entryByDateKey.values()].toSorted((left, right) =>
+    left.dateKey.localeCompare(right.dateKey),
+  )
+}
+
+function sanitizeCelebrations(
+  pendingCelebrations: unknown,
+): ProgressionState['pendingCelebrations'] {
+  if (!Array.isArray(pendingCelebrations)) {
+    return []
+  }
+
+  const celebrationById = new Map<string, ProgressionState['pendingCelebrations'][number]>()
+
+  for (const rawCelebration of pendingCelebrations) {
+    if (!rawCelebration || typeof rawCelebration !== 'object') {
+      continue
+    }
+
+    const celebration = rawCelebration as Partial<ProgressionState['pendingCelebrations'][number]>
+
+    if (
+      typeof celebration.id !== 'string' ||
+      typeof celebration.title !== 'string' ||
+      typeof celebration.body !== 'string' ||
+      typeof celebration.createdAt !== 'string' ||
+      (celebration.type !== 'badge' &&
+        celebration.type !== 'quest' &&
+        celebration.type !== 'record' &&
+        celebration.type !== 'status')
+    ) {
+      continue
+    }
+
+    celebrationById.set(celebration.id, {
+      id: celebration.id,
+      title: celebration.title,
+      body: celebration.body,
+      createdAt: celebration.createdAt,
+      type: celebration.type,
+    })
+  }
+
+  return [...celebrationById.values()]
+    .toSorted((left, right) => left.createdAt.localeCompare(right.createdAt))
+    .slice(-12)
 }
 
 function sanitizeProgression(
@@ -386,23 +551,10 @@ function sanitizeProgression(
         typeof streaks.lastDailyWinDate === 'string' ? streaks.lastDailyWinDate : null,
     },
     dailyWinDateKeys: Array.isArray(value.dailyWinDateKeys)
-      ? value.dailyWinDateKeys.filter(
-          (dateKey): dateKey is string => typeof dateKey === 'string',
-        )
+      ? [...new Set(value.dailyWinDateKeys.filter((dateKey): dateKey is string => typeof dateKey === 'string'))].toSorted()
       : [],
-    pendingCelebrations: Array.isArray(value.pendingCelebrations)
-      ? value.pendingCelebrations.filter(
-          (celebration): celebration is ProgressionState['pendingCelebrations'][number] =>
-            Boolean(celebration) &&
-            typeof celebration.id === 'string' &&
-            typeof celebration.title === 'string' &&
-            typeof celebration.body === 'string' &&
-            typeof celebration.createdAt === 'string' &&
-            (celebration.type === 'badge' ||
-              celebration.type === 'quest' ||
-              celebration.type === 'record'),
-        )
-      : [],
+    dailyHistory: sanitizeDailyHistoryEntries(value.dailyHistory),
+    pendingCelebrations: sanitizeCelebrations(value.pendingCelebrations),
   }
 }
 
@@ -426,12 +578,12 @@ function migrateV3SessionKey(sessionKey: string): string {
 
   if (/^\d{4}-\d{2}-\d{2}$/.test(parts[0] ?? '')) {
     const [dateKey, clueMode, themeId, difficultyId] = parts
-    return [dateKey, clueMode, themeId, 'none', difficultyId].join(':')
+    return [dateKey, clueMode, themeId, 'none', 'reg', difficultyId].join(':')
   }
 
   if (parts.length === 3) {
     const [clueMode, themeId, difficultyId] = parts
-    return [clueMode, themeId, 'none', difficultyId].join(':')
+    return [clueMode, themeId, 'none', 'reg', difficultyId].join(':')
   }
 
   return sessionKey
@@ -442,17 +594,19 @@ export function createDefaultState(
   timeZone = getDetectedTimeZone(),
 ): PersistedState {
   return {
-    version: 4,
+    version: 5,
     preferences: {
       mode: 'daily',
       clueMode: DEFAULT_GAME_VARIANT.clueMode,
       themeId: DEFAULT_GAME_VARIANT.themeId,
       difficulty: DEFAULT_DIFFICULTY_ID,
       eventId: null,
+      practiceIncludePostseason: false,
     },
     settings: {
       units: 'imperial',
       theme: 'system',
+      retroThemeId: '2020s',
     },
     profile: createLocalProfile(now.toISOString()),
     progression: createDefaultProgressionState(now, timeZone),
@@ -481,17 +635,19 @@ function migrateLegacyStateV1(
   const practiceSession = sanitizeSession(parsed.practiceSession)
 
   return {
-    version: 4,
+    version: 5,
     preferences: {
       mode: sanitizeMode(parsed.preferredMode),
       clueMode: DEFAULT_GAME_VARIANT.clueMode,
       themeId: DEFAULT_GAME_VARIANT.themeId,
       difficulty: DEFAULT_DIFFICULTY_ID,
       eventId: null,
+      practiceIncludePostseason: false,
     },
     settings: {
       units: sanitizeUnits(parsed.settings?.units),
       theme: sanitizeTheme(parsed.settings?.theme),
+      retroThemeId: '2020s',
     },
     profile: createLocalProfile(now.toISOString()),
     progression: createDefaultProgressionState(now, timeZone),
@@ -512,29 +668,31 @@ function migrateLegacyStateV2(
   timeZone: string,
 ): PersistedState {
   return {
-    version: 4,
+    version: 5,
     preferences: {
       mode: sanitizeMode(parsed.preferences?.mode),
       clueMode: sanitizeClueMode(parsed.preferences?.clueMode),
       themeId: sanitizeThemeId(parsed.preferences?.themeId),
       difficulty: DEFAULT_DIFFICULTY_ID,
       eventId: null,
+      practiceIncludePostseason: false,
     },
     settings: {
       units: sanitizeUnits(parsed.settings?.units),
       theme: sanitizeTheme(parsed.settings?.theme),
+      retroThemeId: '2020s',
     },
     profile: createLocalProfile(now.toISOString()),
     progression: createDefaultProgressionState(now, timeZone),
     dailySessions: Object.fromEntries(
       Object.entries(sanitizeSessions(parsed.dailySessions)).map(([sessionKey, session]) => [
-        `${sessionKey}:${DEFAULT_DIFFICULTY_ID}`,
+        `${sessionKey}:reg:${DEFAULT_DIFFICULTY_ID}`,
         session,
       ]),
     ),
     practiceSessions: Object.fromEntries(
       Object.entries(sanitizeSessions(parsed.practiceSessions)).map(([sessionKey, session]) => [
-        `${sessionKey}:${DEFAULT_DIFFICULTY_ID}`,
+        `${sessionKey}:reg:${DEFAULT_DIFFICULTY_ID}`,
         session,
       ]),
     ),
@@ -551,17 +709,19 @@ function migrateLegacyStateV3(
   timeZone: string,
 ): PersistedState {
   return {
-    version: 4,
+    version: 5,
     preferences: {
       mode: sanitizeMode(parsed.preferences?.mode),
       clueMode: sanitizeClueMode(parsed.preferences?.clueMode),
       themeId: sanitizeThemeId(parsed.preferences?.themeId),
       difficulty: sanitizeDifficultyId(parsed.preferences?.difficulty),
       eventId: null,
+      practiceIncludePostseason: false,
     },
     settings: {
       units: sanitizeUnits(parsed.settings?.units),
       theme: sanitizeTheme(parsed.settings?.theme),
+      retroThemeId: '2020s',
     },
     profile: createLocalProfile(now.toISOString()),
     progression: createDefaultProgressionState(now, timeZone),
@@ -584,6 +744,37 @@ function migrateLegacyStateV3(
   }
 }
 
+function migrateLegacyStateV4(
+  parsed: LegacyPersistedStateV4,
+  now: Date,
+  timeZone: string,
+): PersistedState {
+  return {
+    version: 5,
+    preferences: {
+      mode: sanitizeMode(parsed.preferences?.mode),
+      clueMode: sanitizeClueMode(parsed.preferences?.clueMode),
+      themeId: sanitizeThemeId(parsed.preferences?.themeId),
+      difficulty: sanitizeDifficultyId(parsed.preferences?.difficulty),
+      eventId: sanitizeEventId(parsed.preferences?.eventId),
+      practiceIncludePostseason: false,
+    },
+    settings: {
+      units: sanitizeUnits(parsed.settings?.units),
+      theme: sanitizeTheme(parsed.settings?.theme),
+      retroThemeId: '2020s',
+    },
+    profile: sanitizeProfile(parsed.profile, now),
+    progression: sanitizeProgression(parsed.progression, now, timeZone),
+    dailySessions: sanitizeSessions(parsed.dailySessions),
+    practiceSessions: sanitizeSessions(parsed.practiceSessions),
+    stats: {
+      daily: sanitizeDifficultyStats(parsed.stats?.daily),
+      practice: sanitizeDifficultyStats(parsed.stats?.practice),
+    },
+  }
+}
+
 export function coercePersistedState(
   parsed: unknown,
   now: Date = new Date(),
@@ -596,21 +787,24 @@ export function coercePersistedState(
   const value = parsed as Partial<PersistedState> &
     LegacyPersistedStateV1 &
     LegacyPersistedStateV2 &
-    LegacyPersistedStateV3
+    LegacyPersistedStateV3 &
+    LegacyPersistedStateV4
 
-  if (value.version === 4) {
+  if (value.version === 5) {
     return {
-      version: 4,
+      version: 5,
       preferences: {
         mode: sanitizeMode(value.preferences?.mode),
         clueMode: sanitizeClueMode(value.preferences?.clueMode),
         themeId: sanitizeThemeId(value.preferences?.themeId),
         difficulty: sanitizeDifficultyId(value.preferences?.difficulty),
         eventId: sanitizeEventId(value.preferences?.eventId),
+        practiceIncludePostseason: value.preferences?.practiceIncludePostseason === true,
       },
       settings: {
         units: sanitizeUnits(value.settings?.units),
         theme: sanitizeTheme(value.settings?.theme),
+        retroThemeId: sanitizeRetroThemeId(value.settings?.retroThemeId),
       },
       profile: sanitizeProfile(value.profile, now),
       progression: sanitizeProgression(value.progression, now, timeZone),
@@ -621,6 +815,10 @@ export function coercePersistedState(
         practice: sanitizeDifficultyStats(value.stats?.practice),
       },
     }
+  }
+
+  if (value.version === 4) {
+    return migrateLegacyStateV4(value as LegacyPersistedStateV4, now, timeZone)
   }
 
   if (value.version === 3) {
@@ -672,6 +870,7 @@ export function loadPersistedState(): PersistedState {
   try {
     const rawValue =
       safeStorageGet(STORAGE_KEY) ??
+      safeStorageGet(LEGACY_STORAGE_KEY_V4) ??
       safeStorageGet(LEGACY_STORAGE_KEY_V3) ??
       safeStorageGet(LEGACY_STORAGE_KEY_V2) ??
       safeStorageGet(LEGACY_STORAGE_KEY_V1)

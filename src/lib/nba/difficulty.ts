@@ -42,6 +42,7 @@ export interface DifficultyConfig {
   }
   clueAvailability: {
     careerPathMode: boolean
+    draftMode: boolean
     seasonSnapshot: boolean
     bonusClues: boolean
   }
@@ -87,6 +88,7 @@ export const DIFFICULTY_DEFINITIONS: DifficultyConfig[] = [
     },
     clueAvailability: {
       careerPathMode: true,
+      draftMode: true,
       seasonSnapshot: true,
       bonusClues: true,
     },
@@ -130,6 +132,7 @@ export const DIFFICULTY_DEFINITIONS: DifficultyConfig[] = [
     },
     clueAvailability: {
       careerPathMode: true,
+      draftMode: true,
       seasonSnapshot: true,
       bonusClues: true,
     },
@@ -173,6 +176,7 @@ export const DIFFICULTY_DEFINITIONS: DifficultyConfig[] = [
     },
     clueAvailability: {
       careerPathMode: true,
+      draftMode: true,
       seasonSnapshot: true,
       bonusClues: true,
     },
@@ -216,6 +220,7 @@ export const DIFFICULTY_DEFINITIONS: DifficultyConfig[] = [
     },
     clueAvailability: {
       careerPathMode: true,
+      draftMode: true,
       seasonSnapshot: true,
       bonusClues: false,
     },
@@ -223,8 +228,8 @@ export const DIFFICULTY_DEFINITIONS: DifficultyConfig[] = [
   {
     id: 'elite-ball-knowledge',
     label: 'Elite Ball Knowledge',
-    description: 'Only for true NBA sickos.',
-    maxGuesses: 3,
+    description: 'Only for true NBA sickos. Strict, fair, and built for real roster knowledge.',
+    maxGuesses: 4,
     numericCloseTolerance: 1,
     ageCloseTolerance: 0,
     ageDisplay: 'bucketed',
@@ -259,6 +264,7 @@ export const DIFFICULTY_DEFINITIONS: DifficultyConfig[] = [
     },
     clueAvailability: {
       careerPathMode: false,
+      draftMode: false,
       seasonSnapshot: false,
       bonusClues: false,
     },

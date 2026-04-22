@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react'
 
-import { BonusCluesPanel } from './components/BonusCluesPanel'
-import { CareerPathPanel } from './components/CareerPathPanel'
 import { CelebrationToasts } from './components/CelebrationToasts'
+import { CareerPathPanel } from './components/CareerPathPanel'
 import { ClueGrid } from './components/ClueGrid'
+import { DailyLockoutModal } from './components/DailyLockoutModal'
+import { DraftClueGrid } from './components/DraftClueGrid'
 import { EventModesPanel } from './components/EventModesPanel'
 import { GuessInput } from './components/GuessInput'
 import { GuessLedger } from './components/GuessLedger'
+import { LateRoundCluesPanel } from './components/LateRoundCluesPanel'
 import { MysteryPortrait } from './components/MysteryPortrait'
+import { PostGameExplainer } from './components/PostGameExplainer'
 import { ProfilePanel } from './components/ProfilePanel'
-import { SeasonSnapshotPanel } from './components/SeasonSnapshotPanel'
 import { SettingsPanel } from './components/SettingsPanel'
 import { VariantControls } from './components/VariantControls'
 import { WeeklyQuestPanel } from './components/WeeklyQuestPanel'
@@ -34,6 +36,7 @@ export default function App() {
   const [shareStatus, setShareStatus] = useState('')
   const [isProfileOpen, setIsProfileOpen] = useState(false)
   const [mobileView, setMobileView] = useState<MobileView>('play')
+  const [dismissedDailyLockoutDate, setDismissedDailyLockoutDate] = useState<string | null>(null)
   const isComplete = game.activeSession.status !== 'in_progress'
   const didWin = game.activeSession.status === 'won'
   const modeLabel = formatModeLabel(game.activeMode)
@@ -41,26 +44,77 @@ export default function App() {
   const difficultyLabel = formatDifficultyLabel(game.activeDifficultyId)
   const themeLabel = formatThemeLabel(game.activeThemeId)
   const eventLabel = formatEventModeLabel(game.eventId)
-  const revealLine = `${game.activeTarget.teamName} | ${game.activeTarget.position} | ${formatHeight(
-    game.activeTarget,
-    game.settings.units,
-  )} | Age ${formatAge(game.activeTarget, game.dailyDateKey, game.activeDifficultyId)} | ${game.activeTarget.country ?? 'Country unavailable'}`
-  const boardGuidance = game.profileWarning
-    ? game.profileWarning
-    : game.activeClueMode === 'career'
+  const boardPoolLabel =
+    game.activeMode === 'daily'
+      ? 'Daily full roster'
+      : game.eventId
+        ? eventLabel
+        : themeLabel
+  const revealLine =
+    game.activeClueMode === 'draft'
+      ? `${game.activeTarget.draft.teamAbbreviation ?? 'N/A'} | ${game.activeTarget.draft.year ?? 'N/A'} | ${game.activeTarget.draft.isUndrafted ? 'Undrafted' : `Pick ${game.activeTarget.draft.pick ?? 'N/A'}`}`
+      : `${game.activeTarget.teamName} | ${game.activeTarget.position} | ${formatHeight(
+          game.activeTarget,
+          game.settings.units,
+        )} | Age ${formatAge(game.activeTarget, game.dailyDateKey, game.activeDifficultyId)} | ${game.activeTarget.country ?? 'Country unavailable'}`
+  const boardGuidance =
+    game.profileWarning ??
+    (game.activeClueMode === 'career'
       ? 'Career Path Mode swaps the compare grid for deeper background clues.'
-      : game.activeDifficulty.ui.showRoundGuidance
-        ? isMobileLayout
-          ? 'Read the board first. Mobile trims the extra panels so the guess lane stays readable.'
-          : 'Read the roster lane, cross-check the traits, and use the portrait reveal only as a last confirmation.'
-        : 'Minimal assistance. Read the board and work the deduction.'
-  const shouldShowLateRoundSection =
-    (game.showBonusClues && game.activeClueMode === 'standard') || game.showSeasonSnapshot
+      : game.activeClueMode === 'draft'
+        ? 'Draft Mode shifts the board toward draft identity, year, team, and pick range.'
+        : game.activeDifficulty.ui.showRoundGuidance
+        ? 'Read the strongest lane first, then use the portrait as confirmation instead of a shortcut.'
+        : 'Minimal assistance. Read the board and work the deduction.')
+  const compactBoardGuidance =
+    game.profileWarning ??
+    (game.activeClueMode === 'career'
+      ? 'Career clues only. No roster grid.'
+      : game.activeClueMode === 'draft'
+        ? 'Draft clues replace the normal roster board.'
+        : game.activeDifficulty.ui.showRoundGuidance
+          ? 'Read the board first. Portrait reveal is secondary.'
+          : 'Minimal assistance. Work the board.')
+  const headerCopy = isMobileLayout
+    ? 'Phone view keeps the loop tight: guess, read, check the portrait, guess again.'
+    : 'Track the roster trail, stay within the difficulty rules, and identify the current NBA player before the board runs dry.'
+  const headerMetaPills = isMobileLayout
+    ? [
+        game.activeMode === 'daily'
+          ? `Next reset in ${game.resetCountdown}`
+          : 'Unlimited practice boards',
+        `${difficultyLabel} | ${clueModeLabel}`,
+      ]
+    : game.activeMode === 'daily'
+      ? [
+          `Next reset in ${game.resetCountdown}`,
+          `${difficultyLabel} | ${clueModeLabel}`,
+          boardPoolLabel,
+          game.activePostseasonRule.label,
+        ]
+      : [
+          'Unlimited random current players',
+          `${difficultyLabel} | ${clueModeLabel}`,
+          boardPoolLabel,
+          game.activePostseasonRule.label,
+        ]
+  const statusMetaPills = isMobileLayout
+    ? [difficultyLabel, clueModeLabel, `${game.activePlayerCount} in pool`]
+    : game.activeMode === 'daily'
+      ? [difficultyLabel, clueModeLabel, boardPoolLabel, `${game.activePlayerCount} players in pool`]
+      : [
+          difficultyLabel,
+          clueModeLabel,
+          boardPoolLabel,
+          game.activePostseasonRule.label,
+          `${game.activePlayerCount} players in pool`,
+        ]
 
   useEffect(() => {
     document.documentElement.dataset.theme = game.settings.theme
     document.documentElement.dataset.device = isMobileLayout ? 'mobile' : 'desktop'
-  }, [game.settings.theme, isMobileLayout])
+    document.documentElement.dataset.pack = game.settings.retroThemeId
+  }, [game.settings.retroThemeId, game.settings.theme, isMobileLayout])
 
   useEffect(() => {
     if (!shareStatus) {
@@ -70,6 +124,11 @@ export default function App() {
     const timer = window.setTimeout(() => setShareStatus(''), 2200)
     return () => window.clearTimeout(timer)
   }, [shareStatus])
+
+  const isDailyLockoutOpen =
+    game.activeMode === 'daily' &&
+    game.dailyLockedOut &&
+    dismissedDailyLockoutDate !== game.dailyDateKey
 
   async function handleShare(): Promise<void> {
     try {
@@ -98,9 +157,15 @@ export default function App() {
     setIsProfileOpen(true)
   }
 
+  function switchToPracticeFromLockout(): void {
+    setDismissedDailyLockoutDate(game.dailyDateKey)
+    game.setMode('practice')
+  }
+
   const profileContent = (
     <ProfilePanel
       key={`${game.profile.profileId}:${game.profile.displayName}`}
+      activeRetroThemeId={game.settings.retroThemeId}
       exportPayload={game.exportPayload}
       isCompact={isMobileLayout}
       isStorageAvailable={game.isStorageAvailable}
@@ -110,99 +175,125 @@ export default function App() {
       stats={game.stats}
       onDisplayNameChange={game.setDisplayName}
       onImport={game.importProfileData}
+      onRetroThemeActivate={game.setRetroThemeId}
+      onRetroThemeUnlock={game.unlockRetroTheme}
     />
   )
 
-  const boardContent = (
-    <>
-      <section className="workspace__hero">
-        <MysteryPortrait
-          difficulty={game.activeDifficulty}
+  const statusPanel = (
+    <section className={`status-panel ${isMobileLayout ? 'is-compact' : ''}`}>
+      <div className="panel-heading">
+        <span className="eyebrow">{modeLabel} board</span>
+        <h3>
+          {didWin
+            ? `Solved in ${game.activeSession.guessIds.length}`
+            : game.activeSession.status === 'lost'
+              ? 'Out of guesses'
+              : game.dailyLockedOut && game.activeMode === 'daily'
+                ? 'Daily board completed'
+                : `${game.remainingGuesses} guesses left`}
+        </h3>
+      </div>
+      <p className="status-panel__body">
+        {isComplete ? revealLine : isMobileLayout ? compactBoardGuidance : boardGuidance}
+      </p>
+      <div className="status-panel__tags">
+        {statusMetaPills.map((pill) => (
+          <span key={pill} className="meta-pill">
+            {pill}
+          </span>
+        ))}
+      </div>
+      <div className="status-panel__actions">
+        {isComplete ? (
+          <button className="action-button" type="button" onClick={() => void handleShare()}>
+            Share result
+          </button>
+        ) : null}
+        {game.canRevealSilhouette ? (
+          <button
+            className="action-button action-button--ghost"
+            type="button"
+            onClick={game.revealSilhouette}
+          >
+            Use silhouette hint
+          </button>
+        ) : null}
+        <button
+          className="action-button action-button--ghost"
+          type="button"
+          onClick={game.startPracticeGame}
+        >
+          New practice puzzle
+        </button>
+      </div>
+      {shareStatus ? <div className="status-panel__toast">{shareStatus}</div> : null}
+    </section>
+  )
+
+  const boardBody =
+    game.activeClueMode === 'standard' ? (
+      <ClueGrid
+        difficultyId={game.activeDifficultyId}
+        referenceDate={game.dailyDateKey}
+        rows={game.guessResults}
+        showNumericArrows={game.activeDifficulty.showNumericArrows}
+        units={game.settings.units}
+      />
+    ) : game.activeClueMode === 'draft' ? (
+      <DraftClueGrid
+        rows={game.draftGuessResults}
+        showNumericArrows={game.activeDifficulty.showNumericArrows}
+      />
+    ) : (
+      <>
+        <CareerPathPanel
           guessCount={game.activeSession.guessIds.length}
           player={game.activeTarget}
-          silhouetteRevealed={game.activeSession.silhouetteRevealed}
           status={game.activeSession.status}
         />
+        <GuessLedger guesses={game.guessedPlayers} targetPlayerId={game.activeTarget.id} />
+      </>
+    )
 
-        <section className="status-panel">
-          <div className="panel-heading">
-            <span className="eyebrow">{modeLabel} board</span>
-            <h3>
-              {didWin
-                ? `Solved in ${game.activeSession.guessIds.length}`
-                : game.activeSession.status === 'lost'
-                  ? 'Out of guesses'
-                  : `${game.remainingGuesses} guesses left`}
-            </h3>
-          </div>
-          <p className="status-panel__body">{isComplete ? revealLine : boardGuidance}</p>
-          <div className="status-panel__tags">
-            <span className="meta-pill">{difficultyLabel}</span>
-            <span className="meta-pill">{clueModeLabel}</span>
-            <span className="meta-pill">{themeLabel}</span>
-            {game.eventId ? <span className="meta-pill">{eventLabel}</span> : null}
-            <span className="meta-pill">{game.activePlayerCount} players in pool</span>
-          </div>
-          <div className="status-panel__actions">
-            {isComplete ? (
-              <button className="action-button" type="button" onClick={() => void handleShare()}>
-                Share result
-              </button>
-            ) : null}
-            {game.canRevealSilhouette ? (
-              <button
-                className="action-button action-button--ghost"
-                type="button"
-                onClick={game.revealSilhouette}
-              >
-                Use silhouette hint
-              </button>
-            ) : null}
-            <button
-              className="action-button action-button--ghost"
-              type="button"
-              onClick={game.startPracticeGame}
-            >
-              New practice puzzle
-            </button>
-          </div>
-          {shareStatus ? <div className="status-panel__toast">{shareStatus}</div> : null}
-        </section>
-
-        {!isMobileLayout ? (
+  const boardContent = (
+    <>
+      {!isMobileLayout ? (
+        <section className="workspace__hero workspace__hero--support">
           <WeeklyQuestPanel
             board={game.progression.weeklyQuests}
             countdown={game.nextWeeklyResetCountdown}
             onClaim={game.claimQuest}
           />
-        ) : null}
-      </section>
+          {game.activeMode === 'practice' ? (
+            <EventModesPanel
+              activeEvents={game.activeEventModes}
+              locked={game.roundLocked}
+              selectedEventId={game.eventId}
+              upcomingEvents={game.upcomingEventModes}
+              onSelect={game.setEventId}
+            />
+          ) : null}
+        </section>
+      ) : null}
 
       <section className="workspace__board">
-        {!isMobileLayout ? (
-          <EventModesPanel
-            activeEvents={game.activeEventModes}
-            locked={game.roundLocked}
-            selectedEventId={game.eventId}
-            upcomingEvents={game.upcomingEventModes}
-            onSelect={game.setEventId}
-          />
-        ) : null}
-
         <div className={`board-heading ${isMobileLayout ? 'is-compact' : ''}`}>
           <div>
             <span className="eyebrow">Guess a current player</span>
             <h2>Follow the clue lane</h2>
           </div>
           <div className="board-heading__meta">
-            <strong>Roster updated {formatRefreshDate(game.dataMeta.rosterFreshness.refreshedAt)}</strong>
-            <span>{isMobileLayout ? `${game.activePlayerCount} eligible players` : game.dataMeta.eligibility.rules[1]}</span>
+            <strong>
+              Roster updated {formatRefreshDate(game.dataMeta.rosterFreshness.refreshedAt)}
+            </strong>
+            {!isMobileLayout ? <span>{game.dataMeta.eligibility.rules[1]}</span> : null}
           </div>
         </div>
 
         {isMobileLayout ? (
           <details className="mobile-disclosure">
-            <summary>Game setup</summary>
+            <summary>Board setup</summary>
             <VariantControls
               activePlayerCount={game.activePlayerCount}
               clueMode={game.activeClueMode}
@@ -210,12 +301,16 @@ export default function App() {
               difficultyOptions={game.difficultyOptions}
               isCompact
               locked={game.roundLocked}
+              mode={game.activeMode}
+              postseasonRule={game.activePostseasonRule}
               showCareerPathOption={game.showCareerPathOption}
+              showDraftModeOption={game.showDraftModeOption}
               themeId={game.activeThemeId}
               themeOptions={game.themeOptions}
               themeSummary={game.activeThemeSummary}
               onClueModeChange={game.setClueMode}
               onDifficultyChange={game.setDifficulty}
+              onPracticeIncludePostseasonChange={game.setPracticeIncludePostseason}
               onThemeChange={game.setThemeId}
             />
             <SettingsPanel
@@ -232,18 +327,22 @@ export default function App() {
             difficultyId={game.activeDifficultyId}
             difficultyOptions={game.difficultyOptions}
             locked={game.roundLocked}
+            mode={game.activeMode}
+            postseasonRule={game.activePostseasonRule}
             showCareerPathOption={game.showCareerPathOption}
+            showDraftModeOption={game.showDraftModeOption}
             themeId={game.activeThemeId}
             themeOptions={game.themeOptions}
             themeSummary={game.activeThemeSummary}
             onClueModeChange={game.setClueMode}
             onDifficultyChange={game.setDifficulty}
+            onPracticeIncludePostseasonChange={game.setPracticeIncludePostseason}
             onThemeChange={game.setThemeId}
           />
         )}
 
         <GuessInput
-          key={`${game.activeClueMode}:${game.activeThemeId}:${game.eventId ?? 'none'}:${game.activeDifficultyId}`}
+          key={`${game.activeClueMode}:${game.activeThemeId}:${game.eventId ?? 'none'}:${game.activeDifficultyId}:${game.activePostseasonRule.includePostseason ? 'post' : 'reg'}`}
           blockedTeamId={game.blockedTeamId}
           closeGuessFeedback={game.closeGuessFeedback}
           difficulty={game.activeDifficulty}
@@ -253,60 +352,86 @@ export default function App() {
           onGuess={game.submitGuess}
         />
 
-        {game.activeClueMode === 'standard' ? (
-          <>
-            <ClueGrid
-              difficultyId={game.activeDifficultyId}
-              referenceDate={game.dailyDateKey}
-              rows={game.guessResults}
-              showNumericArrows={game.activeDifficulty.showNumericArrows}
-              units={game.settings.units}
-            />
-            {game.showBonusClues && !isMobileLayout ? (
-              <BonusCluesPanel
-                canReveal={game.canRevealBonusClue}
-                clues={game.revealedBonusClues}
-                onReveal={game.revealBonusClue}
-              />
-            ) : null}
-          </>
-        ) : (
-          <>
-            <CareerPathPanel
-              guessCount={game.activeSession.guessIds.length}
+        {!isMobileLayout ? (
+          <div className="desktop-loop">
+            <MysteryPortrait
+              difficulty={game.activeDifficulty}
+              isCompact={false}
               player={game.activeTarget}
+              silhouetteRevealed={game.activeSession.silhouetteRevealed}
               status={game.activeSession.status}
+              wrongGuessCount={
+                game.activeSession.status === 'won'
+                  ? Math.max(game.activeSession.guessIds.length - 1, 0)
+                  : game.activeSession.guessIds.length
+              }
             />
-            <GuessLedger guesses={game.guessedPlayers} targetPlayerId={game.activeTarget.id} />
-          </>
-        )}
+            {statusPanel}
+          </div>
+        ) : null}
 
-        {game.showSeasonSnapshot && !isMobileLayout ? (
-          <SeasonSnapshotPanel
+        {isMobileLayout ? (
+          <div className="mobile-loop">
+            <MysteryPortrait
+              difficulty={game.activeDifficulty}
+              isCompact
+              player={game.activeTarget}
+              silhouetteRevealed={game.activeSession.silhouetteRevealed}
+              status={game.activeSession.status}
+              wrongGuessCount={
+                game.activeSession.status === 'won'
+                  ? Math.max(game.activeSession.guessIds.length - 1, 0)
+                  : game.activeSession.guessIds.length
+              }
+            />
+            {statusPanel}
+          </div>
+        ) : null}
+
+        {boardBody}
+
+        {(game.showBonusClues || game.showSeasonSnapshot) && !isMobileLayout ? (
+          <LateRoundCluesPanel
+            canRevealBonusClue={game.canRevealBonusClue}
             guessCount={game.activeSession.guessIds.length}
+            includePostseason={game.activePostseasonRule.includePostseason}
             player={game.activeTarget}
+            revealedBonusClues={game.revealedBonusClues}
+            showBonusClues={game.showBonusClues}
+            showSeasonSnapshot={game.showSeasonSnapshot}
             status={game.activeSession.status}
+            onRevealBonusClue={game.revealBonusClue}
           />
         ) : null}
 
-        {isMobileLayout && shouldShowLateRoundSection ? (
+        {(game.showBonusClues || game.showSeasonSnapshot) && isMobileLayout ? (
           <details className="mobile-disclosure">
             <summary>Late-round clues</summary>
-            {game.activeClueMode === 'standard' && game.showBonusClues ? (
-              <BonusCluesPanel
-                canReveal={game.canRevealBonusClue}
-                clues={game.revealedBonusClues}
-                onReveal={game.revealBonusClue}
-              />
-            ) : null}
-            {game.showSeasonSnapshot ? (
-              <SeasonSnapshotPanel
-                guessCount={game.activeSession.guessIds.length}
-                player={game.activeTarget}
-                status={game.activeSession.status}
-              />
-            ) : null}
+            <LateRoundCluesPanel
+              canRevealBonusClue={game.canRevealBonusClue}
+              embedded
+              guessCount={game.activeSession.guessIds.length}
+              includePostseason={game.activePostseasonRule.includePostseason}
+              player={game.activeTarget}
+              revealedBonusClues={game.revealedBonusClues}
+              showBonusClues={game.showBonusClues}
+              showSeasonSnapshot={game.showSeasonSnapshot}
+              status={game.activeSession.status}
+              onRevealBonusClue={game.revealBonusClue}
+            />
           </details>
+        ) : null}
+
+        {isComplete ? (
+          <PostGameExplainer
+            clueMode={game.activeClueMode}
+            draftGuessResults={game.draftGuessResults}
+            difficultyId={game.activeDifficultyId}
+            guesses={game.guessResults}
+            player={game.activeTarget}
+            referenceDate={game.dailyDateKey}
+            units={game.settings.units}
+          />
         ) : null}
 
         {!isMobileLayout ? (
@@ -332,9 +457,7 @@ export default function App() {
           <span className="eyebrow">NBA deduction game</span>
           <h1>Full Court Cipher</h1>
           <p>
-            {isMobileLayout
-              ? 'Bigger type, fewer surfaces, same rules. The phone view trims the noise instead of squeezing everything.'
-              : 'Track the roster trail, stay within the difficulty rules, and identify the current NBA player before the board runs dry.'}
+            {headerCopy}
           </p>
         </div>
         <div className="app-header__controls">
@@ -355,18 +478,11 @@ export default function App() {
             </button>
           </div>
           <div className="app-header__meta">
-            <span className="meta-pill">
-              {game.activeMode === 'daily'
-                ? `Next reset in ${game.resetCountdown}`
-                : 'Unlimited random current players'}
-            </span>
-            <span className="meta-pill">
-              {difficultyLabel} | {clueModeLabel}
-            </span>
-            <span className="meta-pill">
-              {themeLabel}
-              {game.eventId ? ` | ${eventLabel}` : ''}
-            </span>
+            {headerMetaPills.map((pill) => (
+              <span key={pill} className="meta-pill">
+                {pill}
+              </span>
+            ))}
           </div>
           <button
             className="action-button action-button--ghost app-header__profile-trigger"
@@ -409,14 +525,16 @@ export default function App() {
 
         {isMobileLayout && mobileView === 'quests' ? (
           <div className="mobile-stack">
-            <EventModesPanel
-              activeEvents={game.activeEventModes}
-              isCompact
-              locked={game.roundLocked}
-              selectedEventId={game.eventId}
-              upcomingEvents={game.upcomingEventModes}
-              onSelect={game.setEventId}
-            />
+            {game.activeMode === 'practice' ? (
+              <EventModesPanel
+                activeEvents={game.activeEventModes}
+                isCompact
+                locked={game.roundLocked}
+                selectedEventId={game.eventId}
+                upcomingEvents={game.upcomingEventModes}
+                onSelect={game.setEventId}
+              />
+            ) : null}
             <WeeklyQuestPanel
               board={game.progression.weeklyQuests}
               countdown={game.nextWeeklyResetCountdown}
@@ -446,6 +564,14 @@ export default function App() {
             {profileContent}
           </div>
         </div>
+      ) : null}
+
+      {isDailyLockoutOpen && game.activeMode === 'daily' && game.dailyLockedOut ? (
+        <DailyLockoutModal
+          countdown={game.resetCountdown}
+          onClose={() => setDismissedDailyLockoutDate(game.dailyDateKey)}
+          onSwitchToPractice={switchToPracticeFromLockout}
+        />
       ) : null}
 
       <CelebrationToasts celebrations={game.celebrations} onDismiss={game.dismissCelebration} />

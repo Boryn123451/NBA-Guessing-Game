@@ -41,7 +41,7 @@ export function WeeklyQuestPanel({
                   <strong>{quest.title}</strong>
                   <p>{quest.description}</p>
                 </div>
-                <span className="quest-card__reward">+{quest.rewardPoints} rep</span>
+                <span className="quest-card__reward">+{quest.rewardPoints} points</span>
               </div>
               <div className="quest-card__progress">
                 <div className="quest-card__bar">

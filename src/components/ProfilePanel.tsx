@@ -12,6 +12,7 @@ import type {
   GameMode,
   LocalProfile,
   ProgressionState,
+  RetroThemeId,
 } from '../lib/nba/types'
 import { BADGE_DEFINITIONS } from '../lib/profile/badges'
 import {
@@ -19,6 +20,8 @@ import {
   getCompletedQuestCount,
 } from '../lib/profile/selectors'
 import { getAverageGuesses, getWinRate } from '../lib/storage'
+import { DailyHistoryCalendar } from './DailyHistoryCalendar'
+import { ThemeStorePanel } from './ThemeStorePanel'
 
 interface ProfilePanelProps {
   profile: LocalProfile
@@ -28,17 +31,23 @@ interface ProfilePanelProps {
   nextWeeklyResetCountdown: string
   isStorageAvailable: boolean
   isCompact?: boolean
+  activeRetroThemeId: RetroThemeId
   onDisplayNameChange: (displayName: string) => void
   onImport: (rawValue: string) => { ok: true } | { ok: false; error: string }
+  onRetroThemeActivate: (themeId: RetroThemeId) => void
+  onRetroThemeUnlock: (themeId: RetroThemeId) => void
 }
 
 export function ProfilePanel({
+  activeRetroThemeId,
   exportPayload,
   isCompact = false,
   isStorageAvailable,
   nextWeeklyResetCountdown,
   onDisplayNameChange,
   onImport,
+  onRetroThemeActivate,
+  onRetroThemeUnlock,
   profile,
   progression,
   stats,
@@ -83,7 +92,7 @@ export function ProfilePanel({
   return (
     <section className={`profile-panel ${isCompact ? 'is-compact' : ''}`}>
       <div className="panel-heading">
-        <span className="eyebrow">Local Profile</span>
+        <span className="eyebrow">Local profile</span>
         <h3>{profile.displayName}</h3>
       </div>
 
@@ -99,8 +108,13 @@ export function ProfilePanel({
           />
         </label>
         <div className="profile-panel__meta">
-          <span>Created {new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(new Date(profile.createdAt))}</span>
-          <strong>{profile.reputationPoints} rep</strong>
+          <span>
+            Created{' '}
+            {new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).format(
+              new Date(profile.createdAt),
+            )}
+          </span>
+          <strong>{profile.points} points</strong>
         </div>
       </div>
 
@@ -178,9 +192,7 @@ export function ProfilePanel({
             {DIFFICULTY_DEFINITIONS.map((difficulty) => (
               <article key={difficulty.id} className="record-card">
                 <span className="stats-strip__label">{formatDifficultyLabel(difficulty.id)}</span>
-                <strong>
-                  {progression.records.bestSolveByDifficulty[difficulty.id] ?? '—'}
-                </strong>
+                <strong>{progression.records.bestSolveByDifficulty[difficulty.id] ?? '-'}</strong>
                 <span>Fewest guesses</span>
               </article>
             ))}
@@ -241,6 +253,15 @@ export function ProfilePanel({
           </article>
         </div>
       </section>
+
+      <ThemeStorePanel
+        activeThemeId={activeRetroThemeId}
+        profile={profile}
+        onActivate={onRetroThemeActivate}
+        onUnlock={onRetroThemeUnlock}
+      />
+
+      <DailyHistoryCalendar entries={progression.dailyHistory} />
 
       <details className="profile-panel__backup">
         <summary>Backup local profile data</summary>

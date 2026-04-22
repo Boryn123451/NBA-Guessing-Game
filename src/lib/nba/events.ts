@@ -132,7 +132,7 @@ export const EVENT_MODE_DEFINITIONS: EventModeDefinition[] = [
     end: { month: 6, day: 5 },
     badgeRewardId: 'event-mode-winner',
     specialRuleText: 'Pool favors players with an accolade clue or All-Star status.',
-    filter: (player) => player.snapshot.accoladeLabel !== null || player.flags.isAllStar,
+    filter: (player) => player.snapshot.careerAccoladeLabel !== null || player.flags.isAllStar,
   },
   {
     id: 'draft-week',

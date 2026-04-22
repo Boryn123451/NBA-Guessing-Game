@@ -8,7 +8,8 @@ Original NBA player deduction game built with React, TypeScript, and Vite.
 - Two clue styles:
   - `Roster Clues` for LarryBirdle-style comparison feedback
   - `Career Path` for background-based deduction
-- Theme-filtered pools:
+  - `Draft Mode` for draft identity, team, and pick-range deduction
+- Theme-filtered pools in Practice:
   - Full League
   - Rookies
   - International
@@ -21,12 +22,17 @@ Original NBA player deduction game built with React, TypeScript, and Vite.
   - Impossible
   - Elite Ball Knowledge
 - Real NBA headshots with fallback silhouette and progressive reveal
+- Static image fallback chain:
+  - official NBA headshot
+  - generated 2KRatings fallback manifest
+  - bundled local silhouette
 - Season snapshot clues that unlock later in the round
 - Local stats with wins, losses, streaks, win rate, and per-difficulty average guesses
-- Guest-first local profile with editable display name, badges, weekly quests, and personal records
+- Guest-first local profile with editable display name, badges, weekly quests, personal records, daily history, and unlockable decade themes from the `1950s` through `2020s` purchased with local points
 - Calendar-driven event modes with local countdowns and filtered player pools
 - Metric / imperial height toggle and light / dark / system display theme
 - Dynamic exclusion of players on active 10-day contracts during refresh
+- Daily completion lockout with local reset countdown modal
 - Mobile-aware interface that auto-switches into a reduced-density layout on smaller touch devices
 
 ## Scripts
@@ -44,6 +50,7 @@ Original NBA player deduction game built with React, TypeScript, and Vite.
 ## Data refresh
 
 `npm run refresh:data` writes the current eligible player pool to `src/data/generated/player-pool.json`.
+It also writes the static 2KRatings fallback manifest to `src/data/generated/player-image-fallbacks.json`.
 
 Primary sources used by the refresh pipeline:
 
@@ -55,6 +62,7 @@ Primary sources used by the refresh pipeline:
 - `stats.nba.com/stats/drafthistory` for draft team clues
 - `stats.nba.com/stats/franchiseplayers` for franchise history / previous-team membership
 - `nba.com/allstar/<year>/roster` for the current-season All-Stars theme
+- `stats.nba.com/stats/playerawards` for career-wide accolades and championships
 
 The refresh script stores cache files under `scripts/.cache/nba/<season>/` for the slower static-ish endpoints so reruns stay fast and resilient.
 
@@ -69,6 +77,7 @@ Eligibility rules applied during refresh:
 - Daily reset follows the detected browser time zone and rolls at local midnight
 - The All-Stars theme is based on the current season's official NBA All-Star roster
 - Difficulty is part of the saved round state; after the first guess, the current round keeps its locked rules
+- Daily always uses the full eligible roster and the same answer across every difficulty
 - Elite Ball Knowledge disables portrait reveal, season snapshot clues, bonus clues, and Career Path mode
 - The generated player pool is bundled into the client build, so the production build still emits a chunk-size warning
 - The app is static-host friendly: user progression lives only in browser storage, asset paths are relative for GitHub Pages, and there is no backend or authenticated account system

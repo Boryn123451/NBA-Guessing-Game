@@ -1,6 +1,5 @@
 import { DateTime } from 'luxon'
 
-import { getVariantKey } from './variant'
 import type { GameVariant, PlayerRecord } from './types'
 
 export const DEFAULT_DAILY_TIME_ZONE = 'UTC'
@@ -48,24 +47,24 @@ export function getResetCountdown(
 
 export function formatCountdown(totalMilliseconds: number): string {
   const totalSeconds = Math.floor(totalMilliseconds / 1000)
-  const hours = Math.floor(totalSeconds / 3600)
+  const days = Math.floor(totalSeconds / 86400)
+  const hours = Math.floor((totalSeconds % 86400) / 3600)
   const minutes = Math.floor((totalSeconds % 3600) / 60)
   const seconds = totalSeconds % 60
 
-  return [hours, minutes, seconds]
-    .map((value) => value.toString().padStart(2, '0'))
-    .join(':')
+  return `${days}d ${hours.toString().padStart(2, '0')}h ${minutes
+    .toString()
+    .padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`
 }
 
 export function pickDailyPlayer(
   players: PlayerRecord[],
   dateKey: string,
-  variant: GameVariant,
+  _variant?: GameVariant,
 ): PlayerRecord {
+  void _variant
   const orderedPlayers = players.toSorted((left, right) => left.id - right.id)
-  const seed = hashString(
-    `${dateKey}:${getVariantKey(variant)}:${orderedPlayers.length}:full-court-cipher`,
-  )
+  const seed = hashString(`${dateKey}:${orderedPlayers.length}:full-court-cipher`)
   const index = seed % orderedPlayers.length
 
   return orderedPlayers[index]

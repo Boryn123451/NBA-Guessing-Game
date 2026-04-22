@@ -4,12 +4,14 @@ interface BonusCluesPanelProps {
   clues: BonusClue[]
   canReveal: boolean
   onReveal: () => void
+  embedded?: boolean
 }
 
 export function BonusCluesPanel({
   clues,
   canReveal,
   onReveal,
+  embedded = false,
 }: BonusCluesPanelProps) {
   if (clues.length === 0 && !canReveal) {
     return null
@@ -17,10 +19,12 @@ export function BonusCluesPanel({
 
   return (
     <section className="bonus-panel">
-      <div className="panel-heading">
-        <span className="eyebrow">Bonus clues</span>
-        <h3>Controlled extra reads</h3>
-      </div>
+      {!embedded ? (
+        <div className="panel-heading">
+          <span className="eyebrow">Bonus clues</span>
+          <h3>Controlled extra reads</h3>
+        </div>
+      ) : null}
       <div className="bonus-panel__header">
         <p className="bonus-panel__copy">
           Extra clues stay broad on purpose. They narrow the lane without handing you the player.
@@ -42,4 +46,3 @@ export function BonusCluesPanel({
     </section>
   )
 }
-

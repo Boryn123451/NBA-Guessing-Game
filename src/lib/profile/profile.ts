@@ -26,7 +26,8 @@ export function createLocalProfile(nowIso = new Date().toISOString()): LocalProf
     profileId: buildProfileId(),
     displayName: `Scout ${suffix || '0001'}`,
     createdAt: nowIso,
-    reputationPoints: 0,
+    points: 0,
+    unlockedRetroThemeIds: ['2020s'],
   }
 }
 

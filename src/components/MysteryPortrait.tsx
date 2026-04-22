@@ -1,103 +1,56 @@
-import { useState } from 'react'
 import type { CSSProperties } from 'react'
 
+import { useResolvedPlayerImage } from '../hooks/useResolvedPlayerImage'
 import type { DifficultyConfig } from '../lib/nba/difficulty'
+import { getRevealStage } from '../lib/nba/reveal'
 import type { GameOutcome, PlayerRecord } from '../lib/nba/types'
-
-const FALLBACK_SRC = `${import.meta.env.BASE_URL}player-silhouette.svg`
 
 interface MysteryPortraitProps {
   player: PlayerRecord
   status: GameOutcome
-  guessCount: number
+  wrongGuessCount: number
   silhouetteRevealed: boolean
   difficulty: DifficultyConfig
-}
-
-function getRevealAmount(guessCount: number, status: GameOutcome, difficulty: DifficultyConfig): number {
-  if (status !== 'in_progress') {
-    return 1
-  }
-
-  if (difficulty.image.revealEveryMisses === null) {
-    return 0
-  }
-
-  const revealSteps = Math.floor(guessCount / difficulty.image.revealEveryMisses)
-  const maxRevealSteps = Math.max(
-    Math.floor(difficulty.maxGuesses / difficulty.image.revealEveryMisses),
-    1,
-  )
-  const progress = Math.min(revealSteps / maxRevealSteps, 1)
-
-  return difficulty.image.baseReveal + (1 - difficulty.image.baseReveal) * Math.pow(progress, difficulty.image.curvePower)
+  isCompact?: boolean
 }
 
 export function MysteryPortrait({
   player,
   status,
-  guessCount,
+  wrongGuessCount,
   silhouetteRevealed,
   difficulty,
+  isCompact = false,
 }: MysteryPortraitProps) {
-  const [failedPlayerId, setFailedPlayerId] = useState<number | null>(null)
-  const src =
-    failedPlayerId !== player.id && player.headshotUrl ? player.headshotUrl : FALLBACK_SRC
-  const revealAmount = getRevealAmount(guessCount, status, difficulty)
-  const silhouetteOnly = status === 'in_progress' && silhouetteRevealed
-  const maxRevealSteps =
-    difficulty.image.revealEveryMisses === null
-      ? 0
-      : Math.max(Math.floor(difficulty.maxGuesses / difficulty.image.revealEveryMisses), 1)
-  const revealSteps =
-    difficulty.image.revealEveryMisses === null
-      ? 0
-      : Math.floor(guessCount / difficulty.image.revealEveryMisses)
-  const badgeLabel =
-    status !== 'in_progress'
-      ? 'File Open'
-      : silhouetteOnly
-        ? 'Silhouette'
-        : difficulty.image.revealEveryMisses === null
-          ? 'Locked File'
-          : `Reveal ${Math.min(revealSteps, maxRevealSteps)}/${maxRevealSteps}`
+  const { activeSource, onError } = useResolvedPlayerImage(player)
+  const revealStage = getRevealStage(difficulty, wrongGuessCount, status, silhouetteRevealed)
 
   return (
-    <section className="mystery-panel">
+    <section className={`mystery-panel ${isCompact ? 'is-compact' : ''}`}>
       <div
         className="mystery-panel__frame"
         style={
           {
-            '--portrait-progress': silhouetteOnly ? 0.12 : revealAmount,
-            '--portrait-blur': `${status === 'in_progress' ? (silhouetteOnly ? Math.max(difficulty.image.maxBlurPx * 0.72, 18) : (1 - revealAmount) * difficulty.image.maxBlurPx) : 0}px`,
-            '--portrait-brightness':
-              status === 'in_progress'
-                ? silhouetteOnly
-                  ? 0.02
-                  : 0.1 + revealAmount * 0.72
-                : 1,
-            '--portrait-grayscale':
-              status === 'in_progress' ? (silhouetteOnly ? 1 : 1 - revealAmount * 0.55) : 0,
-            '--portrait-scale': status === 'in_progress' ? (silhouetteOnly ? 1.16 : 1.1 - revealAmount * 0.08) : 1,
-            '--portrait-overlay':
-              status === 'in_progress'
-                ? silhouetteOnly
-                  ? 0.92
-                  : 0.94 - revealAmount * 0.38
-                : 0.08,
+            '--portrait-blur': `${revealStage.blurPx}px`,
+            '--portrait-brightness': revealStage.brightness,
+            '--portrait-grayscale': revealStage.grayscale,
+            '--portrait-scale': revealStage.scale,
+            '--portrait-overlay': revealStage.overlay,
+            '--portrait-clip-inset': revealStage.clipInset,
+            '--portrait-translate-y': revealStage.translateY,
           } as CSSProperties
         }
       >
         <img
           alt={status === 'in_progress' ? 'Hidden mystery player' : player.displayName}
           className="mystery-panel__image"
-          src={src}
-          onError={() => setFailedPlayerId(player.id)}
+          src={activeSource.src}
+          onError={onError}
         />
         <div className="mystery-panel__grain" />
         <div className="mystery-panel__scanlines" />
         <div className="mystery-panel__overlay" />
-        <div className="mystery-panel__badge">{badgeLabel}</div>
+        <div className="mystery-panel__badge">{revealStage.badgeLabel}</div>
       </div>
       <div className="mystery-panel__copy">
         <span className="eyebrow">
@@ -106,7 +59,9 @@ export function MysteryPortrait({
         <h2>{status === 'in_progress' ? 'Mystery player' : player.displayName}</h2>
         <p>
           {status === 'in_progress'
-            ? 'Read the board first. This portrait only opens on the difficulty schedule.'
+            ? activeSource.kind === 'fallback'
+              ? 'Official headshot missing. Static fallback portrait is loaded behind the reveal.'
+              : 'Read the board first. This portrait only opens on the difficulty schedule.'
             : `${player.teamName} | ${player.position}`}
         </p>
       </div>

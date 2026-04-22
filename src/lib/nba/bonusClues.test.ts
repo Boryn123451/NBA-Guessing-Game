@@ -19,6 +19,10 @@ describe('bonus clues', () => {
       previousTeamAbbreviations: [],
       previousTeamNames: [],
       allStarAppearances: 0,
+      championships: 1,
+      accolades: ['NBA Champion'],
+      primaryAccolade: 'NBA Champion',
+      hasRichMetadata: true,
     },
   })
 
@@ -38,4 +42,3 @@ describe('bonus clues', () => {
     expect(canRevealManualBonusClue(player, 'elite-ball-knowledge', 10, [])).toBe(false)
   })
 })
-

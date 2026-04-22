@@ -21,21 +21,16 @@ import {
   pickDailyPlayer,
   pickPracticePlayer,
 } from '../lib/nba/daily'
-import {
-  getActiveEventModes,
-  getUpcomingEventModes,
-  sanitizeEventId,
-} from '../lib/nba/events'
+import { compareDraftGuess } from '../lib/nba/draftMode'
+import { getActiveEventModes, getUpcomingEventModes, sanitizeEventId } from '../lib/nba/events'
 import {
   DIFFICULTY_DEFINITIONS,
   getDifficultyDefinition,
 } from '../lib/nba/difficulty'
+import { getPlayablePlayerPool } from '../lib/nba/pools'
+import { resolvePostseasonRule } from '../lib/nba/postseason'
 import { buildShareSummary } from '../lib/nba/share'
-import {
-  formatThemeSummary,
-  getThemeOptions,
-  getVariantPlayerPool,
-} from '../lib/nba/themes'
+import { formatThemeSummary, getThemeOptions } from '../lib/nba/themes'
 import {
   getDailySessionKey,
   getVariantSessionKey,
@@ -54,6 +49,7 @@ import type {
   UnitSystem,
 } from '../lib/nba/types'
 import { sanitizeDisplayName } from '../lib/profile/profile'
+import { getRetroThemeDefinition } from '../lib/profile/retroThemes'
 import {
   applyCompletedRoundProgression,
   claimWeeklyQuestReward,
@@ -77,32 +73,76 @@ const playerPool = loadPlayerPool()
 const allPlayers = playerPool.players
 const playerById = new Map<number, PlayerRecord>(allPlayers.map((player) => [player.id, player]))
 
+function sanitizeClueModeForDifficulty(
+  clueMode: ClueMode,
+  difficultyId: DifficultyId,
+): ClueMode {
+  const difficulty = getDifficultyDefinition(difficultyId)
+
+  if (clueMode === 'career' && !difficulty.clueAvailability.careerPathMode) {
+    return 'standard'
+  }
+
+  if (clueMode === 'draft' && !difficulty.clueAvailability.draftMode) {
+    return 'standard'
+  }
+
+  return clueMode
+}
+
 function resolveVariantForDifficulty(
   clueMode: ClueMode,
   themeId: PlayerThemeId,
   eventId: PersistedState['preferences']['eventId'],
   difficultyId: DifficultyId,
+  includePostseason: boolean,
 ): GameVariant {
-  const difficulty = getDifficultyDefinition(difficultyId)
-
   return normalizeVariant({
-    clueMode: difficulty.clueAvailability.careerPathMode ? clueMode : 'standard',
+    clueMode: sanitizeClueModeForDifficulty(clueMode, difficultyId),
     themeId,
     eventId,
+    includePostseason,
   })
 }
 
-function resolveVariantFromState(state: PersistedState): GameVariant {
+function resolveVariantFromState(state: PersistedState, dateKey: string): GameVariant {
+  const postseasonRule = resolvePostseasonRule(
+    state.preferences.mode,
+    dateKey,
+    state.preferences.practiceIncludePostseason,
+  )
+
+  if (state.preferences.mode === 'daily') {
+    return normalizeVariant({
+      clueMode: sanitizeClueModeForDifficulty(
+        state.preferences.clueMode,
+        state.preferences.difficulty,
+      ),
+      themeId: 'classic',
+      eventId: null,
+      includePostseason: postseasonRule.includePostseason,
+    })
+  }
+
   return resolveVariantForDifficulty(
     state.preferences.clueMode,
     state.preferences.themeId,
     state.preferences.eventId,
     state.preferences.difficulty,
+    postseasonRule.includePostseason,
   )
 }
 
-function getPlayersForVariant(variant: GameVariant): PlayerRecord[] {
-  const filteredPlayers = getVariantPlayerPool(allPlayers, variant)
+function getPlayersForVariant(
+  mode: GameMode,
+  variant: GameVariant,
+  difficultyId: DifficultyId,
+): PlayerRecord[] {
+  if (mode === 'daily') {
+    return allPlayers
+  }
+
+  const filteredPlayers = getPlayablePlayerPool(allPlayers, variant, difficultyId)
   return filteredPlayers.length > 0 ? filteredPlayers : allPlayers
 }
 
@@ -132,6 +172,33 @@ function createVariantSession(
   return createSession(target.id)
 }
 
+function findLegacyDailySession(
+  state: PersistedState,
+  dateKey: string,
+  playerIds: Set<number>,
+): StoredGameSession | null {
+  const matchingEntries = Object.entries(state.dailySessions)
+    .filter(([sessionKey, session]) => sessionKey.startsWith(`${dateKey}:`) && playerIds.has(session.targetPlayerId))
+    .toSorted((left, right) => {
+      const leftSession = left[1]
+      const rightSession = right[1]
+
+      if (leftSession.status !== rightSession.status) {
+        if (leftSession.status === 'in_progress') {
+          return -1
+        }
+
+        if (rightSession.status === 'in_progress') {
+          return 1
+        }
+      }
+
+      return rightSession.guessIds.length - leftSession.guessIds.length
+    })
+
+  return matchingEntries[0]?.[1] ?? null
+}
+
 function resolveSession(
   state: PersistedState,
   dateKey: string,
@@ -143,8 +210,8 @@ function resolveSession(
   session: StoredGameSession
 } {
   const difficultyId = state.preferences.difficulty
-  const variant = resolveVariantFromState(state)
-  const players = getPlayersForVariant(variant)
+  const variant = resolveVariantFromState(state, dateKey)
+  const players = getPlayersForVariant(state.preferences.mode, variant, difficultyId)
   const sessionKey = getSessionKey(state.preferences.mode, dateKey, variant, difficultyId)
   const storedSession = getStoredSession(state, state.preferences.mode, sessionKey)
   const playerIds = new Set(players.map((player) => player.id))
@@ -156,6 +223,20 @@ function resolveSession(
       players,
       sessionKey,
       session: storedSession,
+    }
+  }
+
+  if (state.preferences.mode === 'daily') {
+    const legacySession = findLegacyDailySession(state, dateKey, playerIds)
+
+    if (legacySession) {
+      return {
+        difficultyId,
+        variant,
+        players,
+        sessionKey,
+        session: legacySession,
+      }
     }
   }
 
@@ -176,7 +257,7 @@ function shouldKeepInactiveEventSelection(
     return false
   }
 
-  const variant = resolveVariantFromState(state)
+  const variant = resolveVariantFromState(state, dateKey)
   const sessionKey = getSessionKey(state.preferences.mode, dateKey, variant, state.preferences.difficulty)
   const session = getStoredSession(state, state.preferences.mode, sessionKey)
 
@@ -201,25 +282,24 @@ function ensureHydratedState(
   const sanitizedEventId =
     activeEventIds.includes(state.preferences.eventId) || keepInactiveEvent
       ? state.preferences.eventId
-      : sanitizeEventId(state.preferences.eventId, activeEventIds.filter(Boolean) as NonNullable<
-          PersistedState['preferences']['eventId']
-        >[])
-  const resolvedVariant = resolveVariantForDifficulty(
+      : sanitizeEventId(
+          state.preferences.eventId,
+          activeEventIds.filter(Boolean) as NonNullable<PersistedState['preferences']['eventId']>[],
+        )
+  const sanitizedClueMode = sanitizeClueModeForDifficulty(
     state.preferences.clueMode,
-    state.preferences.themeId,
-    sanitizedEventId,
     state.preferences.difficulty,
   )
   const nextState =
     progressionState === state.progression &&
     sanitizedEventId === state.preferences.eventId &&
-    resolvedVariant.clueMode === state.preferences.clueMode
+    sanitizedClueMode === state.preferences.clueMode
       ? state
       : {
           ...state,
           preferences: {
             ...state.preferences,
-            clueMode: resolvedVariant.clueMode,
+            clueMode: sanitizedClueMode,
             eventId: sanitizedEventId,
           },
           progression: progressionState,
@@ -250,12 +330,11 @@ function updateActiveSession(
     return preparedState
   }
 
-  return replaceModeSession(
-    preparedState,
-    preparedState.preferences.mode,
-    nextSession,
-    sessionKey,
-  )
+  return replaceModeSession(preparedState, preparedState.preferences.mode, nextSession, sessionKey)
+}
+
+function findDailyCompletionEntry(state: PersistedState, dateKey: string) {
+  return state.progression.dailyHistory.find((entry) => entry.dateKey === dateKey) ?? null
 }
 
 export function useGameSession() {
@@ -294,8 +373,17 @@ export function useGameSession() {
 
   const activeDifficultyId = hydratedState.preferences.difficulty
   const activeDifficulty = getDifficultyDefinition(activeDifficultyId)
-  const activeVariant = resolveVariantFromState(hydratedState)
-  const activePlayers = getPlayersForVariant(activeVariant)
+  const activeVariant = resolveVariantFromState(hydratedState, dailyDateKey)
+  const activePlayers = getPlayersForVariant(
+    hydratedState.preferences.mode,
+    activeVariant,
+    activeDifficultyId,
+  )
+  const activePostseasonRule = resolvePostseasonRule(
+    hydratedState.preferences.mode,
+    dailyDateKey,
+    hydratedState.preferences.practiceIncludePostseason,
+  )
   const sessionKey = getSessionKey(
     hydratedState.preferences.mode,
     dailyDateKey,
@@ -314,14 +402,14 @@ export function useGameSession() {
   const guessedPlayers = activeSession.guessIds
     .map((guessId) => playerById.get(guessId))
     .filter((player): player is PlayerRecord => Boolean(player))
-  const guessResults = guessedPlayers.map((player) =>
+  const standardGuessResults = guessedPlayers.map((player) =>
     compareGuess(player, activeTarget, dailyDateKey, activeDifficultyId),
+  )
+  const draftGuessResults = guessedPlayers.map((player) =>
+    compareDraftGuess(player, activeTarget, activeDifficultyId),
   )
   const guessedIds = new Set(activeSession.guessIds)
   const lastGuessedPlayer = guessedPlayers.at(-1) ?? null
-  const canGuess =
-    activeSession.status === 'in_progress' &&
-    activeSession.guessIds.length < activeDifficulty.maxGuesses
   const variantLocked =
     activeSession.status === 'in_progress' && activeSession.guessIds.length > 0
   const wrongGuessCount =
@@ -333,6 +421,13 @@ export function useGameSession() {
       ? lastGuessedPlayer?.teamId ?? null
       : null
   const themeOptions = getThemeOptions(allPlayers)
+  const dailyCompletionEntry = findDailyCompletionEntry(hydratedState, dailyDateKey)
+  const dailyLockedOut =
+    hydratedState.preferences.mode === 'daily' && dailyCompletionEntry !== null
+  const canGuess =
+    !dailyLockedOut &&
+    activeSession.status === 'in_progress' &&
+    activeSession.guessIds.length < activeDifficulty.maxGuesses
   const revealedBonusClues = getRevealedBonusClues(
     activeTarget,
     activeDifficultyId,
@@ -342,18 +437,20 @@ export function useGameSession() {
   const canRevealBonusClue =
     activeVariant.clueMode === 'standard' &&
     activeSession.status === 'in_progress' &&
+    !dailyLockedOut &&
     canRevealManualBonusClue(
       activeTarget,
       activeDifficultyId,
       wrongGuessCount,
       activeSession.revealedBonusClueIds,
     )
-  const lastGuess = guessResults.at(-1)
+  const lastStandardGuess = standardGuessResults.at(-1) ?? null
   const closeGuessFeedback =
+    activeVariant.clueMode === 'standard' &&
     activeDifficulty.ui.showCloseGuessFeedback &&
-    lastGuess &&
-    !lastGuess.isCorrect &&
-    Object.values(lastGuess.clues).some((clue) => clue.status === 'close')
+    lastStandardGuess &&
+    !lastStandardGuess.isCorrect &&
+    Object.values(lastStandardGuess.clues).some((clue) => clue.status === 'close')
       ? 'Close guess. One or more clues are within range.'
       : null
   const profileWarning =
@@ -361,10 +458,6 @@ export function useGameSession() {
     activeSession.status === 'in_progress' &&
     wrongGuessCount >= activeDifficulty.profileWarningAfterMisses
       ? 'Change the player profile. Repeating the same archetype will waste the board.'
-      : null
-  const activeEventMode =
-    activeVariant.eventId !== null
-      ? activeEventModes.find((eventMode) => eventMode.id === activeVariant.eventId) ?? null
       : null
   const nextWeeklyReset = getNextWeeklyReset(now, timeZone)
   const weeklyResetCountdown = Math.max(nextWeeklyReset.toMillis() - now.getTime(), 0)
@@ -378,6 +471,14 @@ export function useGameSession() {
         timeZone,
         activeEventIds,
       )
+
+      if (
+        preparedState.preferences.mode === 'daily' &&
+        findDailyCompletionEntry(preparedState, dailyDateKey)
+      ) {
+        return preparedState
+      }
+
       const {
         difficultyId,
         players,
@@ -398,10 +499,10 @@ export function useGameSession() {
 
       if (difficulty.blockConsecutiveSameTeam && session.guessIds.length > 0) {
         const lastGuessId = session.guessIds.at(-1)
-        const lastGuess = lastGuessId ? playerById.get(lastGuessId) : null
+        const priorGuess = lastGuessId ? playerById.get(lastGuessId) : null
         const nextGuess = playerById.get(playerId)
 
-        if (lastGuess && nextGuess && lastGuess.teamId === nextGuess.teamId) {
+        if (priorGuess && nextGuess && priorGuess.teamId === nextGuess.teamId) {
           return preparedState
         }
       }
@@ -442,6 +543,8 @@ export function useGameSession() {
         context: {
           mode: preparedState.preferences.mode,
           difficultyId,
+          clueMode: variant.clueMode,
+          themeId: variant.themeId,
           eventId: variant.eventId,
           didWin,
           guessCount: nextSession.guessIds.length,
@@ -486,13 +589,11 @@ export function useGameSession() {
         return preparedState
       }
 
-      const difficulty = getDifficultyDefinition(preparedState.preferences.difficulty)
-
       return {
         ...preparedState,
         preferences: {
           ...preparedState.preferences,
-          clueMode: difficulty.clueAvailability.careerPathMode ? clueMode : 'standard',
+          clueMode: sanitizeClueModeForDifficulty(clueMode, preparedState.preferences.difficulty),
         },
       }
     })
@@ -544,10 +645,7 @@ export function useGameSession() {
         preferences: {
           ...preparedState.preferences,
           difficulty,
-          clueMode:
-            getDifficultyDefinition(difficulty).clueAvailability.careerPathMode
-              ? preparedState.preferences.clueMode
-              : 'standard',
+          clueMode: sanitizeClueModeForDifficulty(preparedState.preferences.clueMode, difficulty),
         },
       }
     })
@@ -581,6 +679,35 @@ export function useGameSession() {
     })
   }
 
+  function setPracticeIncludePostseason(includePostseason: boolean): void {
+    setState((previousState) => {
+      const preparedState = ensureHydratedState(
+        previousState,
+        dailyDateKey,
+        now,
+        timeZone,
+        activeEventIds,
+      )
+      const { session } = resolveSession(preparedState, dailyDateKey)
+
+      if (
+        preparedState.preferences.mode === 'practice' &&
+        session.status === 'in_progress' &&
+        session.guessIds.length > 0
+      ) {
+        return preparedState
+      }
+
+      return {
+        ...preparedState,
+        preferences: {
+          ...preparedState.preferences,
+          practiceIncludePostseason: includePostseason,
+        },
+      }
+    })
+  }
+
   function setUnits(units: UnitSystem): void {
     setState((previousState) => ({
       ...previousState,
@@ -601,6 +728,49 @@ export function useGameSession() {
     }))
   }
 
+  function setRetroThemeId(retroThemeId: PersistedState['settings']['retroThemeId']): void {
+    setState((previousState) => {
+      if (retroThemeId !== '2020s' && !previousState.profile.unlockedRetroThemeIds.includes(retroThemeId)) {
+        return previousState
+      }
+
+      return {
+        ...previousState,
+        settings: {
+          ...previousState.settings,
+          retroThemeId,
+        },
+      }
+    })
+  }
+
+  function unlockRetroTheme(retroThemeId: PersistedState['settings']['retroThemeId']): void {
+    setState((previousState) => {
+      if (previousState.profile.unlockedRetroThemeIds.includes(retroThemeId)) {
+        return previousState
+      }
+
+      const theme = getRetroThemeDefinition(retroThemeId)
+
+      if (previousState.profile.points < theme.cost) {
+        return previousState
+      }
+
+      return {
+        ...previousState,
+        profile: {
+          ...previousState.profile,
+          points: previousState.profile.points - theme.cost,
+          unlockedRetroThemeIds: [...previousState.profile.unlockedRetroThemeIds, retroThemeId],
+        },
+        settings: {
+          ...previousState.settings,
+          retroThemeId,
+        },
+      }
+    })
+  }
+
   function setDisplayName(displayName: string): void {
     setState((previousState) => ({
       ...previousState,
@@ -613,67 +783,53 @@ export function useGameSession() {
 
   function revealBonusClue(): void {
     setState((previousState) =>
-      updateActiveSession(
-        previousState,
-        dailyDateKey,
-        now,
-        timeZone,
-        activeEventIds,
-        (session) => {
-          if (session.status !== 'in_progress') {
-            return null
-          }
+      updateActiveSession(previousState, dailyDateKey, now, timeZone, activeEventIds, (session) => {
+        if (session.status !== 'in_progress') {
+          return null
+        }
 
-          const target = playerById.get(session.targetPlayerId)
+        const target = playerById.get(session.targetPlayerId)
 
-          if (!target) {
-            return null
-          }
+        if (!target) {
+          return null
+        }
 
-          const nextClueId = getNextManualBonusClueId(
-            target,
-            previousState.preferences.difficulty,
-            session.guessIds.length,
-            session.revealedBonusClueIds,
-          )
+        const nextClueId = getNextManualBonusClueId(
+          target,
+          previousState.preferences.difficulty,
+          session.guessIds.length,
+          session.revealedBonusClueIds,
+        )
 
-          if (!nextClueId) {
-            return null
-          }
+        if (!nextClueId) {
+          return null
+        }
 
-          return {
-            ...session,
-            revealedBonusClueIds: [...session.revealedBonusClueIds, nextClueId],
-          }
-        },
-      ),
+        return {
+          ...session,
+          revealedBonusClueIds: [...session.revealedBonusClueIds, nextClueId],
+        }
+      }),
     )
   }
 
   function revealSilhouette(): void {
     setState((previousState) =>
-      updateActiveSession(
-        previousState,
-        dailyDateKey,
-        now,
-        timeZone,
-        activeEventIds,
-        (session) => {
-          if (
-            session.status !== 'in_progress' ||
-            session.silhouetteRevealed ||
-            getDifficultyDefinition(previousState.preferences.difficulty).image.silhouetteHint ===
-              'none'
-          ) {
-            return null
-          }
+      updateActiveSession(previousState, dailyDateKey, now, timeZone, activeEventIds, (session) => {
+        if (
+          session.status !== 'in_progress' ||
+          session.silhouetteRevealed ||
+          getDifficultyDefinition(previousState.preferences.difficulty).image.silhouetteHint ===
+            'none'
+        ) {
+          return null
+        }
 
-          return {
-            ...session,
-            silhouetteRevealed: true,
-          }
-        },
-      ),
+        return {
+          ...session,
+          silhouetteRevealed: true,
+        }
+      }),
     )
   }
 
@@ -729,8 +885,15 @@ export function useGameSession() {
           activeEventIds,
         )
         const difficultyId = preparedState.preferences.difficulty
-        const variant = resolveVariantFromState(preparedState)
-        const players = getPlayersForVariant(variant)
+        const nextMode: GameMode = 'practice'
+        const nextVariant = resolveVariantForDifficulty(
+          preparedState.preferences.clueMode,
+          preparedState.preferences.themeId,
+          preparedState.preferences.eventId,
+          difficultyId,
+          preparedState.preferences.practiceIncludePostseason,
+        )
+        const players = getPlayersForVariant(nextMode, nextVariant, difficultyId)
         const nextTarget = pickPracticePlayer(players, [activeTarget.id])
         const nextSession = createSession(nextTarget.id)
 
@@ -738,11 +901,11 @@ export function useGameSession() {
           ...preparedState,
           preferences: {
             ...preparedState.preferences,
-            mode: 'practice',
+            mode: nextMode,
           },
           practiceSessions: {
             ...preparedState.practiceSessions,
-            [getVariantSessionKey(variant, difficultyId)]: nextSession,
+            [getVariantSessionKey(nextVariant, difficultyId)]: nextSession,
           },
         }
       })
@@ -766,10 +929,10 @@ export function useGameSession() {
     activeClueMode: activeVariant.clueMode,
     activeDifficulty,
     activeDifficultyId,
-    activeEventMode,
     activeEventModes,
     activeMode: hydratedState.preferences.mode,
     activePlayerCount: activePlayers.length,
+    activePostseasonRule,
     activeSession,
     activeTarget,
     activeThemeId: activeVariant.themeId,
@@ -777,6 +940,7 @@ export function useGameSession() {
     canGuess,
     canRevealBonusClue,
     canRevealSilhouette:
+      !dailyLockedOut &&
       activeSession.status === 'in_progress' &&
       !activeSession.silhouetteRevealed &&
       activeDifficulty.image.silhouetteHint !== 'none',
@@ -784,13 +948,16 @@ export function useGameSession() {
     celebrations: hydratedState.progression.pendingCelebrations,
     claimQuest,
     closeGuessFeedback,
+    dailyCompletionEntry,
     dailyDateKey,
+    dailyLockedOut,
     dataMeta: playerPool,
     difficultyOptions: DIFFICULTY_DEFINITIONS,
     dismissCelebration: dismissCelebrationById,
+    draftGuessResults,
     eventId: activeVariant.eventId,
     exportPayload: JSON.stringify(hydratedState, null, 2),
-    guessResults,
+    guessResults: standardGuessResults,
     guessedIds,
     guessedPlayers,
     importProfileData,
@@ -802,7 +969,7 @@ export function useGameSession() {
     profileWarning,
     progression: hydratedState.progression,
     preferences: hydratedState.preferences,
-    remainingGuesses: activeDifficulty.maxGuesses - activeSession.guessIds.length,
+    remainingGuesses: Math.max(activeDifficulty.maxGuesses - activeSession.guessIds.length, 0),
     resetCountdown: formatCountdown(getResetCountdown(now, timeZone)),
     resetStorage,
     revealBonusClue,
@@ -814,8 +981,10 @@ export function useGameSession() {
     setDisplayName,
     setEventId,
     setMode,
+    setPracticeIncludePostseason,
     setTheme,
     setThemeId,
+    setRetroThemeId,
     setUnits,
     settings: hydratedState.settings,
     shareText: buildShareSummary({
@@ -826,17 +995,24 @@ export function useGameSession() {
       eventId: activeVariant.eventId,
       maxGuesses: activeDifficulty.maxGuesses,
       session: activeSession,
-      guesses: guessResults,
+      guesses:
+        activeVariant.clueMode === 'draft'
+          ? (draftGuessResults as never as typeof standardGuessResults)
+          : standardGuessResults,
       guessCount: activeSession.guessIds.length,
       dateKey: dailyDateKey,
     }),
+    showBonusClues:
+      activeDifficulty.clueAvailability.bonusClues && activeVariant.clueMode === 'standard',
     showCareerPathOption: activeDifficulty.clueAvailability.careerPathMode,
-    showSeasonSnapshot: activeDifficulty.clueAvailability.seasonSnapshot,
-    showBonusClues: activeDifficulty.clueAvailability.bonusClues,
+    showDraftModeOption: activeDifficulty.clueAvailability.draftMode,
+    showSeasonSnapshot:
+      activeDifficulty.clueAvailability.seasonSnapshot && activeVariant.clueMode === 'standard',
     startPracticeGame,
     stats: hydratedState.stats,
     submitGuess,
     themeOptions,
     upcomingEventModes,
+    unlockRetroTheme,
   }
 }

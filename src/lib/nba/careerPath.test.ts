@@ -25,6 +25,10 @@ describe('career path clues', () => {
         previousTeamAbbreviations: [],
         previousTeamNames: [],
         allStarAppearances: 0,
+        championships: 0,
+        accolades: [],
+        primaryAccolade: null,
+        hasRichMetadata: true,
       },
     })
 

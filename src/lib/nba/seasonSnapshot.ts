@@ -48,7 +48,7 @@ function formatPlayoffPicture(player: PlayerRecord): string | null {
 }
 
 export function getSeasonSnapshotClues(player: PlayerRecord): SeasonSnapshotClue[] {
-  return [
+  const clues: SeasonSnapshotClue[] = [
     {
       id: 'points',
       label: 'Scoring range',
@@ -68,17 +68,35 @@ export function getSeasonSnapshotClues(player: PlayerRecord): SeasonSnapshotClue
       revealAfterMisses: SNAPSHOT_REVEAL_AFTER.assists,
     },
     {
+      id: 'accolade',
+      label: 'Career accolade',
+      value: player.snapshot.careerAccoladeLabel ?? 'No career accolade clue available',
+      revealAfterMisses: SNAPSHOT_REVEAL_AFTER.accolade,
+    },
+  ]
+
+  return clues
+}
+
+export function getSeasonSnapshotCluesWithPostseason(
+  player: PlayerRecord,
+  includePostseason: boolean,
+): SeasonSnapshotClue[] {
+  const clues = getSeasonSnapshotClues(player)
+
+  if (!includePostseason) {
+    return clues
+  }
+
+  return [
+    ...clues.slice(0, 3),
+    {
       id: 'playoffPicture',
       label: 'Team context',
       value: formatPlayoffPicture(player) ?? 'Unavailable',
       revealAfterMisses: SNAPSHOT_REVEAL_AFTER.playoffPicture,
     },
-    {
-      id: 'accolade',
-      label: 'Notable accolade',
-      value: player.snapshot.accoladeLabel ?? 'No notable accolade clue available',
-      revealAfterMisses: SNAPSHOT_REVEAL_AFTER.accolade,
-    },
+    clues[3],
   ]
 }
 

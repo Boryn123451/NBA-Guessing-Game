@@ -1,3 +1,5 @@
+import { CLUE_KEYS } from './comparison'
+import { DRAFT_CLUE_KEYS } from './draftMode'
 import {
   formatClueModeLabel,
   formatDifficultyLabel,
@@ -5,7 +7,6 @@ import {
   formatModeLabel,
   formatThemeLabel,
 } from './format'
-import { CLUE_KEYS } from './comparison'
 import type {
   ClueMode,
   DifficultyId,
@@ -16,15 +17,15 @@ import type {
   StoredGameSession,
 } from './types'
 
-const EMOJI_BY_STATUS = {
-  exact: '🟩',
-  close: '🟨',
-  miss: '⬛',
-  unknown: '⬜',
+const SYMBOL_BY_STATUS = {
+  exact: 'X',
+  close: '~',
+  miss: '.',
+  unknown: '?',
 } as const
 
 function buildCareerShareLine(guessCount: number): string {
-  return '🟧'.repeat(Math.max(guessCount, 1))
+  return 'R'.repeat(Math.max(guessCount, 1))
 }
 
 export function buildShareSummary(options: {
@@ -66,9 +67,10 @@ export function buildShareSummary(options: {
     clueMode === 'career'
       ? buildCareerShareLine(guessCount)
       : guesses
-          .map((result) =>
-            CLUE_KEYS.map((key) => EMOJI_BY_STATUS[result.clues[key].status]).join(''),
-          )
+          .map((result) => {
+            const clueKeys = clueMode === 'draft' ? DRAFT_CLUE_KEYS : CLUE_KEYS
+            return clueKeys.map((key) => SYMBOL_BY_STATUS[result.clues[key as keyof typeof result.clues].status]).join('')
+          })
           .join('\n')
 
   return [modeLine, variantLine, eventLine, difficultyLine, score, board]

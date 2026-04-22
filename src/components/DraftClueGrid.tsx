@@ -1,28 +1,14 @@
-import { CLUE_KEYS } from '../lib/nba/comparison'
-import {
-  CLUE_LABELS,
-  formatAge,
-  formatHeight,
-  formatJerseyNumber,
-} from '../lib/nba/format'
-import type { DifficultyId, GuessResult, UnitSystem } from '../lib/nba/types'
+import { DRAFT_CLUE_KEYS, DRAFT_CLUE_LABELS, getDraftPickBucketLabel } from '../lib/nba/draftMode'
+import type { DraftGuessResult } from '../lib/nba/draftMode'
+import { formatJerseyNumber } from '../lib/nba/format'
 import { PlayerAvatar } from './PlayerAvatar'
 
-interface ClueGridProps {
-  rows: GuessResult[]
-  units: UnitSystem
-  referenceDate: string
-  difficultyId: DifficultyId
+interface DraftClueGridProps {
+  rows: DraftGuessResult[]
   showNumericArrows: boolean
 }
 
-function getCellValue(
-  result: GuessResult,
-  key: (typeof CLUE_KEYS)[number],
-  units: UnitSystem,
-  referenceDate: string,
-  difficultyId: DifficultyId,
-) {
+function getCellValue(result: DraftGuessResult, key: (typeof DRAFT_CLUE_KEYS)[number]) {
   const player = result.guess
 
   switch (key) {
@@ -36,59 +22,52 @@ function getCellValue(
           </div>
         </div>
       )
-    case 'team':
-      return player.teamAbbreviation
-    case 'conference':
-      return player.conference
-    case 'division':
-      return player.division
-    case 'position':
-      return player.position
-    case 'height':
-      return formatHeight(player, units)
-    case 'age':
-      return formatAge(player, referenceDate, difficultyId)
-    case 'jerseyNumber':
-      return formatJerseyNumber(player.jerseyNumber)
+    case 'draftTeam':
+      return player.draft.teamAbbreviation ?? 'N/A'
+    case 'draftYear':
+      return player.draft.year ?? 'N/A'
+    case 'draftRound':
+      return player.draft.isUndrafted ? 'UDFA' : formatJerseyNumber(player.draft.round)
+    case 'draftPickBucket':
+      return getDraftPickBucketLabel(player)
+    case 'lottery':
+      return player.draft.pick !== null && player.draft.pick <= 14 ? 'Yes' : 'No'
+    case 'undrafted':
+      return player.draft.isUndrafted ? 'Yes' : 'No'
   }
 }
 
-export function ClueGrid({
-  difficultyId,
-  referenceDate,
+export function DraftClueGrid({
   rows,
   showNumericArrows,
-  units,
-}: ClueGridProps) {
+}: DraftClueGridProps) {
   return (
     <section className="clue-grid">
       <div className="clue-grid__scroller">
         <div className="clue-grid__header">
-          {CLUE_KEYS.map((key) => (
+          {DRAFT_CLUE_KEYS.map((key) => (
             <div
               key={key}
               className={`clue-grid__cell clue-grid__cell--head clue-grid__cell--${key}`}
             >
-              {CLUE_LABELS[key]}
+              {DRAFT_CLUE_LABELS[key]}
             </div>
           ))}
         </div>
         {rows.length > 0 ? (
           rows.map((result) => (
             <div key={result.guess.id} className="clue-grid__row">
-              {CLUE_KEYS.map((key) => {
+              {DRAFT_CLUE_KEYS.map((key) => {
                 const clue = result.clues[key]
-                const isNumeric = key === 'height' || key === 'age' || key === 'jerseyNumber'
+                const isNumeric = key === 'draftYear'
 
                 return (
                   <div
                     key={`${result.guess.id}-${key}`}
                     className={`clue-grid__cell clue-grid__cell--${key} is-${clue.status}`}
                   >
-                    <span className="clue-grid__label">{CLUE_LABELS[key]}</span>
-                    <span className="clue-grid__value">
-                      {getCellValue(result, key, units, referenceDate, difficultyId)}
-                    </span>
+                    <span className="clue-grid__label">{DRAFT_CLUE_LABELS[key]}</span>
+                    <span className="clue-grid__value">{getCellValue(result, key)}</span>
                     {showNumericArrows && isNumeric && clue.direction ? (
                       <span className="clue-grid__direction" aria-hidden="true">
                         {clue.direction === 'up' ? 'up' : 'down'}
@@ -101,7 +80,7 @@ export function ClueGrid({
           ))
         ) : (
           <div className="clue-grid__empty">
-            Your scouting table is blank. Make a guess to light up the board.
+            Draft board is empty. Make a guess to start the draft trail.
           </div>
         )}
       </div>

@@ -14,7 +14,7 @@ export type ThemeMode = 'system' | 'light' | 'dark'
 
 export type GameMode = 'daily' | 'practice'
 
-export type ClueMode = 'standard' | 'career'
+export type ClueMode = 'standard' | 'career' | 'draft'
 
 export type DifficultyId =
   | 'easy'
@@ -39,6 +39,16 @@ export type PlayerThemeId =
   | 'international'
   | 'all-stars'
   | 'under-25'
+
+export type RetroThemeId =
+  | '1950s'
+  | '1960s'
+  | '1970s'
+  | '1980s'
+  | '1990s'
+  | '2000s'
+  | '2010s'
+  | '2020s'
 
 export type GameOutcome = 'in_progress' | 'won' | 'lost'
 
@@ -117,15 +127,20 @@ export interface CareerProfile {
   previousTeamAbbreviations: string[]
   previousTeamNames: string[]
   allStarAppearances: number
+  championships: number
+  accolades: string[]
+  primaryAccolade: string | null
+  hasRichMetadata: boolean
 }
 
 export interface SeasonSnapshot {
   pointsPerGame: number | null
   reboundsPerGame: number | null
   assistsPerGame: number | null
+  minutesPerGame: number | null
   playoffPicture: boolean | null
   playoffRank: number | null
-  accoladeLabel: string | null
+  careerAccoladeLabel: string | null
 }
 
 export interface ThemeFlags {
@@ -163,6 +178,13 @@ export interface PlayerRecord {
   searchText: string
 }
 
+export interface PlayerImageFallbackManifest {
+  schemaVersion: 1
+  generatedAt: string
+  source: string
+  fallbacks: Record<string, string>
+}
+
 export interface ExcludedTenDayPlayer {
   id: number
   displayName: string
@@ -188,7 +210,7 @@ export interface EligibilityMetadata {
 }
 
 export interface PlayerPoolData {
-  schemaVersion: 2
+  schemaVersion: 3
   season: string
   refreshedAt: string
   asOfDate: string
@@ -203,6 +225,7 @@ export interface PlayerPoolData {
     draftHistory: string
     franchisePlayers: string
     allStarRoster: string
+    playerAwards: string
   }
   excludedTenDayPlayers: ExcludedTenDayPlayer[]
   players: PlayerRecord[]
@@ -249,6 +272,7 @@ export interface GameVariant {
   clueMode: ClueMode
   themeId: PlayerThemeId
   eventId: EventModeId | null
+  includePostseason: boolean
 }
 
 export interface StoredGameSession {
@@ -279,7 +303,8 @@ export interface LocalProfile {
   profileId: string
   displayName: string
   createdAt: string
-  reputationPoints: number
+  points: number
+  unlockedRetroThemeIds: RetroThemeId[]
 }
 
 export interface BadgeUnlock {
@@ -313,6 +338,17 @@ export interface LocalRecords {
   eventWinsByEvent: Partial<Record<EventModeId, number>>
 }
 
+export interface DailyHistoryEntry {
+  dateKey: string
+  completedAt: string
+  didWin: boolean
+  guessCount: number
+  difficultyId: DifficultyId
+  clueMode: ClueMode
+  themeId: PlayerThemeId
+  eventId: EventModeId | null
+}
+
 export interface LocalStreaks {
   currentOverall: number
   maxOverall: number
@@ -323,7 +359,7 @@ export interface LocalStreaks {
 
 export interface Celebration {
   id: string
-  type: 'badge' | 'quest' | 'record'
+  type: 'badge' | 'quest' | 'record' | 'status'
   title: string
   body: string
   createdAt: string
@@ -335,21 +371,24 @@ export interface ProgressionState {
   records: LocalRecords
   streaks: LocalStreaks
   dailyWinDateKeys: string[]
+  dailyHistory: DailyHistoryEntry[]
   pendingCelebrations: Celebration[]
 }
 
 export interface PersistedState {
-  version: 4
+  version: 5
   preferences: {
     mode: GameMode
     clueMode: ClueMode
     themeId: PlayerThemeId
     difficulty: DifficultyId
     eventId: EventModeId | null
+    practiceIncludePostseason: boolean
   }
   settings: {
     units: UnitSystem
     theme: ThemeMode
+    retroThemeId: RetroThemeId
   }
   profile: LocalProfile
   progression: ProgressionState

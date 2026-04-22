@@ -29,7 +29,14 @@ export function formatModeLabel(mode: GameMode): string {
 }
 
 export function formatClueModeLabel(clueMode: ClueMode): string {
-  return clueMode === 'standard' ? 'Roster Clues' : 'Career Path'
+  switch (clueMode) {
+    case 'career':
+      return 'Career Path'
+    case 'draft':
+      return 'Draft Board'
+    default:
+      return 'Roster Clues'
+  }
 }
 
 export function formatDifficultyLabel(difficultyId: DifficultyId): string {

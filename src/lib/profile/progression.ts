@@ -4,6 +4,7 @@ import { createWeeklyQuestBoard, advanceWeeklyQuestBoard, claimWeeklyQuest, ensu
 import type {
   BadgeId,
   Celebration,
+  DailyHistoryEntry,
   DifficultyStats,
   LocalProfile,
   ProgressionState,
@@ -18,14 +19,76 @@ function buildCelebration(
   title: string,
   body: string,
   createdAt: string,
+  dedupeKey?: string,
 ): Celebration {
   return {
-    id: `${type}:${createdAt}:${title.toLowerCase().replace(/\s+/g, '-')}`,
+    id: `${type}:${(dedupeKey ?? `${title}:${body}`).toLowerCase().replace(/\s+/g, '-')}`,
     type,
     title,
     body,
     createdAt,
   }
+}
+
+function appendCelebrations(
+  existing: Celebration[],
+  incoming: Celebration[],
+  limit = 12,
+): Celebration[] {
+  const deduped = [...existing]
+
+  for (const celebration of incoming) {
+    if (deduped.some((entry) => entry.id === celebration.id)) {
+      continue
+    }
+
+    deduped.push(celebration)
+  }
+
+  return deduped.slice(-limit)
+}
+
+function calculateRoundPoints(context: RecordContext): number {
+  if (!context.didWin) {
+    return context.mode === 'daily' ? 4 : 2
+  }
+
+  const difficultyBonus = {
+    easy: 6,
+    medium: 8,
+    hard: 12,
+    impossible: 16,
+    'elite-ball-knowledge': 20,
+  }[context.difficultyId]
+  const modeBonus = context.mode === 'daily' ? 10 : 5
+  const efficiencyBonus = Math.max(0, 6 - context.guessCount)
+
+  return difficultyBonus + modeBonus + efficiencyBonus
+}
+
+function updateDailyHistory(
+  history: DailyHistoryEntry[],
+  context: RecordContext,
+  completedAt: string,
+): DailyHistoryEntry[] {
+  if (context.mode !== 'daily') {
+    return history
+  }
+
+  const nextEntry: DailyHistoryEntry = {
+    dateKey: context.dateKey,
+    completedAt,
+    didWin: context.didWin,
+    guessCount: context.guessCount,
+    difficultyId: context.difficultyId,
+    clueMode: context.clueMode,
+    themeId: context.themeId,
+    eventId: context.eventId,
+  }
+
+  return [...history.filter((entry) => entry.dateKey !== context.dateKey), nextEntry].toSorted(
+    (left, right) => left.dateKey.localeCompare(right.dateKey),
+  )
 }
 
 function combineWins(stats: Record<string, DifficultyStats>): number {
@@ -42,6 +105,7 @@ export function createDefaultProgressionState(
     records: createEmptyLocalRecords(),
     streaks: createEmptyLocalStreaks(),
     dailyWinDateKeys: [],
+    dailyHistory: [],
     pendingCelebrations: [],
   }
 }
@@ -107,13 +171,38 @@ export function applyCompletedRoundProgression(options: {
     .map((questId) => questResult.board.quests.find((quest) => quest.id === questId))
     .filter((quest): quest is WeeklyQuestBoard['quests'][number] => Boolean(quest))
     .map((quest) =>
-      buildCelebration('quest', `Quest complete: ${quest.title}`, `${quest.rewardPoints} rep ready to claim.`, createdAt),
+      buildCelebration('quest', `Quest complete: ${quest.title}`, `${quest.rewardPoints} points ready to claim.`, createdAt),
     )
-  const recordCelebrations = [...new Set([...streakResult.newRecordLabels, ...recordResult.newRecordLabels])]
-    .map((label) => buildCelebration('record', 'New personal record', label, createdAt))
+  const recordLabels = [...new Set([...streakResult.newRecordLabels, ...recordResult.newRecordLabels])]
+  const recordCelebrations =
+    recordLabels.length > 0
+      ? [
+          buildCelebration(
+            'record',
+            recordLabels.length > 1 ? 'New personal records' : 'New personal record',
+            recordLabels.join(' | '),
+            createdAt,
+            `record:${recordLabels.join('|')}`,
+          ),
+        ]
+      : []
+  const roundPoints = calculateRoundPoints(context)
+  const statusCelebrations = [
+    buildCelebration(
+      'status',
+      `+${roundPoints} points`,
+      context.didWin
+        ? 'Points added for the completed board.'
+        : 'Points added for staying in the grind.',
+      createdAt,
+    ),
+  ]
 
   return {
-    profile,
+    profile: {
+      ...profile,
+      points: profile.points + roundPoints,
+    },
     progression: {
       ...ensuredProgression,
       badges: nextBadges,
@@ -121,12 +210,13 @@ export function applyCompletedRoundProgression(options: {
       records: recordResult.records,
       streaks: streakResult.streaks,
       dailyWinDateKeys: streakResult.dailyWinDateKeys,
-      pendingCelebrations: [
-        ...ensuredProgression.pendingCelebrations,
+      dailyHistory: updateDailyHistory(ensuredProgression.dailyHistory, context, createdAt),
+      pendingCelebrations: appendCelebrations(ensuredProgression.pendingCelebrations, [
+        ...statusCelebrations,
         ...questCelebrations,
         ...badgeCelebrations,
         ...recordCelebrations,
-      ].slice(-10),
+      ]),
     },
   }
 }
@@ -150,20 +240,20 @@ export function claimWeeklyQuestReward(options: {
   return {
     profile: {
       ...profile,
-      reputationPoints: profile.reputationPoints + claimResult.rewardPoints,
+      points: profile.points + claimResult.rewardPoints,
     },
     progression: {
       ...progression,
       weeklyQuests: claimResult.board,
-      pendingCelebrations: [
-        ...progression.pendingCelebrations,
+      pendingCelebrations: appendCelebrations(progression.pendingCelebrations, [
         buildCelebration(
           'quest',
           'Reward claimed',
-          `+${claimResult.rewardPoints} reputation added to your local profile.`,
+          `+${claimResult.rewardPoints} points added to your local profile.`,
           createdAt,
+          `quest-claim:${questId}`,
         ),
-      ].slice(-10),
+      ]),
     },
   }
 }
