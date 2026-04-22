@@ -7,6 +7,8 @@ export function buildPlayerRecord(overrides: Partial<PlayerRecord> = {}): Player
     displayName: 'Sample Player',
     firstName: 'Sample',
     lastName: 'Player',
+    isCurrentPlayer: true,
+    isDefunctFranchise: false,
     teamId: 1610612752,
     teamAbbreviation: 'NYK',
     teamName: 'New York Knicks',
@@ -33,6 +35,8 @@ export function buildPlayerRecord(overrides: Partial<PlayerRecord> = {}): Player
     },
     career: {
       debutYear: 2020,
+      finalSeasonYear: 2025,
+      seasonsPlayed: 6,
       preNbaPath: 'Duke',
       careerTeamIds: [1610612752],
       careerTeamAbbreviations: ['NYK'],

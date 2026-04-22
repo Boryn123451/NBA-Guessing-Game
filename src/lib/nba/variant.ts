@@ -1,6 +1,7 @@
 import type { DifficultyId, GameMode, GameVariant } from './types'
 
 export const DEFAULT_GAME_VARIANT: GameVariant = {
+  playerPoolScope: 'current',
   clueMode: 'standard',
   themeId: 'classic',
   eventId: null,
@@ -9,6 +10,7 @@ export const DEFAULT_GAME_VARIANT: GameVariant = {
 
 export function normalizeVariant(variant: GameVariant): GameVariant {
   return {
+    playerPoolScope: variant.playerPoolScope,
     clueMode: variant.clueMode,
     themeId: variant.themeId,
     eventId: variant.eventId,
@@ -20,6 +22,7 @@ export function getVariantKey(variant: GameVariant): string {
   const normalizedVariant = normalizeVariant(variant)
 
   return [
+    normalizedVariant.playerPoolScope,
     normalizedVariant.clueMode,
     normalizedVariant.themeId,
     normalizedVariant.eventId ?? 'none',

@@ -264,7 +264,7 @@ export const DIFFICULTY_DEFINITIONS: DifficultyConfig[] = [
     },
     clueAvailability: {
       careerPathMode: false,
-      draftMode: false,
+      draftMode: true,
       seasonSnapshot: false,
       bonusClues: false,
     },

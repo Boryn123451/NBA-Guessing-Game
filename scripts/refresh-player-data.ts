@@ -34,8 +34,12 @@ const NBA_HEADERS = {
 }
 
 const PLAYER_INDEX_SOURCE = 'https://stats.nba.com/stats/playerindex?LeagueID=00&Season={season}'
+const HISTORICAL_PLAYER_INDEX_SOURCE =
+  'https://stats.nba.com/stats/playerindex?College=&Country=&Height=&Historical=1&LeagueID=00&Season={season}&TeamID=0'
 const BIO_STATS_SOURCE =
   'https://stats.nba.com/stats/leaguedashplayerbiostats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames=0&LeagueID=00&Location=&Month=0&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode=PerGame&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season={season}&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID=0&VsConference=&VsDivision=&Weight='
+const ADVANCED_PLAYER_STATS_SOURCE =
+  'https://stats.nba.com/stats/leaguedashplayerstats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode=PerGame&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season={season}&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID=0&TwoWay=0&VsConference=&VsDivision=&Weight='
 const TRANSACTION_SOURCE = 'https://stats.nba.com/js/data/playermovement/NBA_Player_Movement.json'
 const SCHEDULE_SOURCE = 'https://cdn.nba.com/static/json/staticData/scheduleLeagueV2_1.json'
 const STANDINGS_SOURCE =
@@ -362,6 +366,19 @@ function buildAgeMap(rows: Array<Record<string, ResultValue>>): Map<number, numb
   )
 }
 
+function buildStatMap(
+  rows: Array<Record<string, ResultValue>>,
+): Map<number, Record<string, ResultValue>> {
+  return new Map(
+    rows
+      .map((row) => {
+        const playerId = parseIntegerValue(row.PLAYER_ID)
+        return playerId === null ? null : ([playerId, row] as const)
+      })
+      .filter(isPresent),
+  )
+}
+
 function buildStandingMap(rows: Array<Record<string, ResultValue>>): Map<number, StandingSnapshot> {
   return new Map(
     rows
@@ -396,6 +413,29 @@ function buildBaseSnapshot(
     playoffRank: standingSnapshot?.playoffRank ?? null,
     careerAccoladeLabel: null,
   }
+}
+
+function buildHistoricalSnapshot(row: Record<string, ResultValue>): SeasonSnapshot {
+  return {
+    pointsPerGame: parseNumberValue(row.PTS),
+    reboundsPerGame: parseNumberValue(row.REB),
+    assistsPerGame: parseNumberValue(row.AST),
+    minutesPerGame: null,
+    playoffPicture: null,
+    playoffRank: null,
+    careerAccoladeLabel: null,
+  }
+}
+
+function getSeasonSpan(
+  debutYear: number | null,
+  finalSeasonYear: number | null,
+): number | null {
+  if (debutYear === null || finalSeasonYear === null || finalSeasonYear < debutYear) {
+    return null
+  }
+
+  return finalSeasonYear - debutYear + 1
 }
 
 function buildDraftStub(row: Record<string, ResultValue>): DraftDetails {
@@ -599,29 +639,67 @@ function hasRichMetadata(player: PlayerRecord): boolean {
   return Boolean(
     player.country &&
       player.career.debutYear !== null &&
-      player.draft.year !== null &&
-      (player.draft.teamId !== null || player.draft.isUndrafted) &&
       player.heightInInches !== null &&
-      player.currentAge !== null &&
       player.jerseyNumber !== null &&
-      player.career.primaryAccolade,
+      player.teamAbbreviation &&
+      (player.draft.year !== null || player.draft.isUndrafted),
   )
+}
+
+function buildTeamContext(row: Record<string, ResultValue>): {
+  teamId: number
+  teamAbbreviation: string
+  teamName: string
+  conference: PlayerRecord['conference']
+  division: PlayerRecord['division']
+  isDefunctFranchise: boolean
+} | null {
+  const teamId = parseIntegerValue(row.TEAM_ID)
+
+  if (teamId === null || teamId === 0) {
+    return null
+  }
+
+  const mappedTeam = TEAM_BY_ID.get(teamId)
+  const teamAbbreviation = cleanText(row.TEAM_ABBREVIATION) ?? mappedTeam?.abbreviation ?? 'LEG'
+  const teamName = cleanText(row.TEAM_NAME)
+  const teamCity = cleanText(row.TEAM_CITY)
+
+  if (mappedTeam) {
+    return {
+      teamId: mappedTeam.id,
+      teamAbbreviation: mappedTeam.abbreviation,
+      teamName: `${mappedTeam.city} ${mappedTeam.name}`,
+      conference: mappedTeam.conference,
+      division: mappedTeam.division,
+      isDefunctFranchise: parseIntegerValue(row.IS_DEFUNCT) === 1,
+    }
+  }
+
+  return {
+    teamId,
+    teamAbbreviation,
+    teamName: teamCity && teamName ? `${teamCity} ${teamName}` : teamAbbreviation,
+    conference: 'Legacy',
+    division: 'Legacy',
+    isDefunctFranchise: true,
+  }
 }
 
 function normalizePlayer(
   row: Record<string, ResultValue>,
   ageMap: Map<number, number>,
+  statsMap: Map<number, Record<string, ResultValue>>,
   standingMap: Map<number, StandingSnapshot>,
   seasonStartYear: number,
 ): PlayerRecord | null {
-  const teamId = parseIntegerValue(row.TEAM_ID)
   const rosterStatus = parseIntegerValue(row.ROSTER_STATUS)
 
-  if (teamId === null || teamId === 0 || rosterStatus !== 1) {
+  if (rosterStatus !== 1) {
     return null
   }
 
-  const team = TEAM_BY_ID.get(teamId)
+  const team = buildTeamContext(row)
   const playerId = parseIntegerValue(row.PERSON_ID)
 
   if (!team || playerId === null) {
@@ -639,15 +717,19 @@ function normalizePlayer(
   const college = cleanText(row.COLLEGE)
   const country = cleanText(row.COUNTRY)
   const debutYear = parseIntegerValue(row.FROM_YEAR)
+  const finalSeasonYear = parseIntegerValue(row.TO_YEAR)
+  const statRow = statsMap.get(playerId) ?? row
   const player: PlayerRecord = {
     id: playerId,
     slug: String(row.PLAYER_SLUG ?? '').trim(),
     displayName,
     firstName,
     lastName,
-    teamId: team.id,
-    teamAbbreviation: team.abbreviation,
-    teamName: `${team.city} ${team.name}`,
+    isCurrentPlayer: true,
+    isDefunctFranchise: team.isDefunctFranchise,
+    teamId: team.teamId,
+    teamAbbreviation: team.teamAbbreviation,
+    teamName: team.teamName,
     conference: team.conference,
     division: team.division,
     position,
@@ -663,10 +745,12 @@ function normalizePlayer(
     draft: buildDraftStub(row),
     career: {
       debutYear,
+      finalSeasonYear,
+      seasonsPlayed: getSeasonSpan(debutYear, finalSeasonYear),
       preNbaPath: college,
-      careerTeamIds: [team.id],
-      careerTeamAbbreviations: [team.abbreviation],
-      careerTeamNames: [`${team.city} ${team.name}`],
+      careerTeamIds: [team.teamId],
+      careerTeamAbbreviations: [team.teamAbbreviation],
+      careerTeamNames: [team.teamName],
       previousTeamIds: [],
       previousTeamAbbreviations: [],
       previousTeamNames: [],
@@ -676,7 +760,7 @@ function normalizePlayer(
       primaryAccolade: null,
       hasRichMetadata: false,
     },
-    snapshot: buildBaseSnapshot(row, standingMap.get(team.id)),
+    snapshot: buildBaseSnapshot(statRow, standingMap.get(team.teamId)),
     flags: {
       isRookie: debutYear === seasonStartYear,
       isInternational: false,
@@ -685,9 +769,8 @@ function normalizePlayer(
     },
     searchText: buildSearchText([
       displayName,
-      team.abbreviation,
-      team.city,
-      team.name,
+      team.teamAbbreviation,
+      team.teamName,
       position,
       country,
     ]),
@@ -695,6 +778,90 @@ function normalizePlayer(
 
   player.flags = buildThemeFlags(player, seasonStartYear, false)
   return player
+}
+
+function normalizeHistoricalPlayer(
+  row: Record<string, ResultValue>,
+  seasonStartYear: number,
+): PlayerRecord | null {
+  const team = buildTeamContext(row)
+  const playerId = parseIntegerValue(row.PERSON_ID)
+
+  if (!team || playerId === null) {
+    return null
+  }
+
+  const displayName = `${String(row.PLAYER_FIRST_NAME ?? '').trim()} ${String(
+    row.PLAYER_LAST_NAME ?? '',
+  ).trim()}`.trim()
+  const { firstName, lastName } = splitPlayerName(displayName)
+  const position = canonicalizePosition(
+    String(row.POSITION ?? ''),
+  )
+  const heightInInches = parseHeightToInches(
+    typeof row.HEIGHT === 'string' ? row.HEIGHT : null,
+  )
+  const college = cleanText(row.COLLEGE)
+  const country = cleanText(row.COUNTRY)
+  const debutYear = parseIntegerValue(row.FROM_YEAR)
+  const finalSeasonYear = parseIntegerValue(row.TO_YEAR)
+
+  return {
+    id: playerId,
+    slug: String(row.PLAYER_SLUG ?? '').trim(),
+    displayName,
+    firstName,
+    lastName,
+    isCurrentPlayer: false,
+    isDefunctFranchise: team.isDefunctFranchise,
+    teamId: team.teamId,
+    teamAbbreviation: team.teamAbbreviation,
+    teamName: team.teamName,
+    conference: team.conference,
+    division: team.division,
+    position,
+    positionTokens: positionTokensFromLabel(position),
+    heightInInches,
+    heightCm: inchesToCentimeters(heightInInches),
+    currentAge: null,
+    birthDate: null,
+    jerseyNumber: parseIntegerValue(row.JERSEY_NUMBER),
+    headshotUrl: createHeadshotUrl(playerId),
+    country,
+    college,
+    draft: buildDraftStub(row),
+    career: {
+      debutYear,
+      finalSeasonYear,
+      seasonsPlayed: getSeasonSpan(debutYear, finalSeasonYear),
+      preNbaPath: college,
+      careerTeamIds: [team.teamId],
+      careerTeamAbbreviations: [team.teamAbbreviation],
+      careerTeamNames: [team.teamName],
+      previousTeamIds: [],
+      previousTeamAbbreviations: [],
+      previousTeamNames: [],
+      allStarAppearances: 0,
+      championships: 0,
+      accolades: [],
+      primaryAccolade: null,
+      hasRichMetadata: false,
+    },
+    snapshot: buildHistoricalSnapshot(row),
+    flags: {
+      isRookie: debutYear === seasonStartYear,
+      isInternational: false,
+      isAllStar: false,
+      isUnder25: false,
+    },
+    searchText: buildSearchText([
+      displayName,
+      team.teamAbbreviation,
+      team.teamName,
+      position,
+      country,
+    ]),
+  }
 }
 
 function extractAllStarPlayerIds(html: string): Set<number> {
@@ -728,7 +895,7 @@ function applyExtendedData(
         pick: parseIntegerValue(draftRow.OVERALL_PICK) ?? player.draft.pick,
         teamId: parseIntegerValue(draftRow.TEAM_ID),
         teamAbbreviation: cleanText(draftRow.TEAM_ABBREVIATION),
-      teamName:
+        teamName:
           cleanText(draftRow.TEAM_CITY) && cleanText(draftRow.TEAM_NAME)
             ? `${cleanText(draftRow.TEAM_CITY)} ${cleanText(draftRow.TEAM_NAME)}`
             : null,
@@ -751,8 +918,10 @@ function applyExtendedData(
     career: {
       ...player.career,
       careerTeamIds: uniqueCareerTeamIds,
-      careerTeamAbbreviations: careerTeams.map((team) => team.abbreviation),
-      careerTeamNames: careerTeams.map((team) => `${team.city} ${team.name}`),
+      careerTeamAbbreviations:
+        careerTeams.length > 0 ? careerTeams.map((team) => team.abbreviation) : [player.teamAbbreviation],
+      careerTeamNames:
+        careerTeams.length > 0 ? careerTeams.map((team) => `${team.city} ${team.name}`) : [player.teamName],
       previousTeamIds,
       previousTeamAbbreviations: previousTeams.map((team) => team.abbreviation),
       previousTeamNames: previousTeams.map((team) => `${team.city} ${team.name}`),
@@ -782,8 +951,17 @@ function coerceExistingPlayerRecord(
     player.career.primaryAccolade ?? legacySnapshot.careerAccoladeLabel ?? legacySnapshot.accoladeLabel ?? null
   const coercedPlayer: PlayerRecord = {
     ...player,
+    isCurrentPlayer: player.isCurrentPlayer ?? true,
+    isDefunctFranchise: player.isDefunctFranchise ?? false,
     career: {
       ...player.career,
+      finalSeasonYear: player.career.finalSeasonYear ?? player.career.debutYear ?? null,
+      seasonsPlayed:
+        player.career.seasonsPlayed ??
+        getSeasonSpan(
+          player.career.debutYear,
+          player.career.finalSeasonYear ?? player.career.debutYear ?? null,
+        ),
       championships: player.career.championships ?? 0,
       accolades: player.career.accolades ?? (primaryAccolade ? [primaryAccolade] : []),
       primaryAccolade,
@@ -880,21 +1058,43 @@ async function main(): Promise<void> {
   const cacheDirectory = path.resolve(currentFileDirectory, `.cache/nba/${season}`)
   const outputDirectory = path.resolve(currentFileDirectory, '../src/data/generated')
   const outputPath = path.join(outputDirectory, 'player-pool.json')
+  const historyOutputPath = path.join(outputDirectory, 'history-player-pool.json')
   const imageFallbackPath = path.join(outputDirectory, 'player-image-fallbacks.json')
   const existingPool = await readCachedJson<PlayerPoolData>(outputPath)
+  const existingHistoryPool = await readCachedJson<PlayerPoolData>(historyOutputPath)
   let rosterPlayers: PlayerRecord[] = []
+  let historicalRosterRows: Array<Record<string, ResultValue>> = []
   let activeTenDayPlayers: PlayerPoolData['excludedTenDayPlayers'] = []
   let baseEligiblePlayers: PlayerRecord[] = []
+  let historyPlayers: PlayerRecord[] = []
   let rosterPlayerCount = 0
   let draftYears: number[] = []
   let currentAllStarIds = new Set<number>()
   let usingExistingPoolFallback = false
 
   try {
-    const [playerIndexResponse, bioStatsResponse, scheduleResponse, movementResponse, standingsResponse] =
+    const [
+      playerIndexResponse,
+      historicalPlayerIndexResponse,
+      bioStatsResponse,
+      advancedPlayerStatsResponse,
+      scheduleResponse,
+      movementResponse,
+      standingsResponse,
+    ] =
       await Promise.all([
         fetchJson<ResultSetResponse>(PLAYER_INDEX_SOURCE.replace('{season}', season), NBA_HEADERS, 30000),
+        fetchJson<ResultSetResponse>(
+          HISTORICAL_PLAYER_INDEX_SOURCE.replace('{season}', season),
+          NBA_HEADERS,
+          30000,
+        ),
         fetchJson<ResultSetResponse>(BIO_STATS_SOURCE.replace('{season}', season), NBA_HEADERS, 30000),
+        fetchJson<ResultSetResponse>(
+          ADVANCED_PLAYER_STATS_SOURCE.replace('{season}', season),
+          NBA_HEADERS,
+          30000,
+        ),
         fetchJson<ScheduleResponse>(
           SCHEDULE_SOURCE,
           {
@@ -908,10 +1108,12 @@ async function main(): Promise<void> {
       ])
 
     const ageMap = buildAgeMap(mapRows(bioStatsResponse))
+    const statMap = buildStatMap(mapRows(advancedPlayerStatsResponse))
     const standingMap = buildStandingMap(mapRows(standingsResponse, 'Standings'))
     const rosterRows = mapRows(playerIndexResponse, 'PlayerIndex')
+    historicalRosterRows = mapRows(historicalPlayerIndexResponse, 'PlayerIndex')
     rosterPlayers = rosterRows
-      .map((row) => normalizePlayer(row, ageMap, standingMap, seasonStartYear))
+      .map((row) => normalizePlayer(row, ageMap, statMap, standingMap, seasonStartYear))
       .filter((player): player is PlayerRecord => player !== null)
     const games = scheduleResponse.leagueSchedule.gameDates.flatMap((date) => date.games)
     activeTenDayPlayers = deriveActiveTenDayContracts(
@@ -932,7 +1134,7 @@ async function main(): Promise<void> {
     rosterPlayerCount = rosterPlayers.length
     draftYears = [...new Set(baseEligiblePlayers.map((player) => player.draft.year).filter(isPresent))]
   } catch (error) {
-    if (!existingPool) {
+    if (!existingPool || !existingHistoryPool) {
       throw error
     }
 
@@ -945,45 +1147,68 @@ async function main(): Promise<void> {
     baseEligiblePlayers = rosterPlayers
     rosterPlayerCount = existingPool.eligibility?.rosterPlayerCount ?? rosterPlayers.length
     draftYears = []
+    historyPlayers = existingHistoryPool.players.map((player) =>
+      coerceExistingPlayerRecord(player, seasonStartYear),
+    )
     currentAllStarIds = new Set(
       rosterPlayers.filter((player) => player.flags.isAllStar).map((player) => player.id),
     )
   }
 
+  const excludedIds = new Set(activeTenDayPlayers.map((player) => player.id))
   const eligiblePlayerIds = new Set(baseEligiblePlayers.map((player) => player.id))
-  const playerAwardsPayloads = await mapWithConcurrency(baseEligiblePlayers, 10, async (player) => {
-    const response = await fetchJsonWithCache<ResultSetResponse>(
-      PLAYER_AWARDS_SOURCE.replace('{playerId}', `${player.id}`),
-      path.join(cacheDirectory, 'player-awards', `${player.id}.json`),
-      NBA_HEADERS,
-      4500,
-      2,
-    )
-
-    return [player.id, response] as const
+  const historicalRowsForPool = historicalRosterRows.filter((row) => {
+    const playerId = parseIntegerValue(row.PERSON_ID)
+    return playerId !== null && !excludedIds.has(playerId)
   })
+  const historicalDraftYears = usingExistingPoolFallback
+    ? []
+    : [
+        ...new Set(
+          historicalRowsForPool
+            .map((row) => parseIntegerValue(row.DRAFT_YEAR))
+            .filter(isPresent),
+        ),
+      ]
+  const allDraftYears = [...new Set([...draftYears, ...historicalDraftYears])].sort((left, right) => left - right)
 
-  const draftPayloads = await mapWithConcurrency(draftYears, 4, async (year) => {
-    const response = await fetchJsonWithCache<ResultSetResponse>(
-      DRAFT_HISTORY_SOURCE.replace('{year}', `${year}`),
-      path.join(cacheDirectory, 'draft-history', `${year}.json`),
-      NBA_HEADERS,
-      15000,
-    )
+  const [
+    playerAwardsPayloads,
+    draftPayloads,
+    franchisePayloads,
+  ] = await Promise.all([
+    mapWithConcurrency(baseEligiblePlayers, 6, async (player) => {
+      const response = await fetchJsonWithCache<ResultSetResponse>(
+        PLAYER_AWARDS_SOURCE.replace('{playerId}', `${player.id}`),
+        path.join(cacheDirectory, 'player-awards', `${player.id}.json`),
+        NBA_HEADERS,
+        6500,
+        3,
+      )
 
-    return [year, response] as const
-  })
+      return [player.id, response] as const
+    }),
+    mapWithConcurrency(allDraftYears, 2, async (year) => {
+      const response = await fetchJsonWithCache<ResultSetResponse>(
+        DRAFT_HISTORY_SOURCE.replace('{year}', `${year}`),
+        path.join(cacheDirectory, 'draft-history', `${year}.json`),
+        NBA_HEADERS,
+        30000,
+      )
 
-  const franchisePayloads = await mapWithConcurrency(TEAM_METADATA, 4, async (team) => {
-    const response = await fetchJsonWithCache<ResultSetResponse>(
-      FRANCHISE_PLAYERS_SOURCE.replace('{teamId}', `${team.id}`),
-      path.join(cacheDirectory, 'franchise-players', `${team.id}.json`),
-      NBA_HEADERS,
-      20000,
-    )
+      return [year, response] as const
+    }),
+    mapWithConcurrency(TEAM_METADATA, 4, async (team) => {
+      const response = await fetchJsonWithCache<ResultSetResponse>(
+        FRANCHISE_PLAYERS_SOURCE.replace('{teamId}', `${team.id}`),
+        path.join(cacheDirectory, 'franchise-players', `${team.id}.json`),
+        NBA_HEADERS,
+        20000,
+      )
 
-    return [team.id, response] as const
-  })
+      return [team.id, response] as const
+    }),
+  ])
 
   if (!usingExistingPoolFallback) {
     const allStarRosterHtml = await fetchTextWithCache(
@@ -997,6 +1222,7 @@ async function main(): Promise<void> {
     )
     currentAllStarIds = allStarRosterHtml ? extractAllStarPlayerIds(allStarRosterHtml) : new Set<number>()
   }
+
   const draftByPlayerId = new Map<number, Record<string, ResultValue>>()
   const awardsByPlayerId = new Map<number, Array<Record<string, ResultValue>>>()
 
@@ -1020,8 +1246,15 @@ async function main(): Promise<void> {
 
   const careerTeamMap = new Map<number, Set<number>>()
 
-  for (const player of baseEligiblePlayers) {
-    careerTeamMap.set(player.id, new Set([player.teamId]))
+  for (const row of historicalRowsForPool) {
+    const playerId = parseIntegerValue(row.PERSON_ID)
+    const teamContext = buildTeamContext(row)
+
+    if (playerId === null || !teamContext) {
+      continue
+    }
+
+    careerTeamMap.set(playerId, new Set([teamContext.teamId]))
   }
 
   for (const [teamId, response] of franchisePayloads) {
@@ -1032,8 +1265,10 @@ async function main(): Promise<void> {
     for (const row of mapRows(response)) {
       const playerId = parseIntegerValue(row.PERSON_ID)
 
-      if (playerId !== null && eligiblePlayerIds.has(playerId)) {
-        careerTeamMap.get(playerId)?.add(teamId)
+      if (playerId !== null) {
+        const existingTeams = careerTeamMap.get(playerId) ?? new Set<number>()
+        existingTeams.add(teamId)
+        careerTeamMap.set(playerId, existingTeams)
       }
     }
   }
@@ -1058,6 +1293,32 @@ async function main(): Promise<void> {
     )
     .toSorted((left, right) => left.displayName.localeCompare(right.displayName))
 
+  if (!usingExistingPoolFallback) {
+    const inactiveHistoryPlayers = historicalRowsForPool
+      .filter((row) => {
+        const playerId = parseIntegerValue(row.PERSON_ID)
+        return playerId !== null && !eligiblePlayerIds.has(playerId)
+      })
+      .map((row) =>
+        normalizeHistoricalPlayer(row, seasonStartYear),
+      )
+      .filter((player): player is PlayerRecord => player !== null)
+      .map((player) =>
+        applyExtendedData(
+          player,
+          draftByPlayerId.get(player.id),
+          [],
+          [...(careerTeamMap.get(player.id) ?? new Set<number>())],
+          new Set<number>(),
+          seasonStartYear,
+        ),
+      )
+
+    historyPlayers = [...eligiblePlayers, ...inactiveHistoryPlayers].toSorted((left, right) =>
+      left.displayName.localeCompare(right.displayName),
+    )
+  }
+
   const imageFallbackEntries = await mapWithConcurrency(eligiblePlayers, 16, async (player) => {
     for (const candidateUrl of build2KRatingsFallbackCandidates(player)) {
       if (await headExists(candidateUrl)) {
@@ -1071,11 +1332,15 @@ async function main(): Promise<void> {
     schemaVersion: 1,
     generatedAt: refreshedAt,
     source: '2KRatings static image fallback manifest',
-    fallbacks: Object.fromEntries(imageFallbackEntries.filter(isPresent).map(([playerId, url]) => [`${playerId}`, url])),
+    fallbacks: Object.fromEntries(
+      imageFallbackEntries
+        .filter(isPresent)
+        .map(([playerId, url]) => [`${playerId}`, url]),
+    ),
   }
 
   const playerPool: PlayerPoolData = {
-    schemaVersion: 3,
+    schemaVersion: 4,
     season,
     refreshedAt,
     asOfDate,
@@ -1105,6 +1370,7 @@ async function main(): Promise<void> {
       transactions: TRANSACTION_SOURCE,
       schedule: SCHEDULE_SOURCE,
       standings: STANDINGS_SOURCE.replace('{season}', season),
+      advancedStats: ADVANCED_PLAYER_STATS_SOURCE.replace('{season}', season),
       draftHistory: DRAFT_HISTORY_SOURCE,
       franchisePlayers: FRANCHISE_PLAYERS_SOURCE,
       allStarRoster: ALL_STAR_ROSTER_SOURCE.replace('{year}', `${allStarYear}`),
@@ -1114,13 +1380,53 @@ async function main(): Promise<void> {
     players: eligiblePlayers,
   }
 
+  const historyPlayerPool: PlayerPoolData = {
+    schemaVersion: 4,
+    season,
+    refreshedAt,
+    asOfDate,
+    rosterFreshness: {
+      refreshedAt,
+      asOfDate,
+      season,
+    },
+    eligibility: {
+      rosterStatusRequired: false,
+      transactionAwareTenDayExclusion: true,
+      rosterPlayerCount: historicalRowsForPool.length,
+      eligiblePlayerCount: historyPlayers.length,
+      excludedActiveTenDayCount: activeTenDayPlayers.length,
+      rules: [
+        'All-time history uses the official NBA historical player index for the same season snapshot.',
+        'Active 10-day contract players are excluded from the shared current-day pool.',
+        'Historical players are enriched with official draft history, franchise lineage, and award data where the cached responses are available.',
+        'History mode stays practice-only so Daily remains deterministic on the current roster.',
+      ],
+    },
+    sources: {
+      rosters: HISTORICAL_PLAYER_INDEX_SOURCE.replace('{season}', season),
+      bioStats: BIO_STATS_SOURCE.replace('{season}', season),
+      transactions: TRANSACTION_SOURCE,
+      schedule: SCHEDULE_SOURCE,
+      standings: STANDINGS_SOURCE.replace('{season}', season),
+      advancedStats: ADVANCED_PLAYER_STATS_SOURCE.replace('{season}', season),
+      draftHistory: DRAFT_HISTORY_SOURCE,
+      franchisePlayers: FRANCHISE_PLAYERS_SOURCE,
+      allStarRoster: ALL_STAR_ROSTER_SOURCE.replace('{year}', `${allStarYear}`),
+      playerAwards: PLAYER_AWARDS_SOURCE,
+    },
+    excludedTenDayPlayers: activeTenDayPlayers,
+    players: historyPlayers,
+  }
+
   await mkdir(outputDirectory, { recursive: true })
   await writeFile(outputPath, `${JSON.stringify(playerPool, null, 2)}\n`, 'utf8')
+  await writeFile(historyOutputPath, `${JSON.stringify(historyPlayerPool, null, 2)}\n`, 'utf8')
   await writeFile(imageFallbackPath, `${JSON.stringify(imageFallbackManifest, null, 2)}\n`, 'utf8')
   flushFailedRequestSummary()
 
   console.log(
-    `Wrote ${eligiblePlayers.length} eligible players to ${outputPath}. Excluded ${activeTenDayPlayers.length} active 10-day contracts. Built ${Object.keys(imageFallbackManifest.fallbacks).length} 2KRatings fallback images.`,
+    `Wrote ${eligiblePlayers.length} current players to ${outputPath}. Wrote ${historyPlayers.length} history players to ${historyOutputPath}. Excluded ${activeTenDayPlayers.length} active 10-day contracts. Built ${Object.keys(imageFallbackManifest.fallbacks).length} 2KRatings fallback images.`,
   )
 }
 

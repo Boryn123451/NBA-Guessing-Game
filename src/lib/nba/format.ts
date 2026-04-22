@@ -1,6 +1,7 @@
 import { getAgeBucketIndex, getPlayerAge } from './comparison'
 import { getDifficultyDefinition } from './difficulty'
 import { getEventDefinition } from './events'
+import { getPlayerPoolScopeDefinition } from './playerScopes'
 import { getThemeDefinition } from './themes'
 import type {
   ClueKey,
@@ -10,6 +11,7 @@ import type {
   GameMode,
   NumericDirection,
   PlayerRecord,
+  PlayerPoolScopeId,
   PlayerThemeId,
   UnitSystem,
 } from './types'
@@ -46,6 +48,10 @@ export function formatDifficultyLabel(difficultyId: DifficultyId): string {
 
 export function formatThemeLabel(themeId: PlayerThemeId): string {
   return getThemeDefinition(themeId).label
+}
+
+export function formatPlayerPoolScopeLabel(scopeId: PlayerPoolScopeId): string {
+  return getPlayerPoolScopeDefinition(scopeId).label
 }
 
 export function formatEventModeLabel(eventId: EventModeId | null): string {
@@ -92,7 +98,11 @@ export function formatAge(
   const age = getPlayerAge(player, referenceDate)
   const difficulty = getDifficultyDefinition(difficultyId)
 
-  return difficulty.ageDisplay === 'bucketed' ? formatAgeBucketLabel(age) : age === null ? 'N/A' : `${age}`
+  return difficulty.ageDisplay === 'bucketed'
+    ? formatAgeBucketLabel(age)
+    : age === null
+      ? 'N/A'
+      : `${age}`
 }
 
 export function formatJerseyNumber(jerseyNumber: number | null): string {
@@ -102,9 +112,9 @@ export function formatJerseyNumber(jerseyNumber: number | null): string {
 export function formatNumericDirectionSymbol(direction: NumericDirection): string {
   switch (direction) {
     case 'up':
-      return '↑'
+      return '\u2191'
     case 'down':
-      return '↓'
+      return '\u2193'
     default:
       return ''
   }

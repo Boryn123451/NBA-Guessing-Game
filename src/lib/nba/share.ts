@@ -5,6 +5,7 @@ import {
   formatDifficultyLabel,
   formatEventModeLabel,
   formatModeLabel,
+  formatPlayerPoolScopeLabel,
   formatThemeLabel,
 } from './format'
 import type {
@@ -13,6 +14,7 @@ import type {
   EventModeId,
   GameMode,
   GuessResult,
+  PlayerPoolScopeId,
   PlayerThemeId,
   StoredGameSession,
 } from './types'
@@ -32,6 +34,7 @@ export function buildShareSummary(options: {
   mode: GameMode
   clueMode: ClueMode
   themeId: PlayerThemeId
+  playerPoolScope: PlayerPoolScopeId
   difficultyId: DifficultyId
   eventId: EventModeId | null
   maxGuesses: number
@@ -49,6 +52,7 @@ export function buildShareSummary(options: {
     guesses,
     maxGuesses,
     mode,
+    playerPoolScope,
     session,
     themeId,
   } = options
@@ -60,7 +64,10 @@ export function buildShareSummary(options: {
         ? `X/${maxGuesses}`
         : `${session.guessIds.length}/${maxGuesses}`
   const modeLine = mode === 'daily' ? `${title} ${dateKey}` : title
-  const variantLine = `${formatClueModeLabel(clueMode)} | ${formatThemeLabel(themeId)}`
+  const variantLine =
+    playerPoolScope === 'history'
+      ? `${formatClueModeLabel(clueMode)} | ${formatPlayerPoolScopeLabel(playerPoolScope)}`
+      : `${formatClueModeLabel(clueMode)} | ${formatThemeLabel(themeId)}`
   const eventLine = eventId ? `Event | ${formatEventModeLabel(eventId)}` : null
   const difficultyLine = formatDifficultyLabel(difficultyId)
   const board =

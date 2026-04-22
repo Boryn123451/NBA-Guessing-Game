@@ -11,6 +11,8 @@ describe('bonus clues', () => {
     country: 'Serbia',
     career: {
       debutYear: 2021,
+      finalSeasonYear: 2025,
+      seasonsPlayed: 5,
       preNbaPath: 'Mega Basket',
       careerTeamIds: [1610612743],
       careerTeamAbbreviations: ['DEN'],

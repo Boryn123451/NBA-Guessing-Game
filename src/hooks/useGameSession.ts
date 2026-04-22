@@ -6,7 +6,10 @@ import {
   useState,
 } from 'react'
 
-import { loadPlayerPool } from '../lib/data/provider'
+import {
+  loadCurrentPlayerPool,
+  loadHistoricalPlayerPool,
+} from '../lib/data/provider'
 import {
   canRevealManualBonusClue,
   getNextManualBonusClueId,
@@ -22,17 +25,21 @@ import {
   pickPracticePlayer,
 } from '../lib/nba/daily'
 import { compareDraftGuess } from '../lib/nba/draftMode'
-import { getActiveEventModes, getUpcomingEventModes, sanitizeEventId } from '../lib/nba/events'
 import {
   DIFFICULTY_DEFINITIONS,
   getDifficultyDefinition,
 } from '../lib/nba/difficulty'
+import { getActiveEventModes, getUpcomingEventModes, sanitizeEventId } from '../lib/nba/events'
 import {
   getBlockedTeamIdForNextGuess,
   shouldBlockConsecutiveSameTeamGuess,
 } from '../lib/nba/guessRules'
 import { getPlayablePlayerPool } from '../lib/nba/pools'
-import { resolvePostseasonRule } from '../lib/nba/postseason'
+import {
+  DEFAULT_PLAYER_POOL_SCOPE_ID,
+  getPlayerPoolScopeDefinition,
+} from '../lib/nba/playerScopes'
+import { resolvePostseasonRule, type PostseasonRule } from '../lib/nba/postseason'
 import { buildShareSummary } from '../lib/nba/share'
 import { formatThemeSummary, getThemeOptions } from '../lib/nba/themes'
 import {
@@ -46,6 +53,8 @@ import type {
   GameMode,
   GameVariant,
   PersistedState,
+  PlayerPoolData,
+  PlayerPoolScopeId,
   PlayerRecord,
   PlayerThemeId,
   StoredGameSession,
@@ -73,9 +82,18 @@ import {
   savePersistedState,
 } from '../lib/storage'
 
-const playerPool = loadPlayerPool()
-const allPlayers = playerPool.players
-const playerById = new Map<number, PlayerRecord>(allPlayers.map((player) => [player.id, player]))
+const currentPlayerPool = loadCurrentPlayerPool()
+const currentPlayers = currentPlayerPool.players
+
+type HistoryPoolStatus = 'loading' | 'ready' | 'error'
+
+interface PlayerPoolScopeOption {
+  id: PlayerPoolScopeId
+  label: string
+  description: string
+  count: number | null
+  disabled: boolean
+}
 
 function sanitizeClueModeForDifficulty(
   clueMode: ClueMode,
@@ -94,30 +112,66 @@ function sanitizeClueModeForDifficulty(
   return clueMode
 }
 
+function resolveRequestedPlayerPoolScope(
+  mode: GameMode,
+  requestedScope: PlayerPoolScopeId,
+  historyReady: boolean,
+): PlayerPoolScopeId {
+  if (mode === 'daily') {
+    return 'current'
+  }
+
+  return requestedScope === 'history' && historyReady ? 'history' : DEFAULT_PLAYER_POOL_SCOPE_ID
+}
+
 function resolveVariantForDifficulty(
   clueMode: ClueMode,
   themeId: PlayerThemeId,
   eventId: PersistedState['preferences']['eventId'],
   difficultyId: DifficultyId,
   includePostseason: boolean,
+  playerPoolScope: PlayerPoolScopeId,
 ): GameVariant {
+  const normalizedClueMode = sanitizeClueModeForDifficulty(clueMode, difficultyId)
+
+  if (playerPoolScope === 'history') {
+    return normalizeVariant({
+      playerPoolScope,
+      clueMode: normalizedClueMode,
+      themeId: 'classic',
+      eventId: null,
+      includePostseason: false,
+    })
+  }
+
   return normalizeVariant({
-    clueMode: sanitizeClueModeForDifficulty(clueMode, difficultyId),
+    playerPoolScope,
+    clueMode: normalizedClueMode,
     themeId,
     eventId,
     includePostseason,
   })
 }
 
-function resolveVariantFromState(state: PersistedState, dateKey: string): GameVariant {
+function resolveVariantFromState(
+  state: PersistedState,
+  dateKey: string,
+  historyReady: boolean,
+): GameVariant {
   const postseasonRule = resolvePostseasonRule(
     state.preferences.mode,
     dateKey,
     state.preferences.practiceIncludePostseason,
   )
+  const playerPoolScope = resolveRequestedPlayerPoolScope(
+    state.preferences.mode,
+    state.preferences.playerPoolScope,
+    historyReady,
+  )
 
   if (state.preferences.mode === 'daily') {
     return normalizeVariant({
+      playerPoolScope: 'current',
       clueMode: sanitizeClueModeForDifficulty(
         state.preferences.clueMode,
         state.preferences.difficulty,
@@ -134,6 +188,7 @@ function resolveVariantFromState(state: PersistedState, dateKey: string): GameVa
     state.preferences.eventId,
     state.preferences.difficulty,
     postseasonRule.includePostseason,
+    playerPoolScope,
   )
 }
 
@@ -141,13 +196,19 @@ function getPlayersForVariant(
   mode: GameMode,
   variant: GameVariant,
   difficultyId: DifficultyId,
+  historyPlayers: PlayerRecord[],
 ): PlayerRecord[] {
+  const sourcePlayers =
+    mode === 'daily' || variant.playerPoolScope === 'current'
+      ? currentPlayers
+      : historyPlayers
+
   if (mode === 'daily') {
-    return allPlayers
+    return currentPlayers
   }
 
-  const filteredPlayers = getPlayablePlayerPool(allPlayers, variant, difficultyId)
-  return filteredPlayers.length > 0 ? filteredPlayers : allPlayers
+  const filteredPlayers = getPlayablePlayerPool(sourcePlayers, variant, difficultyId)
+  return filteredPlayers.length > 0 ? filteredPlayers : sourcePlayers
 }
 
 function getSessionKey(
@@ -168,10 +229,11 @@ function createVariantSession(
   players: PlayerRecord[],
   excludedPlayerIds: number[] = [],
 ): StoredGameSession {
+  const pool = players.length > 0 ? players : currentPlayers
   const target =
     mode === 'daily'
-      ? pickDailyPlayer(players, dateKey, variant)
-      : pickPracticePlayer(players, excludedPlayerIds)
+      ? pickDailyPlayer(pool, dateKey, variant)
+      : pickPracticePlayer(pool, excludedPlayerIds)
 
   return createSession(target.id)
 }
@@ -182,7 +244,10 @@ function findLegacyDailySession(
   playerIds: Set<number>,
 ): StoredGameSession | null {
   const matchingEntries = Object.entries(state.dailySessions)
-    .filter(([sessionKey, session]) => sessionKey.startsWith(`${dateKey}:`) && playerIds.has(session.targetPlayerId))
+    .filter(
+      ([sessionKey, session]) =>
+        sessionKey.startsWith(`${dateKey}:`) && playerIds.has(session.targetPlayerId),
+    )
     .toSorted((left, right) => {
       const leftSession = left[1]
       const rightSession = right[1]
@@ -203,142 +268,18 @@ function findLegacyDailySession(
   return matchingEntries[0]?.[1] ?? null
 }
 
-function resolveSession(
-  state: PersistedState,
-  dateKey: string,
-): {
-  difficultyId: DifficultyId
-  variant: GameVariant
-  players: PlayerRecord[]
-  sessionKey: string
-  session: StoredGameSession
-} {
-  const difficultyId = state.preferences.difficulty
-  const variant = resolveVariantFromState(state, dateKey)
-  const players = getPlayersForVariant(state.preferences.mode, variant, difficultyId)
-  const sessionKey = getSessionKey(state.preferences.mode, dateKey, variant, difficultyId)
-  const storedSession = getStoredSession(state, state.preferences.mode, sessionKey)
-  const playerIds = new Set(players.map((player) => player.id))
-
-  if (storedSession && playerIds.has(storedSession.targetPlayerId)) {
-    return {
-      difficultyId,
-      variant,
-      players,
-      sessionKey,
-      session: storedSession,
-    }
-  }
-
-  if (state.preferences.mode === 'daily') {
-    const legacySession = findLegacyDailySession(state, dateKey, playerIds)
-
-    if (legacySession) {
-      return {
-        difficultyId,
-        variant,
-        players,
-        sessionKey,
-        session: legacySession,
-      }
-    }
-  }
-
-  return {
-    difficultyId,
-    variant,
-    players,
-    sessionKey,
-    session: createVariantSession(state.preferences.mode, dateKey, variant, players),
-  }
-}
-
-function shouldKeepInactiveEventSelection(
-  state: PersistedState,
-  dateKey: string,
-): boolean {
-  if (!state.preferences.eventId) {
-    return false
-  }
-
-  const variant = resolveVariantFromState(state, dateKey)
-  const sessionKey = getSessionKey(state.preferences.mode, dateKey, variant, state.preferences.difficulty)
-  const session = getStoredSession(state, state.preferences.mode, sessionKey)
-
-  return Boolean(session && session.status === 'in_progress' && session.guessIds.length > 0)
-}
-
-function ensureHydratedState(
-  state: PersistedState,
-  dateKey: string,
-  now: Date,
-  timeZone: string,
-  activeEventIds: PersistedState['preferences']['eventId'][],
-): PersistedState {
-  const progressionState = ensureProgressionState(state.progression, now, timeZone)
-  const keepInactiveEvent = shouldKeepInactiveEventSelection(
-    {
-      ...state,
-      progression: progressionState,
-    },
-    dateKey,
-  )
-  const sanitizedEventId =
-    activeEventIds.includes(state.preferences.eventId) || keepInactiveEvent
-      ? state.preferences.eventId
-      : sanitizeEventId(
-          state.preferences.eventId,
-          activeEventIds.filter(Boolean) as NonNullable<PersistedState['preferences']['eventId']>[],
-        )
-  const sanitizedClueMode = sanitizeClueModeForDifficulty(
-    state.preferences.clueMode,
-    state.preferences.difficulty,
-  )
-  const nextState =
-    progressionState === state.progression &&
-    sanitizedEventId === state.preferences.eventId &&
-    sanitizedClueMode === state.preferences.clueMode
-      ? state
-      : {
-          ...state,
-          preferences: {
-            ...state.preferences,
-            clueMode: sanitizedClueMode,
-            eventId: sanitizedEventId,
-          },
-          progression: progressionState,
-        }
-  const { session, sessionKey } = resolveSession(nextState, dateKey)
-  const storedSession = getStoredSession(nextState, nextState.preferences.mode, sessionKey)
-
-  if (storedSession && storedSession.targetPlayerId === session.targetPlayerId) {
-    return nextState
-  }
-
-  return replaceModeSession(nextState, nextState.preferences.mode, session, sessionKey)
-}
-
-function updateActiveSession(
-  state: PersistedState,
-  dateKey: string,
-  now: Date,
-  timeZone: string,
-  activeEventIds: PersistedState['preferences']['eventId'][],
-  mutate: (session: StoredGameSession) => StoredGameSession | null,
-): PersistedState {
-  const preparedState = ensureHydratedState(state, dateKey, now, timeZone, activeEventIds)
-  const { session, sessionKey } = resolveSession(preparedState, dateKey)
-  const nextSession = mutate(session)
-
-  if (!nextSession) {
-    return preparedState
-  }
-
-  return replaceModeSession(preparedState, preparedState.preferences.mode, nextSession, sessionKey)
-}
-
 function findDailyCompletionEntry(state: PersistedState, dateKey: string) {
   return state.progression.dailyHistory.find((entry) => entry.dateKey === dateKey) ?? null
+}
+
+function getHistoryPostseasonRule(): PostseasonRule {
+  return {
+    includePostseason: false,
+    locked: true,
+    label: 'History pool ignores postseason context',
+    helpText:
+      'All-time practice does not mix in current-season postseason filters or playoff snapshots.',
+  }
 }
 
 export function useGameSession() {
@@ -347,6 +288,13 @@ export function useGameSession() {
   const dailyDateKey = getLeagueDateKey(now, timeZone)
   const [state, setState] = useState<PersistedState>(() => loadPersistedState())
   const [storageAvailable] = useState(() => isStorageAvailable())
+  const [historyPoolState, setHistoryPoolState] = useState<{
+    status: HistoryPoolStatus
+    data: PlayerPoolData | null
+  }>({
+    status: 'loading',
+    data: null,
+  })
 
   const syncClock = useEffectEvent(() => {
     setNow(new Date())
@@ -357,19 +305,211 @@ export function useGameSession() {
     return () => window.clearInterval(timer)
   }, [])
 
+  useEffect(() => {
+    let cancelled = false
+
+    loadHistoricalPlayerPool()
+      .then((data) => {
+        if (cancelled) {
+          return
+        }
+
+        setHistoryPoolState({
+          status: 'ready',
+          data,
+        })
+      })
+      .catch(() => {
+        if (cancelled) {
+          return
+        }
+
+        setHistoryPoolState({
+          status: 'error',
+          data: null,
+        })
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
+  const historyReady = historyPoolState.status === 'ready' && historyPoolState.data !== null
+  const historyPlayers = historyPoolState.data?.players ?? currentPlayers
+  const playerById = useMemo(
+    () =>
+      new Map<number, PlayerRecord>(
+        [...currentPlayers, ...(historyPoolState.data?.players ?? [])].map((player) => [
+          player.id,
+          player,
+        ]),
+      ),
+    [historyPoolState.data],
+  )
+
+  function resolveSessionForState(stateValue: PersistedState): {
+    difficultyId: DifficultyId
+    variant: GameVariant
+    players: PlayerRecord[]
+    sessionKey: string
+    session: StoredGameSession
+  } {
+    const difficultyId = stateValue.preferences.difficulty
+    const variant = resolveVariantFromState(stateValue, dailyDateKey, historyReady)
+    const players = getPlayersForVariant(
+      stateValue.preferences.mode,
+      variant,
+      difficultyId,
+      historyPlayers,
+    )
+    const sessionKey = getSessionKey(stateValue.preferences.mode, dailyDateKey, variant, difficultyId)
+    const storedSession = getStoredSession(stateValue, stateValue.preferences.mode, sessionKey)
+    const playerIds = new Set(players.map((player) => player.id))
+
+    if (storedSession && playerIds.has(storedSession.targetPlayerId)) {
+      return {
+        difficultyId,
+        variant,
+        players,
+        sessionKey,
+        session: storedSession,
+      }
+    }
+
+    if (stateValue.preferences.mode === 'daily') {
+      const legacySession = findLegacyDailySession(stateValue, dailyDateKey, playerIds)
+
+      if (legacySession) {
+        return {
+          difficultyId,
+          variant,
+          players,
+          sessionKey,
+          session: legacySession,
+        }
+      }
+    }
+
+    return {
+      difficultyId,
+      variant,
+      players,
+      sessionKey,
+      session: createVariantSession(
+        stateValue.preferences.mode,
+        dailyDateKey,
+        variant,
+        players,
+      ),
+    }
+  }
+
+  function shouldKeepInactiveEventSelection(stateValue: PersistedState): boolean {
+    if (!stateValue.preferences.eventId || stateValue.preferences.playerPoolScope === 'history') {
+      return false
+    }
+
+    const variant = resolveVariantFromState(stateValue, dailyDateKey, historyReady)
+    const sessionKey = getSessionKey(
+      stateValue.preferences.mode,
+      dailyDateKey,
+      variant,
+      stateValue.preferences.difficulty,
+    )
+    const session = getStoredSession(stateValue, stateValue.preferences.mode, sessionKey)
+
+    return Boolean(session && session.status === 'in_progress' && session.guessIds.length > 0)
+  }
+
   const activeEventModes = useMemo(
-    () => getActiveEventModes(allPlayers, now, timeZone),
+    () => getActiveEventModes(currentPlayers, now, timeZone),
     [now, timeZone],
   )
   const upcomingEventModes = useMemo(
-    () => getUpcomingEventModes(allPlayers, now, timeZone),
+    () => getUpcomingEventModes(currentPlayers, now, timeZone),
     [now, timeZone],
   )
   const activeEventIds = activeEventModes.map((eventMode) => eventMode.id)
-  const hydratedState = useMemo(
-    () => ensureHydratedState(state, dailyDateKey, now, timeZone, activeEventIds),
-    [state, dailyDateKey, now, timeZone, activeEventIds],
-  )
+
+  function ensureHydratedStateLocal(stateValue: PersistedState): PersistedState {
+    const progressionState = ensureProgressionState(stateValue.progression, now, timeZone)
+    const keepInactiveEvent = shouldKeepInactiveEventSelection({
+      ...stateValue,
+      progression: progressionState,
+    })
+    const scopeForMode =
+      stateValue.preferences.mode === 'daily'
+        ? 'current'
+        : stateValue.preferences.playerPoolScope
+    const sanitizedEventId =
+      scopeForMode === 'history'
+        ? null
+        : (stateValue.preferences.eventId !== null &&
+            activeEventIds.includes(stateValue.preferences.eventId)) ||
+          keepInactiveEvent
+          ? stateValue.preferences.eventId
+          : sanitizeEventId(
+              stateValue.preferences.eventId,
+              activeEventIds.filter(Boolean) as NonNullable<
+                PersistedState['preferences']['eventId']
+              >[],
+            )
+    const sanitizedClueMode = sanitizeClueModeForDifficulty(
+      stateValue.preferences.clueMode,
+      stateValue.preferences.difficulty,
+    )
+    const sanitizedThemeId = scopeForMode === 'history' ? 'classic' : stateValue.preferences.themeId
+    const sanitizedScope = stateValue.preferences.mode === 'daily' ? 'current' : scopeForMode
+    const nextState =
+      progressionState === stateValue.progression &&
+      sanitizedEventId === stateValue.preferences.eventId &&
+      sanitizedClueMode === stateValue.preferences.clueMode &&
+      sanitizedThemeId === stateValue.preferences.themeId &&
+      sanitizedScope === stateValue.preferences.playerPoolScope
+        ? stateValue
+        : {
+            ...stateValue,
+            preferences: {
+              ...stateValue.preferences,
+              playerPoolScope: sanitizedScope,
+              clueMode: sanitizedClueMode,
+              themeId: sanitizedThemeId,
+              eventId: sanitizedEventId,
+            },
+            progression: progressionState,
+          }
+    const { session, sessionKey } = resolveSessionForState(nextState)
+    const storedSession = getStoredSession(nextState, nextState.preferences.mode, sessionKey)
+
+    if (storedSession && storedSession.targetPlayerId === session.targetPlayerId) {
+      return nextState
+    }
+
+    return replaceModeSession(nextState, nextState.preferences.mode, session, sessionKey)
+  }
+
+  function updateActiveSessionLocal(
+    stateValue: PersistedState,
+    mutate: (session: StoredGameSession) => StoredGameSession | null,
+  ): PersistedState {
+    const preparedState = ensureHydratedStateLocal(stateValue)
+    const { session, sessionKey } = resolveSessionForState(preparedState)
+    const nextSession = mutate(session)
+
+    if (!nextSession) {
+      return preparedState
+    }
+
+    return replaceModeSession(
+      preparedState,
+      preparedState.preferences.mode,
+      nextSession,
+      sessionKey,
+    )
+  }
+
+  const hydratedState = ensureHydratedStateLocal(state)
 
   useEffect(() => {
     savePersistedState(hydratedState)
@@ -377,17 +517,21 @@ export function useGameSession() {
 
   const activeDifficultyId = hydratedState.preferences.difficulty
   const activeDifficulty = getDifficultyDefinition(activeDifficultyId)
-  const activeVariant = resolveVariantFromState(hydratedState, dailyDateKey)
+  const activeVariant = resolveVariantFromState(hydratedState, dailyDateKey, historyReady)
   const activePlayers = getPlayersForVariant(
     hydratedState.preferences.mode,
     activeVariant,
     activeDifficultyId,
+    historyPlayers,
   )
-  const activePostseasonRule = resolvePostseasonRule(
-    hydratedState.preferences.mode,
-    dailyDateKey,
-    hydratedState.preferences.practiceIncludePostseason,
-  )
+  const activePostseasonRule =
+    activeVariant.playerPoolScope === 'history'
+      ? getHistoryPostseasonRule()
+      : resolvePostseasonRule(
+          hydratedState.preferences.mode,
+          dailyDateKey,
+          hydratedState.preferences.practiceIncludePostseason,
+        )
   const sessionKey = getSessionKey(
     hydratedState.preferences.mode,
     dailyDateKey,
@@ -402,7 +546,8 @@ export function useGameSession() {
       activeVariant,
       activePlayers,
     )
-  const activeTarget = playerById.get(activeSession.targetPlayerId) ?? activePlayers[0] ?? allPlayers[0]
+  const activeTarget =
+    playerById.get(activeSession.targetPlayerId) ?? activePlayers[0] ?? currentPlayers[0]
   const guessedPlayers = activeSession.guessIds
     .map((guessId) => playerById.get(guessId))
     .filter((player): player is PlayerRecord => Boolean(player))
@@ -427,13 +572,14 @@ export function useGameSession() {
     lastGuessedPlayer,
     status: activeSession.status,
   })
-  const themeOptions = getThemeOptions(allPlayers)
+  const themeOptions = getThemeOptions(currentPlayers)
   const dailyCompletionEntry = findDailyCompletionEntry(hydratedState, dailyDateKey)
   const dailyLockedOut =
     hydratedState.preferences.mode === 'daily' && dailyCompletionEntry !== null
   const canGuess =
     !dailyLockedOut &&
     activeSession.status === 'in_progress' &&
+    activePlayers.length > 0 &&
     activeSession.guessIds.length < activeDifficulty.maxGuesses
   const revealedBonusClues = getRevealedBonusClues(
     activeTarget,
@@ -467,16 +613,35 @@ export function useGameSession() {
       : null
   const nextWeeklyReset = getNextWeeklyReset(now, timeZone)
   const weeklyResetCountdown = Math.max(nextWeeklyReset.toMillis() - now.getTime(), 0)
+  const playerPoolScopeOptions: PlayerPoolScopeOption[] = [
+    {
+      id: 'current',
+      label: getPlayerPoolScopeDefinition('current').label,
+      description: getPlayerPoolScopeDefinition('current').description,
+      count: currentPlayers.length,
+      disabled: false,
+    },
+    {
+      id: 'history',
+      label: getPlayerPoolScopeDefinition('history').label,
+      description:
+        historyPoolState.status === 'ready'
+          ? getPlayerPoolScopeDefinition('history').description
+          : historyPoolState.status === 'error'
+            ? 'All-time data failed to load in this session.'
+            : 'Loading the all-time player pool.',
+      count: historyPoolState.data?.players.length ?? null,
+      disabled: historyPoolState.status !== 'ready',
+    },
+  ]
+  const activeDataMeta =
+    activeVariant.playerPoolScope === 'history' && historyPoolState.data
+      ? historyPoolState.data
+      : currentPlayerPool
 
   function submitGuess(playerId: number): void {
     setState((previousState) => {
-      const preparedState = ensureHydratedState(
-        previousState,
-        dailyDateKey,
-        now,
-        timeZone,
-        activeEventIds,
-      )
+      const preparedState = ensureHydratedStateLocal(previousState)
 
       if (
         preparedState.preferences.mode === 'daily' &&
@@ -491,7 +656,7 @@ export function useGameSession() {
         session,
         sessionKey: resolvedSessionKey,
         variant,
-      } = resolveSession(preparedState, dailyDateKey)
+      } = resolveSessionForState(preparedState)
       const playerIds = new Set(players.map((player) => player.id))
       const difficulty = getDifficultyDefinition(difficultyId)
 
@@ -589,16 +754,35 @@ export function useGameSession() {
     }))
   }
 
+  function setPlayerPoolScope(playerPoolScope: PlayerPoolScopeId): void {
+    if (playerPoolScope === 'history' && historyPoolState.status !== 'ready') {
+      return
+    }
+
+    setState((previousState) => {
+      const preparedState = ensureHydratedStateLocal(previousState)
+      const { session } = resolveSessionForState(preparedState)
+
+      if (session.status === 'in_progress' && session.guessIds.length > 0) {
+        return preparedState
+      }
+
+      return {
+        ...preparedState,
+        preferences: {
+          ...preparedState.preferences,
+          playerPoolScope,
+          themeId: playerPoolScope === 'history' ? 'classic' : preparedState.preferences.themeId,
+          eventId: playerPoolScope === 'history' ? null : preparedState.preferences.eventId,
+        },
+      }
+    })
+  }
+
   function setClueMode(clueMode: ClueMode): void {
     setState((previousState) => {
-      const preparedState = ensureHydratedState(
-        previousState,
-        dailyDateKey,
-        now,
-        timeZone,
-        activeEventIds,
-      )
-      const { session } = resolveSession(preparedState, dailyDateKey)
+      const preparedState = ensureHydratedStateLocal(previousState)
+      const { session } = resolveSessionForState(preparedState)
 
       if (session.status === 'in_progress' && session.guessIds.length > 0) {
         return preparedState
@@ -616,16 +800,13 @@ export function useGameSession() {
 
   function setThemeId(themeId: PlayerThemeId): void {
     setState((previousState) => {
-      const preparedState = ensureHydratedState(
-        previousState,
-        dailyDateKey,
-        now,
-        timeZone,
-        activeEventIds,
-      )
-      const { session } = resolveSession(preparedState, dailyDateKey)
+      const preparedState = ensureHydratedStateLocal(previousState)
+      const { session } = resolveSessionForState(preparedState)
 
-      if (session.status === 'in_progress' && session.guessIds.length > 0) {
+      if (
+        preparedState.preferences.playerPoolScope === 'history' ||
+        (session.status === 'in_progress' && session.guessIds.length > 0)
+      ) {
         return preparedState
       }
 
@@ -641,14 +822,8 @@ export function useGameSession() {
 
   function setDifficulty(difficulty: DifficultyId): void {
     setState((previousState) => {
-      const preparedState = ensureHydratedState(
-        previousState,
-        dailyDateKey,
-        now,
-        timeZone,
-        activeEventIds,
-      )
-      const { session } = resolveSession(preparedState, dailyDateKey)
+      const preparedState = ensureHydratedStateLocal(previousState)
+      const { session } = resolveSessionForState(preparedState)
       const roundInProgress = session.status === 'in_progress' && session.guessIds.length > 0
 
       if (roundInProgress) {
@@ -668,16 +843,13 @@ export function useGameSession() {
 
   function setEventId(eventId: PersistedState['preferences']['eventId']): void {
     setState((previousState) => {
-      const preparedState = ensureHydratedState(
-        previousState,
-        dailyDateKey,
-        now,
-        timeZone,
-        activeEventIds,
-      )
-      const { session } = resolveSession(preparedState, dailyDateKey)
+      const preparedState = ensureHydratedStateLocal(previousState)
+      const { session } = resolveSessionForState(preparedState)
 
-      if (session.status === 'in_progress' && session.guessIds.length > 0) {
+      if (
+        preparedState.preferences.playerPoolScope === 'history' ||
+        (session.status === 'in_progress' && session.guessIds.length > 0)
+      ) {
         return preparedState
       }
 
@@ -687,7 +859,9 @@ export function useGameSession() {
           ...preparedState.preferences,
           eventId: sanitizeEventId(
             eventId,
-            activeEventIds.filter(Boolean) as NonNullable<PersistedState['preferences']['eventId']>[],
+            activeEventIds.filter(Boolean) as NonNullable<
+              PersistedState['preferences']['eventId']
+            >[],
           ),
         },
       }
@@ -696,19 +870,14 @@ export function useGameSession() {
 
   function setPracticeIncludePostseason(includePostseason: boolean): void {
     setState((previousState) => {
-      const preparedState = ensureHydratedState(
-        previousState,
-        dailyDateKey,
-        now,
-        timeZone,
-        activeEventIds,
-      )
-      const { session } = resolveSession(preparedState, dailyDateKey)
+      const preparedState = ensureHydratedStateLocal(previousState)
+      const { session } = resolveSessionForState(preparedState)
 
       if (
-        preparedState.preferences.mode === 'practice' &&
-        session.status === 'in_progress' &&
-        session.guessIds.length > 0
+        preparedState.preferences.playerPoolScope === 'history' ||
+        (preparedState.preferences.mode === 'practice' &&
+          session.status === 'in_progress' &&
+          session.guessIds.length > 0)
       ) {
         return preparedState
       }
@@ -745,7 +914,10 @@ export function useGameSession() {
 
   function setRetroThemeId(retroThemeId: PersistedState['settings']['retroThemeId']): void {
     setState((previousState) => {
-      if (retroThemeId !== '2020s' && !previousState.profile.unlockedRetroThemeIds.includes(retroThemeId)) {
+      if (
+        retroThemeId !== '2020s' &&
+        !previousState.profile.unlockedRetroThemeIds.includes(retroThemeId)
+      ) {
         return previousState
       }
 
@@ -776,7 +948,10 @@ export function useGameSession() {
         profile: {
           ...previousState.profile,
           points: previousState.profile.points - theme.cost,
-          unlockedRetroThemeIds: [...previousState.profile.unlockedRetroThemeIds, retroThemeId],
+          unlockedRetroThemeIds: [
+            ...previousState.profile.unlockedRetroThemeIds,
+            retroThemeId,
+          ],
         },
         settings: {
           ...previousState.settings,
@@ -798,7 +973,7 @@ export function useGameSession() {
 
   function revealBonusClue(): void {
     setState((previousState) =>
-      updateActiveSession(previousState, dailyDateKey, now, timeZone, activeEventIds, (session) => {
+      updateActiveSessionLocal(previousState, (session) => {
         if (session.status !== 'in_progress') {
           return null
         }
@@ -830,7 +1005,7 @@ export function useGameSession() {
 
   function revealSilhouette(): void {
     setState((previousState) =>
-      updateActiveSession(previousState, dailyDateKey, now, timeZone, activeEventIds, (session) => {
+      updateActiveSessionLocal(previousState, (session) => {
         if (
           session.status !== 'in_progress' ||
           session.silhouetteRevealed ||
@@ -892,13 +1067,7 @@ export function useGameSession() {
   function startPracticeGame(): void {
     startTransition(() => {
       setState((previousState) => {
-        const preparedState = ensureHydratedState(
-          previousState,
-          dailyDateKey,
-          now,
-          timeZone,
-          activeEventIds,
-        )
+        const preparedState = ensureHydratedStateLocal(previousState)
         const difficultyId = preparedState.preferences.difficulty
         const nextMode: GameMode = 'practice'
         const nextVariant = resolveVariantForDifficulty(
@@ -907,8 +1076,18 @@ export function useGameSession() {
           preparedState.preferences.eventId,
           difficultyId,
           preparedState.preferences.practiceIncludePostseason,
+          resolveRequestedPlayerPoolScope(
+            nextMode,
+            preparedState.preferences.playerPoolScope,
+            historyReady,
+          ),
         )
-        const players = getPlayersForVariant(nextMode, nextVariant, difficultyId)
+        const players = getPlayersForVariant(
+          nextMode,
+          nextVariant,
+          difficultyId,
+          historyPlayers,
+        )
         const nextTarget = pickPracticePlayer(players, [activeTarget.id])
         const nextSession = createSession(nextTarget.id)
 
@@ -942,16 +1121,21 @@ export function useGameSession() {
 
   return {
     activeClueMode: activeVariant.clueMode,
+    activeDataMeta,
     activeDifficulty,
     activeDifficultyId,
     activeEventModes,
     activeMode: hydratedState.preferences.mode,
     activePlayerCount: activePlayers.length,
+    activePlayerPoolScope: activeVariant.playerPoolScope,
+    activePlayerPoolScopeSummary:
+      activeVariant.playerPoolScope === 'history'
+        ? getPlayerPoolScopeDefinition('history').description
+        : formatThemeSummary(activeVariant.themeId),
     activePostseasonRule,
     activeSession,
     activeTarget,
     activeThemeId: activeVariant.themeId,
-    activeThemeSummary: formatThemeSummary(activeVariant.themeId),
     canGuess,
     canRevealBonusClue,
     canRevealSilhouette:
@@ -966,7 +1150,7 @@ export function useGameSession() {
     dailyCompletionEntry,
     dailyDateKey,
     dailyLockedOut,
-    dataMeta: playerPool,
+    dataMeta: activeDataMeta,
     difficultyOptions: DIFFICULTY_DEFINITIONS,
     dismissCelebration: dismissCelebrationById,
     draftGuessResults,
@@ -976,9 +1160,11 @@ export function useGameSession() {
     guessedIds,
     guessedPlayers,
     importProfileData,
+    isHistoryPoolReady: historyReady,
     isStorageAvailable: storageAvailable,
     maxGuesses: activeDifficulty.maxGuesses,
     nextWeeklyResetCountdown: formatCountdown(weeklyResetCountdown),
+    playerPoolScopeOptions,
     players: activePlayers,
     profile: hydratedState.profile,
     profileWarning,
@@ -996,6 +1182,7 @@ export function useGameSession() {
     setDisplayName,
     setEventId,
     setMode,
+    setPlayerPoolScope,
     setPracticeIncludePostseason,
     setTheme,
     setThemeId,
@@ -1006,6 +1193,7 @@ export function useGameSession() {
       mode: hydratedState.preferences.mode,
       clueMode: activeVariant.clueMode,
       themeId: activeVariant.themeId,
+      playerPoolScope: activeVariant.playerPoolScope,
       difficultyId: activeDifficultyId,
       eventId: activeVariant.eventId,
       maxGuesses: activeDifficulty.maxGuesses,
@@ -1021,8 +1209,16 @@ export function useGameSession() {
       activeDifficulty.clueAvailability.bonusClues && activeVariant.clueMode === 'standard',
     showCareerPathOption: activeDifficulty.clueAvailability.careerPathMode,
     showDraftModeOption: activeDifficulty.clueAvailability.draftMode,
+    showEventModes:
+      hydratedState.preferences.mode === 'practice' && activeVariant.playerPoolScope === 'current',
+    showPracticePostseasonToggle:
+      hydratedState.preferences.mode === 'practice' && activeVariant.playerPoolScope === 'current',
     showSeasonSnapshot:
-      activeDifficulty.clueAvailability.seasonSnapshot && activeVariant.clueMode === 'standard',
+      activeDifficulty.clueAvailability.seasonSnapshot &&
+      activeVariant.clueMode === 'standard' &&
+      activeVariant.playerPoolScope === 'current',
+    showThemeFilters:
+      hydratedState.preferences.mode === 'practice' && activeVariant.playerPoolScope === 'current',
     startPracticeGame,
     stats: hydratedState.stats,
     submitGuess,

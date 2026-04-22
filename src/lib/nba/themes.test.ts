@@ -15,6 +15,8 @@ describe('theme filtering', () => {
       flags: { isRookie: false, isInternational: true, isAllStar: true, isUnder25: false },
       career: {
         debutYear: 2018,
+        finalSeasonYear: 2025,
+        seasonsPlayed: 8,
         preNbaPath: 'Metropolitans 92',
         careerTeamIds: [1610612759, 1610612747],
         careerTeamAbbreviations: ['SAS', 'LAL'],
@@ -33,6 +35,7 @@ describe('theme filtering', () => {
 
   it('filters the all-star pool from player flags', () => {
     const result = getVariantPlayerPool(players, {
+      playerPoolScope: 'current',
       clueMode: 'standard',
       themeId: 'all-stars',
       eventId: null,

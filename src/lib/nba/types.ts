@@ -1,4 +1,4 @@
-export type Conference = 'East' | 'West'
+export type Conference = 'East' | 'West' | 'Legacy'
 
 export type Division =
   | 'Atlantic'
@@ -7,6 +7,7 @@ export type Division =
   | 'Northwest'
   | 'Pacific'
   | 'Southwest'
+  | 'Legacy'
 
 export type UnitSystem = 'imperial' | 'metric'
 
@@ -15,6 +16,8 @@ export type ThemeMode = 'system' | 'light' | 'dark'
 export type GameMode = 'daily' | 'practice'
 
 export type ClueMode = 'standard' | 'career' | 'draft'
+
+export type PlayerPoolScopeId = 'current' | 'history'
 
 export type DifficultyId =
   | 'easy'
@@ -119,6 +122,8 @@ export interface DraftDetails {
 
 export interface CareerProfile {
   debutYear: number | null
+  finalSeasonYear: number | null
+  seasonsPlayed: number | null
   preNbaPath: string | null
   careerTeamIds: number[]
   careerTeamAbbreviations: string[]
@@ -156,6 +161,8 @@ export interface PlayerRecord {
   displayName: string
   firstName: string
   lastName: string
+  isCurrentPlayer: boolean
+  isDefunctFranchise: boolean
   teamId: number
   teamAbbreviation: string
   teamName: string
@@ -210,7 +217,7 @@ export interface EligibilityMetadata {
 }
 
 export interface PlayerPoolData {
-  schemaVersion: 3
+  schemaVersion: 4
   season: string
   refreshedAt: string
   asOfDate: string
@@ -222,10 +229,12 @@ export interface PlayerPoolData {
     transactions: string
     schedule: string
     standings: string
+    advancedStats: string
     draftHistory: string
     franchisePlayers: string
     allStarRoster: string
     playerAwards: string
+    commonPlayerInfo?: string
   }
   excludedTenDayPlayers: ExcludedTenDayPlayer[]
   players: PlayerRecord[]
@@ -269,6 +278,7 @@ export interface GuessResult {
 }
 
 export interface GameVariant {
+  playerPoolScope: PlayerPoolScopeId
   clueMode: ClueMode
   themeId: PlayerThemeId
   eventId: EventModeId | null
@@ -376,9 +386,10 @@ export interface ProgressionState {
 }
 
 export interface PersistedState {
-  version: 5
+  version: 6
   preferences: {
     mode: GameMode
+    playerPoolScope: PlayerPoolScopeId
     clueMode: ClueMode
     themeId: PlayerThemeId
     difficulty: DifficultyId

@@ -23,6 +23,7 @@ import {
   formatEventModeLabel,
   formatHeight,
   formatModeLabel,
+  formatPlayerPoolScopeLabel,
   formatRefreshDate,
   formatThemeLabel,
 } from './lib/nba/format'
@@ -42,10 +43,17 @@ export default function App() {
   const clueModeLabel = formatClueModeLabel(game.activeClueMode)
   const difficultyLabel = formatDifficultyLabel(game.activeDifficultyId)
   const themeLabel = formatThemeLabel(game.activeThemeId)
+  const playerPoolScopeLabel = formatPlayerPoolScopeLabel(game.activePlayerPoolScope)
   const eventLabel = formatEventModeLabel(game.eventId)
+  const boardEyebrowLabel =
+    game.activePlayerPoolScope === 'history'
+      ? 'Guess an NBA player from history'
+      : 'Guess a current NBA player'
   const boardPoolLabel =
     game.activeMode === 'daily'
       ? 'Daily full roster'
+      : game.activePlayerPoolScope === 'history'
+        ? playerPoolScopeLabel
       : game.eventId
         ? eventLabel
         : themeLabel
@@ -62,26 +70,34 @@ export default function App() {
       ? 'Career Path Mode swaps the compare grid for deeper background clues.'
       : game.activeClueMode === 'draft'
         ? 'Draft Mode shifts the board toward draft identity, year, team, and pick range.'
+        : game.activePlayerPoolScope === 'history'
+          ? 'All-time scope stays practice-only. Read the strongest lane first and use the portrait as confirmation, not as a shortcut.'
         : game.activeDifficulty.ui.showRoundGuidance
-        ? 'Read the strongest lane first, then use the portrait as confirmation instead of a shortcut.'
-        : 'Minimal assistance. Read the board and work the deduction.')
+          ? 'Read the strongest lane first, then use the portrait as confirmation instead of a shortcut.'
+          : 'Minimal assistance. Read the board and work the deduction.')
   const compactBoardGuidance =
     game.profileWarning ??
     (game.activeClueMode === 'career'
       ? 'Career clues only. No roster grid.'
       : game.activeClueMode === 'draft'
         ? 'Draft clues replace the normal roster board.'
+        : game.activePlayerPoolScope === 'history'
+          ? 'All-time scope. Read the board first.'
         : game.activeDifficulty.ui.showRoundGuidance
           ? 'Read the board first. Portrait reveal is secondary.'
           : 'Minimal assistance. Work the board.')
   const headerCopy = isMobileLayout
     ? 'Phone view keeps the loop tight: guess, read, check the portrait, guess again.'
-    : 'Track the roster trail, stay within the difficulty rules, and identify the current NBA player before the board runs dry.'
+    : game.activePlayerPoolScope === 'history'
+      ? 'Track the all-time trail, stay within the difficulty rules, and identify the NBA player before the board runs dry.'
+      : 'Track the roster trail, stay within the difficulty rules, and identify the current NBA player before the board runs dry.'
   const headerMetaPills = isMobileLayout
     ? [
         game.activeMode === 'daily'
           ? `Next reset in ${game.resetCountdown}`
-          : 'Unlimited practice boards',
+          : game.activePlayerPoolScope === 'history'
+            ? 'Unlimited all-time practice boards'
+            : 'Unlimited practice boards',
         `${difficultyLabel} | ${clueModeLabel}`,
       ]
     : game.activeMode === 'daily'
@@ -92,15 +108,24 @@ export default function App() {
           game.activePostseasonRule.label,
         ]
       : [
-          'Unlimited random current players',
+          game.activePlayerPoolScope === 'history'
+            ? 'Unlimited all-time practice boards'
+            : 'Unlimited random current players',
           `${difficultyLabel} | ${clueModeLabel}`,
           boardPoolLabel,
           game.activePostseasonRule.label,
         ]
   const statusMetaPills = isMobileLayout
-    ? [difficultyLabel, clueModeLabel, `${game.activePlayerCount} in pool`]
+      ? [difficultyLabel, clueModeLabel, `${game.activePlayerCount} in pool`]
     : game.activeMode === 'daily'
       ? [difficultyLabel, clueModeLabel, boardPoolLabel, `${game.activePlayerCount} players in pool`]
+      : game.activePlayerPoolScope === 'history'
+        ? [
+            difficultyLabel,
+            clueModeLabel,
+            boardPoolLabel,
+            `${game.activePlayerCount} players in pool`,
+          ]
       : [
           difficultyLabel,
           clueModeLabel,
@@ -269,6 +294,7 @@ export default function App() {
             onClaim={game.claimQuest}
           />
           {game.activeMode === 'practice' ? (
+            game.showEventModes ? (
             <EventModesPanel
               activeEvents={game.activeEventModes}
               locked={game.roundLocked}
@@ -276,6 +302,7 @@ export default function App() {
               upcomingEvents={game.upcomingEventModes}
               onSelect={game.setEventId}
             />
+            ) : null
           ) : null}
         </section>
       ) : null}
@@ -283,7 +310,7 @@ export default function App() {
       <section className="workspace__board">
         <div className={`board-heading ${isMobileLayout ? 'is-compact' : ''}`}>
           <div>
-            <span className="eyebrow">Guess a current player</span>
+            <span className="eyebrow">{boardEyebrowLabel}</span>
             <h2>Follow the clue lane</h2>
           </div>
           <div className="board-heading__meta">
@@ -302,17 +329,22 @@ export default function App() {
               clueMode={game.activeClueMode}
               difficultyId={game.activeDifficultyId}
               difficultyOptions={game.difficultyOptions}
+              activePoolSummary={game.activePlayerPoolScopeSummary}
               isCompact
               locked={game.roundLocked}
               mode={game.activeMode}
+              playerPoolScope={game.activePlayerPoolScope}
+              playerPoolScopeOptions={game.playerPoolScopeOptions}
               postseasonRule={game.activePostseasonRule}
               showCareerPathOption={game.showCareerPathOption}
               showDraftModeOption={game.showDraftModeOption}
+              showPracticePostseasonToggle={game.showPracticePostseasonToggle}
+              showThemeFilters={game.showThemeFilters}
               themeId={game.activeThemeId}
               themeOptions={game.themeOptions}
-              themeSummary={game.activeThemeSummary}
               onClueModeChange={game.setClueMode}
               onDifficultyChange={game.setDifficulty}
+              onPlayerPoolScopeChange={game.setPlayerPoolScope}
               onPracticeIncludePostseasonChange={game.setPracticeIncludePostseason}
               onThemeChange={game.setThemeId}
             />
@@ -323,31 +355,25 @@ export default function App() {
             clueMode={game.activeClueMode}
             difficultyId={game.activeDifficultyId}
             difficultyOptions={game.difficultyOptions}
+            activePoolSummary={game.activePlayerPoolScopeSummary}
             locked={game.roundLocked}
             mode={game.activeMode}
+            playerPoolScope={game.activePlayerPoolScope}
+            playerPoolScopeOptions={game.playerPoolScopeOptions}
             postseasonRule={game.activePostseasonRule}
             showCareerPathOption={game.showCareerPathOption}
             showDraftModeOption={game.showDraftModeOption}
+            showPracticePostseasonToggle={game.showPracticePostseasonToggle}
+            showThemeFilters={game.showThemeFilters}
             themeId={game.activeThemeId}
             themeOptions={game.themeOptions}
-            themeSummary={game.activeThemeSummary}
             onClueModeChange={game.setClueMode}
             onDifficultyChange={game.setDifficulty}
+            onPlayerPoolScopeChange={game.setPlayerPoolScope}
             onPracticeIncludePostseasonChange={game.setPracticeIncludePostseason}
             onThemeChange={game.setThemeId}
           />
         )}
-
-        <GuessInput
-          key={`${game.activeClueMode}:${game.activeThemeId}:${game.eventId ?? 'none'}:${game.activeDifficultyId}:${game.activePostseasonRule.includePostseason ? 'post' : 'reg'}`}
-          blockedTeamId={game.blockedTeamId}
-          closeGuessFeedback={game.closeGuessFeedback}
-          difficulty={game.activeDifficulty}
-          disabled={!game.canGuess}
-          guessedIds={game.guessedIds}
-          players={game.players}
-          onGuess={game.submitGuess}
-        />
 
         {!isMobileLayout ? (
           <div className="desktop-loop">
@@ -366,6 +392,18 @@ export default function App() {
             {statusPanel}
           </div>
         ) : null}
+
+        <GuessInput
+          key={`${game.activePlayerPoolScope}:${game.activeClueMode}:${game.activeThemeId}:${game.eventId ?? 'none'}:${game.activeDifficultyId}:${game.activePostseasonRule.includePostseason ? 'post' : 'reg'}`}
+          blockedTeamId={game.blockedTeamId}
+          closeGuessFeedback={game.closeGuessFeedback}
+          difficulty={game.activeDifficulty}
+          disabled={!game.canGuess}
+          guessedIds={game.guessedIds}
+          label={game.activePlayerPoolScope === 'history' ? 'Search all-time players' : 'Search eligible players'}
+          players={game.players}
+          onGuess={game.submitGuess}
+        />
 
         {isMobileLayout ? (
           <div className="mobile-loop">
@@ -511,7 +549,7 @@ export default function App() {
 
         {isMobileLayout && mobileView === 'quests' ? (
           <div className="mobile-stack">
-            {game.activeMode === 'practice' ? (
+            {game.activeMode === 'practice' && game.showEventModes ? (
               <EventModesPanel
                 activeEvents={game.activeEventModes}
                 isCompact

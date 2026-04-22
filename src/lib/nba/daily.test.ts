@@ -5,6 +5,7 @@ import { buildPlayerRecord } from './testUtils'
 import type { GameVariant } from './types'
 
 const defaultVariant: GameVariant = {
+  playerPoolScope: 'current',
   clueMode: 'standard',
   themeId: 'classic',
   eventId: null,
@@ -47,6 +48,7 @@ describe('daily helpers', () => {
   it('picks the same player for the same date across clue variants', () => {
     const players = [buildPlayer(1), buildPlayer(2), buildPlayer(3), buildPlayer(4)]
     const careerVariant: GameVariant = {
+      playerPoolScope: 'history',
       clueMode: 'career',
       themeId: 'under-25',
       eventId: 'playoff-mode',

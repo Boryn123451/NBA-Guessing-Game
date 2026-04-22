@@ -5,10 +5,13 @@ Original NBA player deduction game built with React, TypeScript, and Vite.
 ## Features
 
 - Daily and Practice modes with deterministic daily boards per local time zone
+- Practice can switch between:
+  - `Current players only`
+  - `All NBA history`
 - Two clue styles:
   - `Roster Clues` for LarryBirdle-style comparison feedback
   - `Career Path` for background-based deduction
-  - `Draft Mode` for draft identity, team, and pick-range deduction
+  - `Draft Mode` for draft identity, team, and pick-range deduction across current-only or all-time practice pools
 - Theme-filtered pools in Practice:
   - Full League
   - Rookies
@@ -49,8 +52,11 @@ Original NBA player deduction game built with React, TypeScript, and Vite.
 
 ## Data refresh
 
-`npm run refresh:data` writes the current eligible player pool to `src/data/generated/player-pool.json`.
-It also writes the static 2KRatings fallback manifest to `src/data/generated/player-image-fallbacks.json`.
+`npm run refresh:data` writes:
+
+- the current eligible player pool to `src/data/generated/player-pool.json`
+- the all-time player pool to `src/data/generated/history-player-pool.json`
+- the static 2KRatings fallback manifest to `src/data/generated/player-image-fallbacks.json`
 
 Primary sources used by the refresh pipeline:
 
@@ -78,6 +84,7 @@ Eligibility rules applied during refresh:
 - The All-Stars theme is based on the current season's official NBA All-Star roster
 - Difficulty is part of the saved round state; after the first guess, the current round keeps its locked rules
 - Daily always uses the full eligible roster and the same answer across every difficulty
+- Daily ignores practice-only player-pool settings, so it never switches to the all-time scope
 - Elite Ball Knowledge disables portrait reveal, season snapshot clues, bonus clues, and Career Path mode
 - The generated player pool is bundled into the client build, so the production build still emits a chunk-size warning
 - The app is static-host friendly: user progression lives only in browser storage, asset paths are relative for GitHub Pages, and there is no backend or authenticated account system

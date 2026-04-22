@@ -1,6 +1,12 @@
 import type { DifficultyConfig } from '../lib/nba/difficulty'
-import type { ClueMode, DifficultyId, GameMode, PlayerThemeId } from '../lib/nba/types'
 import type { PostseasonRule } from '../lib/nba/postseason'
+import type {
+  ClueMode,
+  DifficultyId,
+  GameMode,
+  PlayerPoolScopeId,
+  PlayerThemeId,
+} from '../lib/nba/types'
 
 interface ThemeOption {
   id: PlayerThemeId
@@ -9,28 +15,42 @@ interface ThemeOption {
   count: number
 }
 
+interface PlayerPoolScopeOption {
+  id: PlayerPoolScopeId
+  label: string
+  description: string
+  count: number | null
+  disabled: boolean
+}
+
 interface VariantControlsProps {
   mode: GameMode
   clueMode: ClueMode
   difficultyId: DifficultyId
   difficultyOptions: DifficultyConfig[]
+  playerPoolScope: PlayerPoolScopeId
+  playerPoolScopeOptions: PlayerPoolScopeOption[]
   themeId: PlayerThemeId
   activePlayerCount: number
-  themeSummary: string
+  activePoolSummary: string
   themeOptions: ThemeOption[]
   locked: boolean
   isCompact?: boolean
   showCareerPathOption: boolean
   showDraftModeOption: boolean
+  showPracticePostseasonToggle: boolean
+  showThemeFilters: boolean
   postseasonRule: PostseasonRule
   onClueModeChange: (clueMode: ClueMode) => void
   onDifficultyChange: (difficultyId: DifficultyId) => void
+  onPlayerPoolScopeChange: (scopeId: PlayerPoolScopeId) => void
   onPracticeIncludePostseasonChange: (enabled: boolean) => void
   onThemeChange: (themeId: PlayerThemeId) => void
 }
 
 export function VariantControls({
   activePlayerCount,
+  activePoolSummary,
   clueMode,
   difficultyId,
   difficultyOptions,
@@ -39,16 +59,21 @@ export function VariantControls({
   mode,
   onClueModeChange,
   onDifficultyChange,
+  onPlayerPoolScopeChange,
   onPracticeIncludePostseasonChange,
   onThemeChange,
+  playerPoolScope,
+  playerPoolScopeOptions,
   postseasonRule,
   showCareerPathOption,
   showDraftModeOption,
+  showPracticePostseasonToggle,
+  showThemeFilters,
   themeId,
   themeOptions,
-  themeSummary,
 }: VariantControlsProps) {
-  const activeDifficulty = difficultyOptions.find((option) => option.id === difficultyId) ?? difficultyOptions[1]
+  const activeDifficulty =
+    difficultyOptions.find((option) => option.id === difficultyId) ?? difficultyOptions[1]
 
   return (
     <section className={`variant-controls ${isCompact ? 'is-compact' : ''}`}>
@@ -120,6 +145,51 @@ export function VariantControls({
 
       {mode === 'practice' ? (
         <div className="variant-controls__group">
+          <span className="settings-panel__label">Player Pool</span>
+          {isCompact ? (
+            <select
+              className="variant-controls__select"
+              disabled={locked}
+              value={playerPoolScope}
+              onChange={(event) => onPlayerPoolScopeChange(event.target.value as PlayerPoolScopeId)}
+            >
+              {playerPoolScopeOptions.map((scope) => (
+                <option key={scope.id} value={scope.id} disabled={scope.disabled}>
+                  {scope.count !== null ? `${scope.label} (${scope.count})` : scope.label}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <div className="variant-controls__chips">
+              {playerPoolScopeOptions.map((scope) => (
+                <button
+                  key={scope.id}
+                  className={`theme-chip ${scope.id === playerPoolScope ? 'is-active' : ''}`}
+                  type="button"
+                  disabled={locked || scope.disabled}
+                  onClick={() => onPlayerPoolScopeChange(scope.id)}
+                >
+                  <span>{scope.label}</span>
+                  {scope.count !== null ? <strong>{scope.count}</strong> : null}
+                </button>
+              ))}
+            </div>
+          )}
+          <div className="variant-controls__summary">
+            <span className="variant-controls__summary-copy">
+              {
+                playerPoolScopeOptions.find((scope) => scope.id === playerPoolScope)?.description
+              }
+            </span>
+            {playerPoolScope === 'history' ? (
+              <strong>History mode stays practice-only and uses difficulty-aware curation.</strong>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
+
+      {mode === 'practice' && showPracticePostseasonToggle ? (
+        <div className="variant-controls__group">
           <span className="settings-panel__label">Postseason Context</span>
           <div className="toggle-row">
             <button
@@ -132,15 +202,13 @@ export function VariantControls({
             </button>
           </div>
           <div className="variant-controls__summary">
-            <span className="variant-controls__summary-copy">
-              Practice can include or exclude postseason context without changing Daily.
-            </span>
+            <span className="variant-controls__summary-copy">{postseasonRule.helpText}</span>
             <strong>{postseasonRule.label}</strong>
           </div>
         </div>
       ) : null}
 
-      {mode === 'practice' ? (
+      {mode === 'practice' && showThemeFilters ? (
         <div className="variant-controls__group">
           <span className="settings-panel__label">Theme</span>
           {isCompact ? (
@@ -178,8 +246,8 @@ export function VariantControls({
       <div className="variant-controls__summary">
         <span className="variant-controls__summary-copy">
           {mode === 'daily'
-            ? 'Daily always pulls from the full eligible roster so the answer stays identical across difficulties.'
-            : themeSummary}
+            ? 'Daily always pulls from the full eligible current roster so the answer stays identical across difficulties.'
+            : activePoolSummary}
         </span>
         <strong>{activePlayerCount} eligible players</strong>
       </div>

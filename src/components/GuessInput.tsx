@@ -15,6 +15,7 @@ interface GuessInputProps {
   guessedIds: Set<number>
   disabled: boolean
   difficulty: DifficultyConfig
+  label?: string
   closeGuessFeedback: string | null
   blockedTeamId: number | null
   onGuess: (playerId: number) => void
@@ -37,6 +38,7 @@ export function GuessInput({
   guessedIds,
   disabled,
   difficulty,
+  label = 'Search eligible players',
   closeGuessFeedback,
   blockedTeamId,
   onGuess,
@@ -104,7 +106,7 @@ export function GuessInput({
   return (
     <div className="guess-box">
       <label className="guess-box__label" htmlFor="player-guess">
-        Search eligible players
+        {label}
       </label>
       <div className="guess-box__field">
         <input

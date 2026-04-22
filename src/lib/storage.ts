@@ -1,5 +1,6 @@
 import { getDetectedTimeZone } from './nba/daily'
 import { DEFAULT_DIFFICULTY_ID, sanitizeDifficultyId } from './nba/difficulty'
+import { sanitizePlayerPoolScopeId } from './nba/playerScopes'
 import { DEFAULT_GAME_VARIANT, getDailySessionKey, getVariantKey } from './nba/variant'
 import type {
   ClueMode,
@@ -10,6 +11,7 @@ import type {
   LocalProfile,
   ModeStats,
   PersistedState,
+  PlayerPoolScopeId,
   PlayerThemeId,
   ProgressionState,
   RetroThemeId,
@@ -20,7 +22,8 @@ import type {
 import { createLocalProfile, sanitizeDisplayName } from './profile/profile'
 import { createDefaultProgressionState } from './profile/progression'
 
-const STORAGE_KEY = 'full-court-cipher:v5'
+const STORAGE_KEY = 'full-court-cipher:v6'
+const LEGACY_STORAGE_KEY_V5 = 'full-court-cipher:v5'
 const LEGACY_STORAGE_KEY_V4 = 'full-court-cipher:v4'
 const LEGACY_STORAGE_KEY_V3 = 'full-court-cipher:v3'
 const LEGACY_STORAGE_KEY_V2 = 'full-court-cipher:v2'
@@ -119,6 +122,31 @@ interface LegacyPersistedStateV4 {
   }
 }
 
+interface LegacyPersistedStateV5 {
+  version?: unknown
+  preferences?: {
+    mode?: unknown
+    clueMode?: unknown
+    themeId?: unknown
+    difficulty?: unknown
+    eventId?: unknown
+    practiceIncludePostseason?: unknown
+  }
+  settings?: {
+    units?: unknown
+    theme?: unknown
+    retroThemeId?: unknown
+  }
+  profile?: unknown
+  progression?: unknown
+  dailySessions?: Record<string, unknown>
+  practiceSessions?: Record<string, unknown>
+  stats?: {
+    daily?: unknown
+    practice?: unknown
+  }
+}
+
 function createEmptyStats(): ModeStats {
   return {
     gamesPlayed: 0,
@@ -193,6 +221,10 @@ function sanitizeRetroThemeId(value: unknown): RetroThemeId {
 
 function sanitizeMode(mode: unknown): GameMode {
   return mode === 'practice' ? 'practice' : 'daily'
+}
+
+function sanitizePlayerPoolScope(scope: unknown): PlayerPoolScopeId {
+  return sanitizePlayerPoolScopeId(scope)
 }
 
 function sanitizeClueMode(clueMode: unknown): ClueMode {
@@ -589,14 +621,29 @@ function migrateV3SessionKey(sessionKey: string): string {
   return sessionKey
 }
 
+function migrateV5PracticeSessionKey(sessionKey: string): string {
+  const parts = sessionKey.split(':')
+
+  if (parts.length === 6) {
+    return sessionKey
+  }
+
+  if (parts.length === 5) {
+    return ['current', ...parts].join(':')
+  }
+
+  return sessionKey
+}
+
 export function createDefaultState(
   now: Date = new Date(),
   timeZone = getDetectedTimeZone(),
 ): PersistedState {
   return {
-    version: 5,
+    version: 6,
     preferences: {
       mode: 'daily',
+      playerPoolScope: 'current',
       clueMode: DEFAULT_GAME_VARIANT.clueMode,
       themeId: DEFAULT_GAME_VARIANT.themeId,
       difficulty: DEFAULT_DIFFICULTY_ID,
@@ -635,9 +682,10 @@ function migrateLegacyStateV1(
   const practiceSession = sanitizeSession(parsed.practiceSession)
 
   return {
-    version: 5,
+    version: 6,
     preferences: {
       mode: sanitizeMode(parsed.preferredMode),
+      playerPoolScope: 'current',
       clueMode: DEFAULT_GAME_VARIANT.clueMode,
       themeId: DEFAULT_GAME_VARIANT.themeId,
       difficulty: DEFAULT_DIFFICULTY_ID,
@@ -668,9 +716,10 @@ function migrateLegacyStateV2(
   timeZone: string,
 ): PersistedState {
   return {
-    version: 5,
+    version: 6,
     preferences: {
       mode: sanitizeMode(parsed.preferences?.mode),
+      playerPoolScope: 'current',
       clueMode: sanitizeClueMode(parsed.preferences?.clueMode),
       themeId: sanitizeThemeId(parsed.preferences?.themeId),
       difficulty: DEFAULT_DIFFICULTY_ID,
@@ -709,9 +758,10 @@ function migrateLegacyStateV3(
   timeZone: string,
 ): PersistedState {
   return {
-    version: 5,
+    version: 6,
     preferences: {
       mode: sanitizeMode(parsed.preferences?.mode),
+      playerPoolScope: 'current',
       clueMode: sanitizeClueMode(parsed.preferences?.clueMode),
       themeId: sanitizeThemeId(parsed.preferences?.themeId),
       difficulty: sanitizeDifficultyId(parsed.preferences?.difficulty),
@@ -750,9 +800,10 @@ function migrateLegacyStateV4(
   timeZone: string,
 ): PersistedState {
   return {
-    version: 5,
+    version: 6,
     preferences: {
       mode: sanitizeMode(parsed.preferences?.mode),
+      playerPoolScope: 'current',
       clueMode: sanitizeClueMode(parsed.preferences?.clueMode),
       themeId: sanitizeThemeId(parsed.preferences?.themeId),
       difficulty: sanitizeDifficultyId(parsed.preferences?.difficulty),
@@ -775,6 +826,43 @@ function migrateLegacyStateV4(
   }
 }
 
+function migrateLegacyStateV5(
+  parsed: LegacyPersistedStateV5,
+  now: Date,
+  timeZone: string,
+): PersistedState {
+  return {
+    version: 6,
+    preferences: {
+      mode: sanitizeMode(parsed.preferences?.mode),
+      playerPoolScope: 'current',
+      clueMode: sanitizeClueMode(parsed.preferences?.clueMode),
+      themeId: sanitizeThemeId(parsed.preferences?.themeId),
+      difficulty: sanitizeDifficultyId(parsed.preferences?.difficulty),
+      eventId: sanitizeEventId(parsed.preferences?.eventId),
+      practiceIncludePostseason: parsed.preferences?.practiceIncludePostseason === true,
+    },
+    settings: {
+      units: sanitizeUnits(parsed.settings?.units),
+      theme: sanitizeTheme(parsed.settings?.theme),
+      retroThemeId: sanitizeRetroThemeId(parsed.settings?.retroThemeId),
+    },
+    profile: sanitizeProfile(parsed.profile, now),
+    progression: sanitizeProgression(parsed.progression, now, timeZone),
+    dailySessions: sanitizeSessions(parsed.dailySessions),
+    practiceSessions: Object.fromEntries(
+      Object.entries(sanitizeSessions(parsed.practiceSessions)).map(([sessionKey, session]) => [
+        migrateV5PracticeSessionKey(sessionKey),
+        session,
+      ]),
+    ),
+    stats: {
+      daily: sanitizeDifficultyStats(parsed.stats?.daily),
+      practice: sanitizeDifficultyStats(parsed.stats?.practice),
+    },
+  }
+}
+
 export function coercePersistedState(
   parsed: unknown,
   now: Date = new Date(),
@@ -788,13 +876,15 @@ export function coercePersistedState(
     LegacyPersistedStateV1 &
     LegacyPersistedStateV2 &
     LegacyPersistedStateV3 &
-    LegacyPersistedStateV4
+    LegacyPersistedStateV4 &
+    LegacyPersistedStateV5
 
-  if (value.version === 5) {
+  if (value.version === 6) {
     return {
-      version: 5,
+      version: 6,
       preferences: {
         mode: sanitizeMode(value.preferences?.mode),
+        playerPoolScope: sanitizePlayerPoolScope(value.preferences?.playerPoolScope),
         clueMode: sanitizeClueMode(value.preferences?.clueMode),
         themeId: sanitizeThemeId(value.preferences?.themeId),
         difficulty: sanitizeDifficultyId(value.preferences?.difficulty),
@@ -809,12 +899,21 @@ export function coercePersistedState(
       profile: sanitizeProfile(value.profile, now),
       progression: sanitizeProgression(value.progression, now, timeZone),
       dailySessions: sanitizeSessions(value.dailySessions),
-      practiceSessions: sanitizeSessions(value.practiceSessions),
+      practiceSessions: Object.fromEntries(
+        Object.entries(sanitizeSessions(value.practiceSessions)).map(([sessionKey, session]) => [
+          migrateV5PracticeSessionKey(sessionKey),
+          session,
+        ]),
+      ),
       stats: {
         daily: sanitizeDifficultyStats(value.stats?.daily),
         practice: sanitizeDifficultyStats(value.stats?.practice),
       },
     }
+  }
+
+  if (value.version === 5) {
+    return migrateLegacyStateV5(value as LegacyPersistedStateV5, now, timeZone)
   }
 
   if (value.version === 4) {
@@ -870,6 +969,7 @@ export function loadPersistedState(): PersistedState {
   try {
     const rawValue =
       safeStorageGet(STORAGE_KEY) ??
+      safeStorageGet(LEGACY_STORAGE_KEY_V5) ??
       safeStorageGet(LEGACY_STORAGE_KEY_V4) ??
       safeStorageGet(LEGACY_STORAGE_KEY_V3) ??
       safeStorageGet(LEGACY_STORAGE_KEY_V2) ??

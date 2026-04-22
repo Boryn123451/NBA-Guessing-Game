@@ -5,6 +5,7 @@ import { buildPlayerRecord } from './testUtils'
 import type { GameVariant } from './types'
 
 const variant: GameVariant = {
+  playerPoolScope: 'current',
   clueMode: 'standard',
   themeId: 'classic',
   eventId: null,
@@ -46,5 +47,87 @@ describe('player pools', () => {
         (player) => player.id,
       ),
     ).toEqual([1])
+  })
+
+  it('keeps undrafted players inside Draft Mode pools', () => {
+    const undrafted = buildPlayerRecord({
+      id: 11,
+      displayName: 'Undrafted Guard',
+      draft: {
+        year: null,
+        round: null,
+        pick: null,
+        teamId: null,
+        teamAbbreviation: null,
+        teamName: null,
+        isUndrafted: true,
+      },
+    })
+    const drafted = buildPlayerRecord({
+      id: 12,
+      displayName: 'Drafted Wing',
+    })
+
+    expect(
+      getPlayablePlayerPool(
+        [undrafted, drafted],
+        {
+          ...variant,
+          clueMode: 'draft',
+        },
+        'medium',
+      ).map((player) => player.id),
+    ).toEqual([11, 12])
+  })
+
+  it('curates history easy away from obscure short-career players', () => {
+    const accessibleHistory = buildPlayerRecord({
+      id: 21,
+      displayName: 'Accessible Veteran',
+      isCurrentPlayer: false,
+      snapshot: {
+        ...buildPlayerRecord().snapshot,
+        pointsPerGame: 12.4,
+        minutesPerGame: null,
+      },
+      career: {
+        ...buildPlayerRecord().career,
+        seasonsPlayed: 9,
+        championships: 1,
+        hasRichMetadata: true,
+      },
+    })
+    const obscureHistory = buildPlayerRecord({
+      id: 22,
+      displayName: 'Obscure Fringe Forward',
+      isCurrentPlayer: false,
+      snapshot: {
+        ...buildPlayerRecord().snapshot,
+        pointsPerGame: 3.1,
+        minutesPerGame: null,
+      },
+      career: {
+        ...buildPlayerRecord().career,
+        seasonsPlayed: 2,
+        championships: 0,
+        allStarAppearances: 0,
+        hasRichMetadata: true,
+      },
+      draft: {
+        ...buildPlayerRecord().draft,
+        pick: 42,
+      },
+    })
+
+    expect(
+      getPlayablePlayerPool(
+        [accessibleHistory, obscureHistory],
+        {
+          ...variant,
+          playerPoolScope: 'history',
+        },
+        'easy',
+      ).map((player) => player.id),
+    ).toEqual([21])
   })
 })

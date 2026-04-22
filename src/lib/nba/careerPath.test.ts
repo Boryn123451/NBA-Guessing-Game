@@ -17,6 +17,8 @@ describe('career path clues', () => {
       },
       career: {
         debutYear: 2022,
+        finalSeasonYear: 2025,
+        seasonsPlayed: 4,
         preNbaPath: 'Real Madrid',
         careerTeamIds: [1610612742],
         careerTeamAbbreviations: ['DAL'],
