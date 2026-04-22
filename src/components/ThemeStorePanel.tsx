@@ -32,10 +32,14 @@ export function ThemeStorePanel({
         {RETRO_THEME_DEFINITIONS.map((theme) => {
           const isUnlocked = profile.unlockedRetroThemeIds.includes(theme.id)
           const canBuy = !isUnlocked && profile.points >= theme.cost
+          const priceLabel = theme.cost === 0 ? 'Free' : `${theme.cost} points`
 
           return (
             <article key={theme.id} className={`theme-pack-card ${activeThemeId === theme.id ? 'is-active' : ''}`}>
-              <span className="theme-pack-card__eyebrow">{theme.cost === 0 ? 'Included' : `${theme.cost} points`}</span>
+              <div className="theme-pack-card__header">
+                <span className="theme-pack-card__eyebrow">Decade pack</span>
+                <span className="theme-pack-card__price">{priceLabel}</span>
+              </div>
               <strong>{theme.label}</strong>
               <p>{theme.description}</p>
               <span>{theme.previewLine}</span>
@@ -54,7 +58,7 @@ export function ThemeStorePanel({
                   type="button"
                   onClick={() => onUnlock(theme.id)}
                 >
-                  {canBuy ? 'Unlock' : 'Need more points'}
+                  {canBuy ? `Unlock for ${priceLabel}` : `${priceLabel} required`}
                 </button>
               )}
             </article>
