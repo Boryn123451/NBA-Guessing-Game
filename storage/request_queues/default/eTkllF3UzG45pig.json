@@ -1,0 +1,9 @@
+{
+	"id": "eTkllF3UzG45pig",
+	"json": "{\"id\":\"eTkllF3UzG45pig\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=AJ%20Griffin\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=AJ%20Griffin\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=AJ+Griffin\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:46:54.574Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=AJ+Griffin",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=AJ%20Griffin"
+}

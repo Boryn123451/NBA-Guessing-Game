@@ -1,0 +1,9 @@
+{
+	"id": "2JOLTuXez6MJ3va",
+	"json": "{\"id\":\"2JOLTuXez6MJ3va\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Nolan%20Traore\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Nolan%20Traore\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Nolan+Traore\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:41:06.523Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Nolan+Traore",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Nolan%20Traore"
+}

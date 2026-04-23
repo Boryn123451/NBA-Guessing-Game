@@ -1,0 +1,9 @@
+{
+	"id": "jzDxPOPg7f7l5oo",
+	"json": "{\"id\":\"jzDxPOPg7f7l5oo\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alan%20Williams\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alan%20Williams\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alan+Williams\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:48:42.601Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Alan+Williams",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Alan%20Williams"
+}

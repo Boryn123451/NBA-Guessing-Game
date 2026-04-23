@@ -1,0 +1,9 @@
+{
+	"id": "EkIs7N1DcB8HtEr",
+	"json": "{\"id\":\"EkIs7N1DcB8HtEr\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Walter%20Clayton%20Jr.\",\"loadedUrl\":\"https://www.basketball-reference.com/gleague/players/c/claytwa01d.html\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Walter+Clayton+Jr.\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:44:20.329Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Walter+Clayton+Jr.",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Walter%20Clayton%20Jr."
+}

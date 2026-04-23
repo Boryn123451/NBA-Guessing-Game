@@ -1,0 +1,9 @@
+{
+	"id": "1FdiJ5QK2qu6R50",
+	"json": "{\"id\":\"1FdiJ5QK2qu6R50\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Keshad%20Johnson\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Keshad%20Johnson\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Keshad+Johnson\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:38:54.526Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Keshad+Johnson",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Keshad%20Johnson"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "Ce3WIySkZtU9K3G",
+	"json": "{\"id\":\"Ce3WIySkZtU9K3G\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Reese\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Reese\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex+Reese\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:49:54.638Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Alex+Reese",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Reese"
+}

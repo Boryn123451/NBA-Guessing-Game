@@ -1,0 +1,9 @@
+{
+	"id": "UIsFEIUQ4tmsQDD",
+	"json": "{\"id\":\"UIsFEIUQ4tmsQDD\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Mason%20Plumlee\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Mason%20Plumlee\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Mason+Plumlee\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:39:39.515Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Mason+Plumlee",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Mason%20Plumlee"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "L58vn3MDAx79UfE",
+	"json": "{\"id\":\"L58vn3MDAx79UfE\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Mac%20McClung\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Mac%20McClung\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Mac+McClung\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:39:15.524Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Mac+McClung",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Mac%20McClung"
+}

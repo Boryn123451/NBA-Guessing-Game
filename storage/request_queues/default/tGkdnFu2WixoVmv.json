@@ -1,0 +1,9 @@
+{
+	"id": "tGkdnFu2WixoVmv",
+	"json": "{\"id\":\"tGkdnFu2WixoVmv\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Ja%20Morant\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Ja%20Morant\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Ja+Morant\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:36:42.498Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Ja+Morant",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Ja%20Morant"
+}

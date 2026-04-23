@@ -1,0 +1,9 @@
+{
+	"id": "VBDxLFkyiMFvtBu",
+	"json": "{\"id\":\"VBDxLFkyiMFvtBu\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Luke%20Kornet\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Luke%20Kornet\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Luke+Kornet\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:39:12.542Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Luke+Kornet",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Luke%20Kornet"
+}

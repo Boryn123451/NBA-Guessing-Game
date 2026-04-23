@@ -1,0 +1,9 @@
+{
+	"id": "GLW6QaYlXvoQ2Ew",
+	"json": "{\"id\":\"GLW6QaYlXvoQ2Ew\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Walker%20Kessler\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Walker%20Kessler\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Walker+Kessler\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:44:15.534Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Walker+Kessler",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Walker%20Kessler"
+}

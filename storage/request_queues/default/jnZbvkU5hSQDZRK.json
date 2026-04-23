@@ -1,0 +1,9 @@
+{
+	"id": "jnZbvkU5hSQDZRK",
+	"json": "{\"id\":\"jnZbvkU5hSQDZRK\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Ade%20Murkey\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Ade%20Murkey\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Ade+Murkey\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:46:15.570Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Ade+Murkey",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Ade%20Murkey"
+}

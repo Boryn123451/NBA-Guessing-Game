@@ -1,0 +1,9 @@
+{
+	"id": "oO5cnnpaS5XcedO",
+	"json": "{\"id\":\"oO5cnnpaS5XcedO\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alaa%20Abdelnaby\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alaa%20Abdelnaby\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alaa+Abdelnaby\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:48:24.584Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Alaa+Abdelnaby",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Alaa%20Abdelnaby"
+}

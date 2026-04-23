@@ -1,3 +1,4 @@
+import { getPlayerEntryDraftYear } from './decades'
 import { getDifficultyDefinition } from './difficulty'
 import type {
   DifficultyId,
@@ -147,8 +148,8 @@ export function compareDraftGuess(
       player: exactOrMiss(guess.id === target.id),
       draftTeam: exactOrMiss(guess.draft.teamId === target.draft.teamId),
       draftYear: compareNumeric(
-        guess.draft.year,
-        target.draft.year,
+        getPlayerEntryDraftYear(guess),
+        getPlayerEntryDraftYear(target),
         difficulty.numericCloseTolerance,
         difficulty.showNumericArrows,
       ),

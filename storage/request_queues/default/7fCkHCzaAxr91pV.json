@@ -1,0 +1,9 @@
+{
+	"id": "7fCkHCzaAxr91pV",
+	"json": "{\"id\":\"7fCkHCzaAxr91pV\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al%20Lujack\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al%20Lujack\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al+Lujack\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:47:51.567Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Al+Lujack",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Al%20Lujack"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "iIzOGTz9kSKVySD",
+	"json": "{\"id\":\"iIzOGTz9kSKVySD\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jay%20Huff\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jay%20Huff\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jay+Huff\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:37:27.512Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Jay+Huff",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Jay%20Huff"
+}

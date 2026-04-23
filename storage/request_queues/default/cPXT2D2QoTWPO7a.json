@@ -1,0 +1,9 @@
+{
+	"id": "cPXT2D2QoTWPO7a",
+	"json": "{\"id\":\"cPXT2D2QoTWPO7a\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al%20Skinner\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al%20Skinner\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al+Skinner\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:48:09.601Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Al+Skinner",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Al%20Skinner"
+}

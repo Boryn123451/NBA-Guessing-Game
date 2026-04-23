@@ -1,0 +1,9 @@
+{
+	"id": "MKyqgyvcqO5Nghz",
+	"json": "{\"id\":\"MKyqgyvcqO5Nghz\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Groza\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Groza\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex+Groza\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:49:39.625Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Alex+Groza",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Groza"
+}

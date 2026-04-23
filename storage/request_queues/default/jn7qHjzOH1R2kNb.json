@@ -1,0 +1,9 @@
+{
+	"id": "jn7qHjzOH1R2kNb",
+	"json": "{\"id\":\"jn7qHjzOH1R2kNb\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Sam%20Hauser\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Sam%20Hauser\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Sam+Hauser\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:42:45.553Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Sam+Hauser",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Sam%20Hauser"
+}

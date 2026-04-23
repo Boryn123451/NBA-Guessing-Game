@@ -1,0 +1,9 @@
+{
+	"id": "AAdHZToUIWc0Vjp",
+	"json": "{\"id\":\"AAdHZToUIWc0Vjp\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Svi%20Mykhailiuk\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Svi%20Mykhailiuk\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Svi+Mykhailiuk\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:43:21.550Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Svi+Mykhailiuk",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Svi%20Mykhailiuk"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "Q4bBrN1laE232ZQ",
+	"json": "{\"id\":\"Q4bBrN1laE232ZQ\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Nikola%20Vu%C4%8Devi%C4%87\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Nikola%20Vu%C4%8Devi%C4%87\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Nikola+Vu%C4%8Devi%C4%87\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:40:51.529Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Nikola+Vu%C4%8Devi%C4%87",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Nikola%20Vu%C4%8Devi%C4%87"
+}

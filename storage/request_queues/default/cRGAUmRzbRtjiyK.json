@@ -1,0 +1,9 @@
+{
+	"id": "cRGAUmRzbRtjiyK",
+	"json": "{\"id\":\"cRGAUmRzbRtjiyK\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Tosan%20Evbuomwan\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Tosan%20Evbuomwan\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Tosan+Evbuomwan\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:43:51.532Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Tosan+Evbuomwan",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Tosan%20Evbuomwan"
+}

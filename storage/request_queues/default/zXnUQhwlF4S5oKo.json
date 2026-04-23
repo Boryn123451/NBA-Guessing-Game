@@ -1,0 +1,9 @@
+{
+	"id": "zXnUQhwlF4S5oKo",
+	"json": "{\"id\":\"zXnUQhwlF4S5oKo\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al%20Ferrari\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al%20Ferrari\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al+Ferrari\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:47:24.582Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Al+Ferrari",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Al%20Ferrari"
+}

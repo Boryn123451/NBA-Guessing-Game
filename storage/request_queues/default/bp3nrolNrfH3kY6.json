@@ -1,0 +1,9 @@
+{
+	"id": "bp3nrolNrfH3kY6",
+	"json": "{\"id\":\"bp3nrolNrfH3kY6\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Acie%20Earl\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Acie%20Earl\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Acie+Earl\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:45:48.547Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Acie+Earl",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Acie%20Earl"
+}

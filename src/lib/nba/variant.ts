@@ -6,6 +6,7 @@ export const DEFAULT_GAME_VARIANT: GameVariant = {
   themeId: 'classic',
   eventId: null,
   includePostseason: false,
+  entryDecadeId: null,
 }
 
 export function normalizeVariant(variant: GameVariant): GameVariant {
@@ -15,19 +16,26 @@ export function normalizeVariant(variant: GameVariant): GameVariant {
     themeId: variant.themeId,
     eventId: variant.eventId,
     includePostseason: variant.includePostseason,
+    entryDecadeId: variant.entryDecadeId ?? null,
   }
 }
 
 export function getVariantKey(variant: GameVariant): string {
   const normalizedVariant = normalizeVariant(variant)
 
-  return [
+  const keyParts = [
     normalizedVariant.playerPoolScope,
     normalizedVariant.clueMode,
     normalizedVariant.themeId,
     normalizedVariant.eventId ?? 'none',
     normalizedVariant.includePostseason ? 'post' : 'reg',
-  ].join(':')
+  ]
+
+  if (normalizedVariant.entryDecadeId) {
+    keyParts.push(normalizedVariant.entryDecadeId)
+  }
+
+  return keyParts.join(':')
 }
 
 export function getVariantSessionKey(variant: GameVariant, difficulty: DifficultyId): string {

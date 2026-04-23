@@ -1,0 +1,9 @@
+{
+	"id": "SPsSWElVUm9H1UV",
+	"json": "{\"id\":\"SPsSWElVUm9H1UV\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alan%20Anderson\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alan%20Anderson\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alan+Anderson\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:48:27.599Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Alan+Anderson",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Alan%20Anderson"
+}

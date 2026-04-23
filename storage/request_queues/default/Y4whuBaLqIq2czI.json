@@ -1,0 +1,9 @@
+{
+	"id": "Y4whuBaLqIq2czI",
+	"json": "{\"id\":\"Y4whuBaLqIq2czI\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Drew%20Eubanks\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Drew%20Eubanks\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Drew+Eubanks\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:35:39.497Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Drew+Eubanks",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Drew%20Eubanks"
+}

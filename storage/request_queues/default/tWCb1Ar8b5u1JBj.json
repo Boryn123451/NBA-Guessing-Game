@@ -1,0 +1,9 @@
+{
+	"id": "tWCb1Ar8b5u1JBj",
+	"json": "{\"id\":\"tWCb1Ar8b5u1JBj\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adama%20Sanogo\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adama%20Sanogo\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adama+Sanogo\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:46:12.559Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Adama+Sanogo",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Adama%20Sanogo"
+}

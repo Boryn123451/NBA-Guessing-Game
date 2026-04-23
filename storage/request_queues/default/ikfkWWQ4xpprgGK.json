@@ -1,0 +1,9 @@
+{
+	"id": "ikfkWWQ4xpprgGK",
+	"json": "{\"id\":\"ikfkWWQ4xpprgGK\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Josh%20Minott\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Josh%20Minott\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Josh+Minott\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:37:57.487Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Josh+Minott",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Josh%20Minott"
+}

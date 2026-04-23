@@ -1,0 +1,9 @@
+{
+	"id": "qxlCJAhzZdOTSQ2",
+	"json": "{\"id\":\"qxlCJAhzZdOTSQ2\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Justin%20Edwards\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Justin%20Edwards\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Justin+Edwards\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:38:27.538Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Justin+Edwards",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Justin%20Edwards"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "eKNSl22tIavvO4x",
+	"json": "{\"id\":\"eKNSl22tIavvO4x\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Moritz%20Wagner\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Moritz%20Wagner\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Moritz+Wagner\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:40:15.539Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Moritz+Wagner",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Moritz%20Wagner"
+}

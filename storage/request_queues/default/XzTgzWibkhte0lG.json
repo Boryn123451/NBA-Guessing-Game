@@ -1,0 +1,9 @@
+{
+	"id": "XzTgzWibkhte0lG",
+	"json": "{\"id\":\"XzTgzWibkhte0lG\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Rob%20Dillingham\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Rob%20Dillingham\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Rob+Dillingham\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:42:12.535Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Rob+Dillingham",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Rob%20Dillingham"
+}

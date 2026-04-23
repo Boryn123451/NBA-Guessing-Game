@@ -1,0 +1,9 @@
+{
+	"id": "399e9btPrU1hcBV",
+	"json": "{\"id\":\"399e9btPrU1hcBV\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jake%20LaRavia\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jake%20LaRavia\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jake+LaRavia\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:37:12.504Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Jake+LaRavia",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Jake%20LaRavia"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "rJCCfzE3FKjCvO3",
+	"json": "{\"id\":\"rJCCfzE3FKjCvO3\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Dorian%20Finney-Smith\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Dorian%20Finney-Smith\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Dorian+Finney-Smith\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:35:36.488Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Dorian+Finney-Smith",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Dorian%20Finney-Smith"
+}

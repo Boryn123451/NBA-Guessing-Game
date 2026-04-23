@@ -1,0 +1,9 @@
+{
+	"id": "II6EWESE3uQ1nbD",
+	"json": "{\"id\":\"II6EWESE3uQ1nbD\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Nique%20Clifford\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Nique%20Clifford\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Nique+Clifford\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:40:54.539Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Nique+Clifford",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Nique%20Clifford"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "9ASKnwatig8j1Qt",
+	"json": "{\"id\":\"9ASKnwatig8j1Qt\",\"url\":\"https://www.basketball-reference.com/players/p/priceaj01.html\",\"loadedUrl\":\"https://www.basketball-reference.com/players/p/priceaj01.html\",\"uniqueKey\":\"https://www.basketball-reference.com/players/p/priceaj01.html\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:47:03.449Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/players/p/priceaj01.html",
+	"url": "https://www.basketball-reference.com/players/p/priceaj01.html"
+}

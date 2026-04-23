@@ -1,0 +1,9 @@
+{
+	"id": "wRfcZSGoepwW0Vm",
+	"json": "{\"id\":\"wRfcZSGoepwW0Vm\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alan%20Henderson\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alan%20Henderson\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alan+Henderson\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:48:33.651Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Alan+Henderson",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Alan%20Henderson"
+}

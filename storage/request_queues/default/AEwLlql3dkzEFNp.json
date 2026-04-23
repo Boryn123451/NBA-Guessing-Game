@@ -1,0 +1,9 @@
+{
+	"id": "AEwLlql3dkzEFNp",
+	"json": "{\"id\":\"AEwLlql3dkzEFNp\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Malevy%20Leons\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Malevy%20Leons\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Malevy+Leons\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:39:21.513Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Malevy+Leons",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Malevy%20Leons"
+}

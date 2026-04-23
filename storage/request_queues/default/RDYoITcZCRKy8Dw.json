@@ -1,0 +1,9 @@
+{
+	"id": "RDYoITcZCRKy8Dw",
+	"json": "{\"id\":\"RDYoITcZCRKy8Dw\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Max%20Christie\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Max%20Christie\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Max+Christie\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:39:48.554Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Max+Christie",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Max%20Christie"
+}

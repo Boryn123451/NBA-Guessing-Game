@@ -1,0 +1,9 @@
+{
+	"id": "Cw4isBoaOntcYGt",
+	"json": "{\"id\":\"Cw4isBoaOntcYGt\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Acie%20Law\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Acie%20Law\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Acie+Law\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:45:51.561Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Acie+Law",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Acie%20Law"
+}

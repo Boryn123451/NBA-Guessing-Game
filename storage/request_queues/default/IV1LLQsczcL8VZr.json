@@ -1,0 +1,9 @@
+{
+	"id": "IV1LLQsczcL8VZr",
+	"json": "{\"id\":\"IV1LLQsczcL8VZr\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=John%20Poulakidas\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=John%20Poulakidas\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=John+Poulakidas\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:37:42.535Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=John+Poulakidas",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=John%20Poulakidas"
+}

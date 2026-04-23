@@ -1,0 +1,9 @@
+{
+	"id": "WbtihbdZKaOQrZU",
+	"json": "{\"id\":\"WbtihbdZKaOQrZU\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Emanuel%20Miller\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Emanuel%20Miller\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Emanuel+Miller\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:35:57.509Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Emanuel+Miller",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Emanuel%20Miller"
+}

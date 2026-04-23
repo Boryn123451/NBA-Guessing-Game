@@ -1,0 +1,9 @@
+{
+	"id": "8mfYi0uGfUH3LoZ",
+	"json": "{\"id\":\"8mfYi0uGfUH3LoZ\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=LJ%20Cryer\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=LJ%20Cryer\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=LJ+Cryer\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:39:06.528Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=LJ+Cryer",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=LJ%20Cryer"
+}

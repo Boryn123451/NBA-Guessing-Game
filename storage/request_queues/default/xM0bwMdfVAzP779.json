@@ -1,0 +1,9 @@
+{
+	"id": "xM0bwMdfVAzP779",
+	"json": "{\"id\":\"xM0bwMdfVAzP779\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Javonte%20Green\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Javonte%20Green\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Javonte+Green\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:37:24.516Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Javonte+Green",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Javonte%20Green"
+}

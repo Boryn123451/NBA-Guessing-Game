@@ -1,0 +1,9 @@
+{
+	"id": "iGWD2Kx2KQmBflp",
+	"json": "{\"id\":\"iGWD2Kx2KQmBflp\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Ryan%20Dunn\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Ryan%20Dunn\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Ryan+Dunn\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:42:39.546Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Ryan+Dunn",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Ryan%20Dunn"
+}

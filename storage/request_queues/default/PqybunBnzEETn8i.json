@@ -1,0 +1,9 @@
+{
+	"id": "PqybunBnzEETn8i",
+	"json": "{\"id\":\"PqybunBnzEETn8i\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adreian%20Payne\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adreian%20Payne\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adreian+Payne\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:46:33.558Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Adreian+Payne",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Adreian%20Payne"
+}

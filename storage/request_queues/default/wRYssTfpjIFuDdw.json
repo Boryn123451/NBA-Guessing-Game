@@ -1,0 +1,9 @@
+{
+	"id": "wRYssTfpjIFuDdw",
+	"json": "{\"id\":\"wRYssTfpjIFuDdw\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jose%20Alvarado\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jose%20Alvarado\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jose+Alvarado\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:37:51.507Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Jose+Alvarado",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Jose%20Alvarado"
+}

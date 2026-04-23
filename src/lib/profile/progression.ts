@@ -84,6 +84,7 @@ function updateDailyHistory(
     clueMode: context.clueMode,
     themeId: context.themeId,
     eventId: context.eventId,
+    entryDecadeId: context.entryDecadeId ?? null,
   }
 
   return [...history.filter((entry) => entry.dateKey !== context.dateKey), nextEntry].toSorted(

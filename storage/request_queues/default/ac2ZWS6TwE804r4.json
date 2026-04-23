@@ -1,0 +1,9 @@
+{
+	"id": "ac2ZWS6TwE804r4",
+	"json": "{\"id\":\"ac2ZWS6TwE804r4\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aaron%20Henry\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aaron%20Henry\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aaron+Henry\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:45:21.619Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Aaron+Henry",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Aaron%20Henry"
+}

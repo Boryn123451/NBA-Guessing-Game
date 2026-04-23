@@ -1,0 +1,9 @@
+{
+	"id": "nGFiqsMRcsYTjJ8",
+	"json": "{\"id\":\"nGFiqsMRcsYTjJ8\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Gabe%20Vincent\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Gabe%20Vincent\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Gabe+Vincent\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:36:06.511Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Gabe+Vincent",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Gabe%20Vincent"
+}

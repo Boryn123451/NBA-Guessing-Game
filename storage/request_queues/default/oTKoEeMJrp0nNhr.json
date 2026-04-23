@@ -1,0 +1,9 @@
+{
+	"id": "oTKoEeMJrp0nNhr",
+	"json": "{\"id\":\"oTKoEeMJrp0nNhr\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Anthony%20Gill\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Anthony%20Gill\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Anthony+Gill\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:34:20.386Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Anthony+Gill",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Anthony%20Gill"
+}

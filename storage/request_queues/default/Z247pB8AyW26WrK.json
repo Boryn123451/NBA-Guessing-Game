@@ -1,0 +1,9 @@
+{
+	"id": "Z247pB8AyW26WrK",
+	"json": "{\"id\":\"Z247pB8AyW26WrK\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Quenton%20Jackson\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Quenton%20Jackson\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Quenton+Jackson\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:41:48.550Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Quenton+Jackson",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Quenton%20Jackson"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "JKHViijHdw0Vb4c",
+	"json": "{\"id\":\"JKHViijHdw0Vb4c\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Garrett%20Temple\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Garrett%20Temple\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Garrett+Temple\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:36:09.548Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Garrett+Temple",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Garrett%20Temple"
+}

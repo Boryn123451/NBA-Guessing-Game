@@ -1,0 +1,9 @@
+{
+	"id": "LZfNK2DK4ZeASkj",
+	"json": "{\"id\":\"LZfNK2DK4ZeASkj\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Hannum\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Hannum\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex+Hannum\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:49:42.680Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Alex+Hannum",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Hannum"
+}

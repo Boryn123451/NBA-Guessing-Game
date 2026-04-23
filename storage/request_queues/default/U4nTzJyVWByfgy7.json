@@ -1,0 +1,9 @@
+{
+	"id": "U4nTzJyVWByfgy7",
+	"json": "{\"id\":\"U4nTzJyVWByfgy7\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Isaac%20Jones\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Isaac%20Jones\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Isaac+Jones\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:36:21.517Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Isaac+Jones",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Isaac%20Jones"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "7CVI2sbHFqwtDPv",
+	"json": "{\"id\":\"7CVI2sbHFqwtDPv\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Rui%20Hachimura\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Rui%20Hachimura\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Rui+Hachimura\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:42:33.547Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Rui+Hachimura",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Rui%20Hachimura"
+}

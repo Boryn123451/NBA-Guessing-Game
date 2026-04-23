@@ -1,0 +1,9 @@
+{
+	"id": "IDQ4oNyUWmPZapI",
+	"json": "{\"id\":\"IDQ4oNyUWmPZapI\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Marcus%20Sasser\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Marcus%20Sasser\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Marcus+Sasser\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:39:24.525Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Marcus+Sasser",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Marcus%20Sasser"
+}

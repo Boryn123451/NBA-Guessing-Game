@@ -1,0 +1,9 @@
+{
+	"id": "RpjynEU9Vo3Q9Hi",
+	"json": "{\"id\":\"RpjynEU9Vo3Q9Hi\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adam%20Mokoka\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adam%20Mokoka\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adam+Mokoka\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:46:03.559Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Adam+Mokoka",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Adam%20Mokoka"
+}

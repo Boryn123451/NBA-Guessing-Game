@@ -24,6 +24,10 @@ import {
   pickDailyPlayer,
   pickPracticePlayer,
 } from '../lib/nba/daily'
+import {
+  ENTRY_DECADE_DEFINITIONS,
+  getPlayerEntryDecadeId,
+} from '../lib/nba/decades'
 import { compareDraftGuess } from '../lib/nba/draftMode'
 import {
   DIFFICULTY_DEFINITIONS,
@@ -34,6 +38,7 @@ import {
   getBlockedTeamIdForNextGuess,
   shouldBlockConsecutiveSameTeamGuess,
 } from '../lib/nba/guessRules'
+import { getHistoricPoolSummary } from '../lib/nba/historicFilters'
 import { getPlayablePlayerPool } from '../lib/nba/pools'
 import {
   DEFAULT_PLAYER_POOL_SCOPE_ID,
@@ -50,6 +55,7 @@ import {
 import type {
   ClueMode,
   DifficultyId,
+  EntryDecadeId,
   GameMode,
   GameVariant,
   PersistedState,
@@ -95,6 +101,13 @@ interface PlayerPoolScopeOption {
   disabled: boolean
 }
 
+interface EntryDecadeOption {
+  id: EntryDecadeId | null
+  label: string
+  count: number
+  disabled: boolean
+}
+
 function sanitizeClueModeForDifficulty(
   clueMode: ClueMode,
   difficultyId: DifficultyId,
@@ -131,6 +144,7 @@ function resolveVariantForDifficulty(
   difficultyId: DifficultyId,
   includePostseason: boolean,
   playerPoolScope: PlayerPoolScopeId,
+  entryDecadeId: EntryDecadeId | null,
 ): GameVariant {
   const normalizedClueMode = sanitizeClueModeForDifficulty(clueMode, difficultyId)
 
@@ -141,6 +155,7 @@ function resolveVariantForDifficulty(
       themeId: 'classic',
       eventId: null,
       includePostseason: false,
+      entryDecadeId,
     })
   }
 
@@ -150,6 +165,7 @@ function resolveVariantForDifficulty(
     themeId,
     eventId,
     includePostseason,
+    entryDecadeId: null,
   })
 }
 
@@ -179,6 +195,7 @@ function resolveVariantFromState(
       themeId: 'classic',
       eventId: null,
       includePostseason: postseasonRule.includePostseason,
+      entryDecadeId: null,
     })
   }
 
@@ -189,6 +206,7 @@ function resolveVariantFromState(
     state.preferences.difficulty,
     postseasonRule.includePostseason,
     playerPoolScope,
+    state.preferences.entryDecadeId,
   )
 }
 
@@ -461,12 +479,14 @@ export function useGameSession() {
     )
     const sanitizedThemeId = scopeForMode === 'history' ? 'classic' : stateValue.preferences.themeId
     const sanitizedScope = stateValue.preferences.mode === 'daily' ? 'current' : scopeForMode
+    const sanitizedEntryDecadeId = stateValue.preferences.entryDecadeId
     const nextState =
       progressionState === stateValue.progression &&
       sanitizedEventId === stateValue.preferences.eventId &&
       sanitizedClueMode === stateValue.preferences.clueMode &&
       sanitizedThemeId === stateValue.preferences.themeId &&
-      sanitizedScope === stateValue.preferences.playerPoolScope
+      sanitizedScope === stateValue.preferences.playerPoolScope &&
+      sanitizedEntryDecadeId === stateValue.preferences.entryDecadeId
         ? stateValue
         : {
             ...stateValue,
@@ -476,6 +496,7 @@ export function useGameSession() {
               clueMode: sanitizedClueMode,
               themeId: sanitizedThemeId,
               eventId: sanitizedEventId,
+              entryDecadeId: sanitizedEntryDecadeId,
             },
             progression: progressionState,
           }
@@ -626,13 +647,41 @@ export function useGameSession() {
       label: getPlayerPoolScopeDefinition('history').label,
       description:
         historyPoolState.status === 'ready'
-          ? getPlayerPoolScopeDefinition('history').description
+          ? getHistoricPoolSummary(activeDifficultyId)
           : historyPoolState.status === 'error'
             ? 'All-time data failed to load in this session.'
             : 'Loading the all-time player pool.',
       count: historyPoolState.data?.players.length ?? null,
       disabled: historyPoolState.status !== 'ready',
     },
+  ]
+  const historyBaseVariant =
+    activeVariant.playerPoolScope === 'history'
+      ? { ...activeVariant, entryDecadeId: null }
+      : null
+  const historyBasePlayers =
+    historyBaseVariant && historyPoolState.data
+      ? getPlayablePlayerPool(historyPoolState.data.players, historyBaseVariant, activeDifficultyId)
+      : []
+  const entryDecadeOptions: EntryDecadeOption[] = [
+    {
+      id: null,
+      label: 'All eras',
+      count: historyBasePlayers.length,
+      disabled: false,
+    },
+    ...ENTRY_DECADE_DEFINITIONS.map((definition) => {
+      const count = historyBasePlayers.filter(
+        (player) => getPlayerEntryDecadeId(player) === definition.id,
+      ).length
+
+      return {
+        id: definition.id,
+        label: definition.label,
+        count,
+        disabled: count === 0,
+      }
+    }),
   ]
   const activeDataMeta =
     activeVariant.playerPoolScope === 'history' && historyPoolState.data
@@ -726,6 +775,7 @@ export function useGameSession() {
           clueMode: variant.clueMode,
           themeId: variant.themeId,
           eventId: variant.eventId,
+          entryDecadeId: variant.entryDecadeId,
           didWin,
           guessCount: nextSession.guessIds.length,
           dateKey: dailyDateKey,
@@ -774,6 +824,30 @@ export function useGameSession() {
           playerPoolScope,
           themeId: playerPoolScope === 'history' ? 'classic' : preparedState.preferences.themeId,
           eventId: playerPoolScope === 'history' ? null : preparedState.preferences.eventId,
+          entryDecadeId: preparedState.preferences.entryDecadeId,
+        },
+      }
+    })
+  }
+
+  function setEntryDecadeId(entryDecadeId: EntryDecadeId | null): void {
+    setState((previousState) => {
+      const preparedState = ensureHydratedStateLocal(previousState)
+      const { session } = resolveSessionForState(preparedState)
+
+      if (
+        preparedState.preferences.mode !== 'practice' ||
+        preparedState.preferences.playerPoolScope !== 'history' ||
+        (session.status === 'in_progress' && session.guessIds.length > 0)
+      ) {
+        return preparedState
+      }
+
+      return {
+        ...preparedState,
+        preferences: {
+          ...preparedState.preferences,
+          entryDecadeId,
         },
       }
     })
@@ -1081,6 +1155,7 @@ export function useGameSession() {
             preparedState.preferences.playerPoolScope,
             historyReady,
           ),
+          preparedState.preferences.entryDecadeId,
         )
         const players = getPlayersForVariant(
           nextMode,
@@ -1130,7 +1205,7 @@ export function useGameSession() {
     activePlayerPoolScope: activeVariant.playerPoolScope,
     activePlayerPoolScopeSummary:
       activeVariant.playerPoolScope === 'history'
-        ? getPlayerPoolScopeDefinition('history').description
+        ? `${activeVariant.entryDecadeId ?? 'All eras'} | ${getHistoricPoolSummary(activeDifficultyId)}`
         : formatThemeSummary(activeVariant.themeId),
     activePostseasonRule,
     activeSession,
@@ -1154,6 +1229,8 @@ export function useGameSession() {
     difficultyOptions: DIFFICULTY_DEFINITIONS,
     dismissCelebration: dismissCelebrationById,
     draftGuessResults,
+    entryDecadeId: activeVariant.entryDecadeId,
+    entryDecadeOptions,
     eventId: activeVariant.eventId,
     exportPayload: JSON.stringify(hydratedState, null, 2),
     guessResults: standardGuessResults,
@@ -1180,6 +1257,7 @@ export function useGameSession() {
     setClueMode,
     setDifficulty,
     setDisplayName,
+    setEntryDecadeId,
     setEventId,
     setMode,
     setPlayerPoolScope,
@@ -1194,6 +1272,7 @@ export function useGameSession() {
       clueMode: activeVariant.clueMode,
       themeId: activeVariant.themeId,
       playerPoolScope: activeVariant.playerPoolScope,
+      entryDecadeId: activeVariant.entryDecadeId,
       difficultyId: activeDifficultyId,
       eventId: activeVariant.eventId,
       maxGuesses: activeDifficulty.maxGuesses,
@@ -1213,6 +1292,8 @@ export function useGameSession() {
       hydratedState.preferences.mode === 'practice' && activeVariant.playerPoolScope === 'current',
     showPracticePostseasonToggle:
       hydratedState.preferences.mode === 'practice' && activeVariant.playerPoolScope === 'current',
+    showEntryDecadeFilter:
+      hydratedState.preferences.mode === 'practice' && activeVariant.playerPoolScope === 'history',
     showSeasonSnapshot:
       activeDifficulty.clueAvailability.seasonSnapshot &&
       activeVariant.clueMode === 'standard' &&

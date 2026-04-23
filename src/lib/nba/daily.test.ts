@@ -10,6 +10,7 @@ const defaultVariant: GameVariant = {
   themeId: 'classic',
   eventId: null,
   includePostseason: false,
+  entryDecadeId: null,
 }
 
 function buildPlayer(id: number) {
@@ -53,6 +54,7 @@ describe('daily helpers', () => {
       themeId: 'under-25',
       eventId: 'playoff-mode',
       includePostseason: true,
+      entryDecadeId: '1990s',
     }
 
     expect(pickDailyPlayer(players, '2026-04-21', defaultVariant).id).toBe(

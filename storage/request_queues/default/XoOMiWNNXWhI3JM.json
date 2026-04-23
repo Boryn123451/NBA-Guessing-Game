@@ -1,0 +1,9 @@
+{
+	"id": "XoOMiWNNXWhI3JM",
+	"json": "{\"id\":\"XoOMiWNNXWhI3JM\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al%20Wood\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al%20Wood\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al+Wood\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:48:18.590Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Al+Wood",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Al%20Wood"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "WqE78DBtfMkAesG",
+	"json": "{\"id\":\"WqE78DBtfMkAesG\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Riley%20Minix\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Riley%20Minix\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Riley+Minix\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:42:06.538Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Riley+Minix",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Riley%20Minix"
+}

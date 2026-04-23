@@ -1,0 +1,9 @@
+{
+	"id": "GD6iayWVVxuGGSd",
+	"json": "{\"id\":\"GD6iayWVVxuGGSd\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jamal%20Cain\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jamal%20Cain\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jamal+Cain\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:37:15.509Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Jamal+Cain",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Jamal%20Cain"
+}

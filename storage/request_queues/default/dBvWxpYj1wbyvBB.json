@@ -1,0 +1,9 @@
+{
+	"id": "dBvWxpYj1wbyvBB",
+	"json": "{\"id\":\"dBvWxpYj1wbyvBB\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Tyson%20Etienne\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Tyson%20Etienne\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Tyson+Etienne\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:44:06.545Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Tyson+Etienne",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Tyson%20Etienne"
+}

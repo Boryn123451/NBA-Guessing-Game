@@ -1,0 +1,9 @@
+{
+	"id": "VPphtTjELQq1Aop",
+	"json": "{\"id\":\"VPphtTjELQq1Aop\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Branden%20Carlson\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Branden%20Carlson\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Branden+Carlson\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:34:30.521Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Branden+Carlson",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Branden%20Carlson"
+}

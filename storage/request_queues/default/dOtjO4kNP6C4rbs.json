@@ -1,0 +1,9 @@
+{
+	"id": "dOtjO4kNP6C4rbs",
+	"json": "{\"id\":\"dOtjO4kNP6C4rbs\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adam%20Flagler\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adam%20Flagler\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adam+Flagler\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:45:54.550Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Adam+Flagler",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Adam%20Flagler"
+}

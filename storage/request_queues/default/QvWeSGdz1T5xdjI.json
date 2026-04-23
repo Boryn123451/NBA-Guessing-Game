@@ -1,0 +1,9 @@
+{
+	"id": "QvWeSGdz1T5xdjI",
+	"json": "{\"id\":\"QvWeSGdz1T5xdjI\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Taelon%20Peter\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Taelon%20Peter\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Taelon+Peter\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:43:27.560Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Taelon+Peter",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Taelon%20Peter"
+}

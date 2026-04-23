@@ -1,3 +1,4 @@
+import { sanitizeEntryDecadeId } from './nba/decades'
 import { getDetectedTimeZone } from './nba/daily'
 import { DEFAULT_DIFFICULTY_ID, sanitizeDifficultyId } from './nba/difficulty'
 import { sanitizePlayerPoolScopeId } from './nba/playerScopes'
@@ -6,6 +7,7 @@ import type {
   ClueMode,
   DifficultyId,
   DifficultyStats,
+  EntryDecadeId,
   EventModeId,
   GameMode,
   LocalProfile,
@@ -131,6 +133,7 @@ interface LegacyPersistedStateV5 {
     difficulty?: unknown
     eventId?: unknown
     practiceIncludePostseason?: unknown
+    entryDecadeId?: unknown
   }
   settings?: {
     units?: unknown
@@ -225,6 +228,10 @@ function sanitizeMode(mode: unknown): GameMode {
 
 function sanitizePlayerPoolScope(scope: unknown): PlayerPoolScopeId {
   return sanitizePlayerPoolScopeId(scope)
+}
+
+function sanitizeEntryDecade(value: unknown): EntryDecadeId | null {
+  return sanitizeEntryDecadeId(value)
 }
 
 function sanitizeClueMode(clueMode: unknown): ClueMode {
@@ -434,6 +441,7 @@ function sanitizeDailyHistoryEntries(
       clueMode: sanitizeClueMode(entry.clueMode),
       themeId: sanitizeThemeId(entry.themeId),
       eventId: sanitizeEventId(entry.eventId),
+      entryDecadeId: sanitizeEntryDecade(entry.entryDecadeId),
     }
     const existingEntry = entryByDateKey.get(normalizedEntry.dateKey)
 
@@ -649,6 +657,7 @@ export function createDefaultState(
       difficulty: DEFAULT_DIFFICULTY_ID,
       eventId: null,
       practiceIncludePostseason: false,
+      entryDecadeId: null,
     },
     settings: {
       units: 'imperial',
@@ -691,6 +700,7 @@ function migrateLegacyStateV1(
       difficulty: DEFAULT_DIFFICULTY_ID,
       eventId: null,
       practiceIncludePostseason: false,
+      entryDecadeId: null,
     },
     settings: {
       units: sanitizeUnits(parsed.settings?.units),
@@ -725,6 +735,7 @@ function migrateLegacyStateV2(
       difficulty: DEFAULT_DIFFICULTY_ID,
       eventId: null,
       practiceIncludePostseason: false,
+      entryDecadeId: null,
     },
     settings: {
       units: sanitizeUnits(parsed.settings?.units),
@@ -767,6 +778,7 @@ function migrateLegacyStateV3(
       difficulty: sanitizeDifficultyId(parsed.preferences?.difficulty),
       eventId: null,
       practiceIncludePostseason: false,
+      entryDecadeId: null,
     },
     settings: {
       units: sanitizeUnits(parsed.settings?.units),
@@ -809,6 +821,7 @@ function migrateLegacyStateV4(
       difficulty: sanitizeDifficultyId(parsed.preferences?.difficulty),
       eventId: sanitizeEventId(parsed.preferences?.eventId),
       practiceIncludePostseason: false,
+      entryDecadeId: null,
     },
     settings: {
       units: sanitizeUnits(parsed.settings?.units),
@@ -841,6 +854,7 @@ function migrateLegacyStateV5(
       difficulty: sanitizeDifficultyId(parsed.preferences?.difficulty),
       eventId: sanitizeEventId(parsed.preferences?.eventId),
       practiceIncludePostseason: parsed.preferences?.practiceIncludePostseason === true,
+      entryDecadeId: sanitizeEntryDecade(parsed.preferences?.entryDecadeId),
     },
     settings: {
       units: sanitizeUnits(parsed.settings?.units),
@@ -890,6 +904,7 @@ export function coercePersistedState(
         difficulty: sanitizeDifficultyId(value.preferences?.difficulty),
         eventId: sanitizeEventId(value.preferences?.eventId),
         practiceIncludePostseason: value.preferences?.practiceIncludePostseason === true,
+        entryDecadeId: sanitizeEntryDecade(value.preferences?.entryDecadeId),
       },
       settings: {
         units: sanitizeUnits(value.settings?.units),

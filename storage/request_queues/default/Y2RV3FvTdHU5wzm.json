@@ -1,0 +1,9 @@
+{
+	"id": "Y2RV3FvTdHU5wzm",
+	"json": "{\"id\":\"Y2RV3FvTdHU5wzm\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=VJ%20Edgecombe\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=VJ%20Edgecombe\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=VJ+Edgecombe\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:44:09.548Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=VJ+Edgecombe",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=VJ%20Edgecombe"
+}

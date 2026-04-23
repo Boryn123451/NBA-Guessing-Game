@@ -1,0 +1,9 @@
+{
+	"id": "YR0J10IceRp2ZKz",
+	"json": "{\"id\":\"YR0J10IceRp2ZKz\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Pat%20Spencer\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Pat%20Spencer\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Pat+Spencer\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:41:33.554Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Pat+Spencer",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Pat%20Spencer"
+}

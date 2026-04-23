@@ -1,0 +1,9 @@
+{
+	"id": "ILUzA5uQtmPpz9d",
+	"json": "{\"id\":\"ILUzA5uQtmPpz9d\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Austin%20Reaves\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Austin%20Reaves\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Austin+Reaves\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:34:21.496Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Austin+Reaves",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Austin%20Reaves"
+}

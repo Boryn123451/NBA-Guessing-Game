@@ -1,0 +1,9 @@
+{
+	"id": "xadchhenCxFxeRx",
+	"json": "{\"id\":\"xadchhenCxFxeRx\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Amir%20Coffey\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Amir%20Coffey\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Amir+Coffey\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:34:15.491Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Amir+Coffey",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Amir%20Coffey"
+}

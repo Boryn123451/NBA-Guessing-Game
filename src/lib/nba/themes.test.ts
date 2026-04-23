@@ -14,6 +14,7 @@ describe('theme filtering', () => {
       country: 'France',
       flags: { isRookie: false, isInternational: true, isAllStar: true, isUnder25: false },
       career: {
+        ...buildPlayerRecord().career,
         debutYear: 2018,
         finalSeasonYear: 2025,
         seasonsPlayed: 8,
@@ -40,6 +41,7 @@ describe('theme filtering', () => {
       themeId: 'all-stars',
       eventId: null,
       includePostseason: false,
+      entryDecadeId: null,
     })
 
     expect(result.map((player) => player.id)).toEqual([2])

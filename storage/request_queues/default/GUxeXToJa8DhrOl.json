@@ -1,0 +1,9 @@
+{
+	"id": "GUxeXToJa8DhrOl",
+	"json": "{\"id\":\"GUxeXToJa8DhrOl\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alan%20Hardy\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alan%20Hardy\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alan+Hardy\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:48:30.582Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Alan+Hardy",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Alan%20Hardy"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "L68ms7PhOQscveV",
+	"json": "{\"id\":\"L68ms7PhOQscveV\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al%20Jefferson\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al%20Jefferson\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al+Jefferson\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:47:45.601Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Al+Jefferson",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Al%20Jefferson"
+}

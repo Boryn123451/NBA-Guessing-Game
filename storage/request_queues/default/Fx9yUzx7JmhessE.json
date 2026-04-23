@@ -1,0 +1,9 @@
+{
+	"id": "Fx9yUzx7JmhessE",
+	"json": "{\"id\":\"Fx9yUzx7JmhessE\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Duncan%20Robinson\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Duncan%20Robinson\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Duncan+Robinson\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:35:48.497Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Duncan+Robinson",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Duncan%20Robinson"
+}

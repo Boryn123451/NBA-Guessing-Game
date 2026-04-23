@@ -1,0 +1,9 @@
+{
+	"id": "rFcPax9mcZp3CYc",
+	"json": "{\"id\":\"rFcPax9mcZp3CYc\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=AJ%20Price\",\"loadedUrl\":\"https://www.basketball-reference.com/players/p/priceaj01.html\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=AJ+Price\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:47:00.749Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=AJ+Price",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=AJ%20Price"
+}

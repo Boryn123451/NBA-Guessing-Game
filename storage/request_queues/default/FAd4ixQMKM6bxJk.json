@@ -1,0 +1,9 @@
+{
+	"id": "FAd4ixQMKM6bxJk",
+	"json": "{\"id\":\"FAd4ixQMKM6bxJk\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aaron%20Brooks\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aaron%20Brooks\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aaron+Brooks\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:45:12.586Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Aaron+Brooks",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Aaron%20Brooks"
+}

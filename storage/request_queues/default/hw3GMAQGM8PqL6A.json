@@ -1,0 +1,9 @@
+{
+	"id": "hw3GMAQGM8PqL6A",
+	"json": "{\"id\":\"hw3GMAQGM8PqL6A\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adam%20Keefe\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adam%20Keefe\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adam+Keefe\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:46:00.580Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Adam+Keefe",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Adam%20Keefe"
+}

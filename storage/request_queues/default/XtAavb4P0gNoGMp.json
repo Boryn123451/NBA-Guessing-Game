@@ -1,0 +1,9 @@
+{
+	"id": "XtAavb4P0gNoGMp",
+	"json": "{\"id\":\"XtAavb4P0gNoGMp\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Dean%20Wade\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Dean%20Wade\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Dean+Wade\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:35:24.523Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Dean+Wade",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Dean%20Wade"
+}

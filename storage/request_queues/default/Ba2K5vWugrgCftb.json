@@ -1,0 +1,9 @@
+{
+	"id": "Ba2K5vWugrgCftb",
+	"json": "{\"id\":\"Ba2K5vWugrgCftb\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Bez%20Mbeng\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Bez%20Mbeng\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Bez+Mbeng\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:34:24.552Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Bez+Mbeng",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Bez%20Mbeng"
+}

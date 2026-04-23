@@ -1,0 +1,9 @@
+{
+	"id": "h8gwf5tMVVP471y",
+	"json": "{\"id\":\"h8gwf5tMVVP471y\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Isaiah%20Crawford\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Isaiah%20Crawford\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Isaiah+Crawford\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:36:24.507Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Isaiah+Crawford",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Isaiah%20Crawford"
+}

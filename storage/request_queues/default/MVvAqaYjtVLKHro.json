@@ -1,0 +1,9 @@
+{
+	"id": "MVvAqaYjtVLKHro",
+	"json": "{\"id\":\"MVvAqaYjtVLKHro\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Dominick%20Barlow\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Dominick%20Barlow\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Dominick+Barlow\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:35:33.479Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Dominick+Barlow",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Dominick%20Barlow"
+}

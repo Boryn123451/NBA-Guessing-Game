@@ -1,0 +1,9 @@
+{
+	"id": "21ooEW3Lz2xTdqM",
+	"json": "{\"id\":\"21ooEW3Lz2xTdqM\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Nae'Qwan%20Tomlin\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Nae%27Qwan%20Tomlin\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Nae%27Qwan+Tomlin\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:40:27.549Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Nae%27Qwan+Tomlin",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Nae'Qwan%20Tomlin"
+}

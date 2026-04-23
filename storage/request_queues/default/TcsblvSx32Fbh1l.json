@@ -1,0 +1,9 @@
+{
+	"id": "TcsblvSx32Fbh1l",
+	"json": "{\"id\":\"TcsblvSx32Fbh1l\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jaden%20Hardy\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jaden%20Hardy\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jaden+Hardy\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:36:54.512Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Jaden+Hardy",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Jaden%20Hardy"
+}

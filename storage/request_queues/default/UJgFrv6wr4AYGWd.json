@@ -1,0 +1,9 @@
+{
+	"id": "UJgFrv6wr4AYGWd",
+	"json": "{\"id\":\"UJgFrv6wr4AYGWd\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Myron%20Gardner\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Myron%20Gardner\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Myron+Gardner\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:40:24.539Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Myron+Gardner",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Myron%20Gardner"
+}

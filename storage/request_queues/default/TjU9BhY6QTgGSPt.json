@@ -1,0 +1,9 @@
+{
+	"id": "TjU9BhY6QTgGSPt",
+	"json": "{\"id\":\"TjU9BhY6QTgGSPt\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Ronald%20Holland%20II\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Ronald%20Holland%20II\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Ronald+Holland+II\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:42:24.555Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Ronald+Holland+II",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Ronald%20Holland%20II"
+}

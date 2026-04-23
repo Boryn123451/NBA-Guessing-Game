@@ -1,4 +1,5 @@
 import { getAgeBucketIndex, getPlayerAge } from './comparison'
+import { getEntryDecadeDefinition } from './decades'
 import { getDifficultyDefinition } from './difficulty'
 import { getEventDefinition } from './events'
 import { getPlayerPoolScopeDefinition } from './playerScopes'
@@ -7,6 +8,7 @@ import type {
   ClueKey,
   ClueMode,
   DifficultyId,
+  EntryDecadeId,
   EventModeId,
   GameMode,
   NumericDirection,
@@ -58,6 +60,10 @@ export function formatEventModeLabel(eventId: EventModeId | null): string {
   return eventId ? getEventDefinition(eventId).title : 'No event'
 }
 
+export function formatEntryDecadeLabel(decadeId: EntryDecadeId | null): string {
+  return getEntryDecadeDefinition(decadeId)?.label ?? 'All eras'
+}
+
 export function formatHeight(player: PlayerRecord, units: UnitSystem): string {
   if (player.heightInInches === null || player.heightCm === null) {
     return 'N/A'
@@ -86,7 +92,7 @@ function formatAgeBucketLabel(age: number | null): string {
     case 4:
       return '32+'
     default:
-      return 'N/A'
+      return 'Unknown'
   }
 }
 
@@ -101,7 +107,7 @@ export function formatAge(
   return difficulty.ageDisplay === 'bucketed'
     ? formatAgeBucketLabel(age)
     : age === null
-      ? 'N/A'
+      ? 'Unknown'
       : `${age}`
 }
 

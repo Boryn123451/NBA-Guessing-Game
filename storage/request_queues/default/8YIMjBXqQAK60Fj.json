@@ -1,0 +1,9 @@
+{
+	"id": "8YIMjBXqQAK60Fj",
+	"json": "{\"id\":\"8YIMjBXqQAK60Fj\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Dylan%20Cardwell\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Dylan%20Cardwell\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Dylan+Cardwell\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:35:51.509Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Dylan+Cardwell",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Dylan%20Cardwell"
+}

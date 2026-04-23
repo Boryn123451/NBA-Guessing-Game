@@ -1,0 +1,9 @@
+{
+	"id": "njCSb0kKtz2hOc4",
+	"json": "{\"id\":\"njCSb0kKtz2hOc4\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Isaiah%20Stewart\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Isaiah%20Stewart\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Isaiah+Stewart\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:36:36.525Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Isaiah+Stewart",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Isaiah%20Stewart"
+}

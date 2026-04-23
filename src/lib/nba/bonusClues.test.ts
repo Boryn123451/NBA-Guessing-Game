@@ -10,6 +10,7 @@ describe('bonus clues', () => {
   const player = buildPlayerRecord({
     country: 'Serbia',
     career: {
+      ...buildPlayerRecord().career,
       debutYear: 2021,
       finalSeasonYear: 2025,
       seasonsPlayed: 5,

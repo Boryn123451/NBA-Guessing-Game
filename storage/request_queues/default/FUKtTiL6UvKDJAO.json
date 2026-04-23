@@ -1,0 +1,9 @@
+{
+	"id": "FUKtTiL6UvKDJAO",
+	"json": "{\"id\":\"FUKtTiL6UvKDJAO\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Marcus%20Smart\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Marcus%20Smart\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Marcus+Smart\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:39:27.523Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Marcus+Smart",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Marcus%20Smart"
+}

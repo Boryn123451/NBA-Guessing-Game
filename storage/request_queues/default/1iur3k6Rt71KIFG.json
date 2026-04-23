@@ -1,0 +1,9 @@
+{
+	"id": "1iur3k6Rt71KIFG",
+	"json": "{\"id\":\"1iur3k6Rt71KIFG\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Keaton%20Wallace\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Keaton%20Wallace\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Keaton+Wallace\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:38:42.514Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Keaton+Wallace",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Keaton%20Wallace"
+}

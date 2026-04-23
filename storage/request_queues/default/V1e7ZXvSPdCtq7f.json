@@ -1,0 +1,9 @@
+{
+	"id": "V1e7ZXvSPdCtq7f",
+	"json": "{\"id\":\"V1e7ZXvSPdCtq7f\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Spencer%20Jones\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Spencer%20Jones\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Spencer+Jones\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:43:09.560Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Spencer+Jones",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Spencer%20Jones"
+}

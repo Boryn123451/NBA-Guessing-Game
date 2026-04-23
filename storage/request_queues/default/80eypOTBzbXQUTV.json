@@ -1,0 +1,9 @@
+{
+	"id": "80eypOTBzbXQUTV",
+	"json": "{\"id\":\"80eypOTBzbXQUTV\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Xavier%20Tillman\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Xavier%20Tillman\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Xavier+Tillman\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:44:33.561Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Xavier+Tillman",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Xavier%20Tillman"
+}

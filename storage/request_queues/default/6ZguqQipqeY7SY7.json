@@ -1,0 +1,9 @@
+{
+	"id": "6ZguqQipqeY7SY7",
+	"json": "{\"id\":\"6ZguqQipqeY7SY7\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Cormac%20Ryan\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Cormac%20Ryan\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Cormac+Ryan\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:35:06.489Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Cormac+Ryan",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Cormac%20Ryan"
+}

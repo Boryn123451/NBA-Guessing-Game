@@ -1,0 +1,9 @@
+{
+	"id": "Rtrqi0MkmjztMiT",
+	"json": "{\"id\":\"Rtrqi0MkmjztMiT\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Sidy%20Cissoko\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Sidy%20Cissoko\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Sidy+Cissoko\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:43:00.545Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Sidy+Cissoko",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Sidy%20Cissoko"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "FQ1WxdHgG3OPmYj",
+	"json": "{\"id\":\"FQ1WxdHgG3OPmYj\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Justin%20Champagnie\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Justin%20Champagnie\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Justin+Champagnie\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:38:24.522Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Justin+Champagnie",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Justin%20Champagnie"
+}

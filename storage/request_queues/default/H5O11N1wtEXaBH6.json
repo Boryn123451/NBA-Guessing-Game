@@ -1,0 +1,9 @@
+{
+	"id": "H5O11N1wtEXaBH6",
+	"json": "{\"id\":\"H5O11N1wtEXaBH6\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Seth%20Curry\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Seth%20Curry\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Seth+Curry\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:42:54.545Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Seth+Curry",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Seth%20Curry"
+}

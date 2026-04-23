@@ -3,6 +3,7 @@ import { DateTime } from 'luxon'
 import type {
   ClueMode,
   DifficultyId,
+  EntryDecadeId,
   EventModeId,
   GameMode,
   LocalRecords,
@@ -16,6 +17,7 @@ export interface RecordContext {
   clueMode: ClueMode
   themeId: PlayerThemeId
   eventId: EventModeId | null
+  entryDecadeId: EntryDecadeId | null
   didWin: boolean
   guessCount: number
   dateKey: string

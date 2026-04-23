@@ -1,0 +1,9 @@
+{
+	"id": "OEUUJ0tw0e7zIPs",
+	"json": "{\"id\":\"OEUUJ0tw0e7zIPs\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aaron%20Harrison\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aaron%20Harrison\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aaron+Harrison\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:45:18.591Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Aaron+Harrison",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Aaron%20Harrison"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "8Joec7tI0C3smXh",
+	"json": "{\"id\":\"8Joec7tI0C3smXh\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Luguentz%20Dort\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Luguentz%20Dort\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Luguentz+Dort\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:39:09.543Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Luguentz+Dort",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Luguentz%20Dort"
+}

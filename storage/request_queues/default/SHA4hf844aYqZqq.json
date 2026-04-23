@@ -1,0 +1,9 @@
+{
+	"id": "SHA4hf844aYqZqq",
+	"json": "{\"id\":\"SHA4hf844aYqZqq\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Sion%20James\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Sion%20James\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Sion+James\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:43:06.545Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Sion+James",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Sion%20James"
+}

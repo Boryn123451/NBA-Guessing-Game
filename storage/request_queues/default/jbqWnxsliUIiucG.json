@@ -1,0 +1,9 @@
+{
+	"id": "jbqWnxsliUIiucG",
+	"json": "{\"id\":\"jbqWnxsliUIiucG\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Brandon%20Williams\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Brandon%20Williams\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Brandon+Williams\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:34:33.551Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Brandon+Williams",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Brandon%20Williams"
+}

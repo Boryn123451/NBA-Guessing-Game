@@ -1,0 +1,9 @@
+{
+	"id": "LcQNNxqajGluUmF",
+	"json": "{\"id\":\"LcQNNxqajGluUmF\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jock%20Landale\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jock%20Landale\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jock+Landale\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:37:33.525Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Jock+Landale",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Jock%20Landale"
+}

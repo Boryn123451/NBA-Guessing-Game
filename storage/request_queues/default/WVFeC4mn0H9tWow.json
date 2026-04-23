@@ -1,0 +1,9 @@
+{
+	"id": "WVFeC4mn0H9tWow",
+	"json": "{\"id\":\"WVFeC4mn0H9tWow\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Colin%20Castleton\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Colin%20Castleton\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Colin+Castleton\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:35:00.504Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Colin+Castleton",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Colin%20Castleton"
+}

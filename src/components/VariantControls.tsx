@@ -3,6 +3,7 @@ import type { PostseasonRule } from '../lib/nba/postseason'
 import type {
   ClueMode,
   DifficultyId,
+  EntryDecadeId,
   GameMode,
   PlayerPoolScopeId,
   PlayerThemeId,
@@ -23,6 +24,13 @@ interface PlayerPoolScopeOption {
   disabled: boolean
 }
 
+interface EntryDecadeOption {
+  id: EntryDecadeId | null
+  label: string
+  count: number
+  disabled: boolean
+}
+
 interface VariantControlsProps {
   mode: GameMode
   clueMode: ClueMode
@@ -30,6 +38,8 @@ interface VariantControlsProps {
   difficultyOptions: DifficultyConfig[]
   playerPoolScope: PlayerPoolScopeId
   playerPoolScopeOptions: PlayerPoolScopeOption[]
+  entryDecadeId: EntryDecadeId | null
+  entryDecadeOptions: EntryDecadeOption[]
   themeId: PlayerThemeId
   activePlayerCount: number
   activePoolSummary: string
@@ -38,11 +48,13 @@ interface VariantControlsProps {
   isCompact?: boolean
   showCareerPathOption: boolean
   showDraftModeOption: boolean
+  showEntryDecadeFilter: boolean
   showPracticePostseasonToggle: boolean
   showThemeFilters: boolean
   postseasonRule: PostseasonRule
   onClueModeChange: (clueMode: ClueMode) => void
   onDifficultyChange: (difficultyId: DifficultyId) => void
+  onEntryDecadeChange: (decadeId: EntryDecadeId | null) => void
   onPlayerPoolScopeChange: (scopeId: PlayerPoolScopeId) => void
   onPracticeIncludePostseasonChange: (enabled: boolean) => void
   onThemeChange: (themeId: PlayerThemeId) => void
@@ -54,11 +66,14 @@ export function VariantControls({
   clueMode,
   difficultyId,
   difficultyOptions,
+  entryDecadeId,
+  entryDecadeOptions,
   isCompact = false,
   locked,
   mode,
   onClueModeChange,
   onDifficultyChange,
+  onEntryDecadeChange,
   onPlayerPoolScopeChange,
   onPracticeIncludePostseasonChange,
   onThemeChange,
@@ -67,6 +82,7 @@ export function VariantControls({
   postseasonRule,
   showCareerPathOption,
   showDraftModeOption,
+  showEntryDecadeFilter,
   showPracticePostseasonToggle,
   showThemeFilters,
   themeId,
@@ -74,9 +90,26 @@ export function VariantControls({
 }: VariantControlsProps) {
   const activeDifficulty =
     difficultyOptions.find((option) => option.id === difficultyId) ?? difficultyOptions[1]
+  const activeScopeDescription =
+    playerPoolScopeOptions.find((scope) => scope.id === playerPoolScope)?.description ?? ''
 
   return (
     <section className={`variant-controls ${isCompact ? 'is-compact' : ''}`}>
+      <div className="panel-heading">
+        <span className="eyebrow">Gameplay settings</span>
+        <h3>Board setup</h3>
+      </div>
+      <p className="variant-controls__intro">
+        {mode === 'daily'
+          ? 'Daily keeps the shared answer pool fixed. You can still adjust the challenge and clue set before the first guess.'
+          : 'Set the pool, clue set, and challenge before your first guess. Practice keeps every gameplay rule available.'}
+      </p>
+      <div className="variant-controls__meta">
+        <span className="meta-pill">{activeDifficulty.label}</span>
+        <span className="meta-pill">{mode === 'daily' ? 'Daily rules locked to current roster' : playerPoolScopeOptions.find((scope) => scope.id === playerPoolScope)?.label}</span>
+        <span className="meta-pill">{activePlayerCount} eligible players</span>
+      </div>
+
       <div className="variant-controls__group">
         <span className="settings-panel__label">Difficulty</span>
         {isCompact ? (
@@ -177,13 +210,62 @@ export function VariantControls({
           )}
           <div className="variant-controls__summary">
             <span className="variant-controls__summary-copy">
-              {
-                playerPoolScopeOptions.find((scope) => scope.id === playerPoolScope)?.description
-              }
+              {activeScopeDescription}
             </span>
             {playerPoolScope === 'history' ? (
               <strong>History mode stays practice-only and uses difficulty-aware curation.</strong>
             ) : null}
+          </div>
+        </div>
+      ) : null}
+
+      {mode === 'practice' && showEntryDecadeFilter ? (
+        <div className="variant-controls__group">
+          <span className="settings-panel__label">Era</span>
+          {isCompact ? (
+            <select
+              className="variant-controls__select"
+              disabled={locked}
+              value={entryDecadeId ?? 'all'}
+              onChange={(event) =>
+                onEntryDecadeChange(
+                  event.target.value === 'all'
+                    ? null
+                    : (event.target.value as EntryDecadeId),
+                )
+              }
+            >
+              {entryDecadeOptions.map((option) => (
+                <option
+                  key={option.id ?? 'all'}
+                  value={option.id ?? 'all'}
+                  disabled={option.disabled}
+                >
+                  {`${option.label} (${option.count})`}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <div className="variant-controls__chips">
+              {entryDecadeOptions.map((option) => (
+                <button
+                  key={option.id ?? 'all'}
+                  className={`theme-chip ${option.id === entryDecadeId ? 'is-active' : ''}`}
+                  type="button"
+                  disabled={locked || option.disabled}
+                  onClick={() => onEntryDecadeChange(option.id)}
+                >
+                  <span>{option.label}</span>
+                  <strong>{option.count}</strong>
+                </button>
+              ))}
+            </div>
+          )}
+          <div className="variant-controls__summary">
+            <span className="variant-controls__summary-copy">
+              Era filters use the normalized entry class year for both the answer pool and the search list.
+            </span>
+            {entryDecadeId ? <strong>{entryDecadeId} only</strong> : <strong>All eras</strong>}
           </div>
         </div>
       ) : null}

@@ -1,0 +1,9 @@
+{
+	"id": "ZkdlMk1xiUgKIWQ",
+	"json": "{\"id\":\"ZkdlMk1xiUgKIWQ\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Trendon%20Watford\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Trendon%20Watford\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Trendon+Watford\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:43:54.564Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Trendon+Watford",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Trendon%20Watford"
+}

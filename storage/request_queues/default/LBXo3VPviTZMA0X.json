@@ -1,0 +1,9 @@
+{
+	"id": "LBXo3VPviTZMA0X",
+	"json": "{\"id\":\"LBXo3VPviTZMA0X\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aaron%20Gray\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aaron%20Gray\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aaron+Gray\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:45:15.598Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Aaron+Gray",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Aaron%20Gray"
+}

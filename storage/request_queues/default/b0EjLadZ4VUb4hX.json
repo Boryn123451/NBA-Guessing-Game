@@ -1,0 +1,9 @@
+{
+	"id": "b0EjLadZ4VUb4hX",
+	"json": "{\"id\":\"b0EjLadZ4VUb4hX\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Taurean%20Prince\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Taurean%20Prince\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Taurean+Prince\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:43:36.580Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Taurean+Prince",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Taurean%20Prince"
+}

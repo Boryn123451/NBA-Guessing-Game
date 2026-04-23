@@ -1,0 +1,9 @@
+{
+	"id": "I5ASUt2pUivKD9t",
+	"json": "{\"id\":\"I5ASUt2pUivKD9t\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aaron%20McKie\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aaron%20McKie\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aaron+McKie\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:45:30.567Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Aaron+McKie",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Aaron%20McKie"
+}

@@ -2,6 +2,7 @@ import { CLUE_KEYS } from './comparison'
 import { DRAFT_CLUE_KEYS } from './draftMode'
 import {
   formatClueModeLabel,
+  formatEntryDecadeLabel,
   formatDifficultyLabel,
   formatEventModeLabel,
   formatModeLabel,
@@ -11,6 +12,7 @@ import {
 import type {
   ClueMode,
   DifficultyId,
+  EntryDecadeId,
   EventModeId,
   GameMode,
   GuessResult,
@@ -35,6 +37,7 @@ export function buildShareSummary(options: {
   clueMode: ClueMode
   themeId: PlayerThemeId
   playerPoolScope: PlayerPoolScopeId
+  entryDecadeId: EntryDecadeId | null
   difficultyId: DifficultyId
   eventId: EventModeId | null
   maxGuesses: number
@@ -47,6 +50,7 @@ export function buildShareSummary(options: {
     clueMode,
     dateKey,
     difficultyId,
+    entryDecadeId,
     eventId,
     guessCount,
     guesses,
@@ -66,7 +70,7 @@ export function buildShareSummary(options: {
   const modeLine = mode === 'daily' ? `${title} ${dateKey}` : title
   const variantLine =
     playerPoolScope === 'history'
-      ? `${formatClueModeLabel(clueMode)} | ${formatPlayerPoolScopeLabel(playerPoolScope)}`
+      ? `${formatClueModeLabel(clueMode)} | ${formatPlayerPoolScopeLabel(playerPoolScope)} | ${formatEntryDecadeLabel(entryDecadeId)}`
       : `${formatClueModeLabel(clueMode)} | ${formatThemeLabel(themeId)}`
   const eventLine = eventId ? `Event | ${formatEventModeLabel(eventId)}` : null
   const difficultyLine = formatDifficultyLabel(difficultyId)

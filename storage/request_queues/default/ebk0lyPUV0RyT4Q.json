@@ -1,0 +1,9 @@
+{
+	"id": "ebk0lyPUV0RyT4Q",
+	"json": "{\"id\":\"ebk0lyPUV0RyT4Q\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Simone%20Fontecchio\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Simone%20Fontecchio\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Simone+Fontecchio\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:43:03.560Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Simone+Fontecchio",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Simone%20Fontecchio"
+}

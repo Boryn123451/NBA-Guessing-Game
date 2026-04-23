@@ -1,0 +1,9 @@
+{
+	"id": "k2C2GM70S1YTlGJ",
+	"json": "{\"id\":\"k2C2GM70S1YTlGJ\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Terance%20Mann\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Terance%20Mann\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Terance+Mann\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:43:42.561Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Terance+Mann",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Terance%20Mann"
+}

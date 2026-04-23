@@ -1,0 +1,9 @@
+{
+	"id": "1UnEEJ3Y6UVvvzn",
+	"json": "{\"id\":\"1UnEEJ3Y6UVvvzn\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Josh%20Okogie\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Josh%20Okogie\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Josh+Okogie\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:38:03.893Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Josh+Okogie",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Josh%20Okogie"
+}

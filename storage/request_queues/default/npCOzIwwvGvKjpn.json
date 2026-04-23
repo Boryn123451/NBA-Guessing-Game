@@ -1,0 +1,9 @@
+{
+	"id": "npCOzIwwvGvKjpn",
+	"json": "{\"id\":\"npCOzIwwvGvKjpn\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aleksandar%20Radojevic\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aleksandar%20Radojevic\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aleksandar+Radojevic\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:49:06.601Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Aleksandar+Radojevic",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Aleksandar%20Radojevic"
+}

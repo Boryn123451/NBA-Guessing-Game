@@ -1,0 +1,9 @@
+{
+	"id": "Dj6PhWg0rorCi8z",
+	"json": "{\"id\":\"Dj6PhWg0rorCi8z\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al%20Roges\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al%20Roges\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al+Roges\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:48:06.558Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Al+Roges",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Al%20Roges"
+}

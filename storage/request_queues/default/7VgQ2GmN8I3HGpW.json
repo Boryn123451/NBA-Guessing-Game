@@ -1,0 +1,9 @@
+{
+	"id": "7VgQ2GmN8I3HGpW",
+	"json": "{\"id\":\"7VgQ2GmN8I3HGpW\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alexander%20Rosenberg\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alexander%20Rosenberg\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alexander+Rosenberg\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:50:12.588Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Alexander+Rosenberg",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Alexander%20Rosenberg"
+}

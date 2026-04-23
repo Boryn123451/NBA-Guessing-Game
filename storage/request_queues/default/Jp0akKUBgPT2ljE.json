@@ -1,0 +1,9 @@
+{
+	"id": "Jp0akKUBgPT2ljE",
+	"json": "{\"id\":\"Jp0akKUBgPT2ljE\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Nate%20Williams\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Nate%20Williams\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Nate+Williams\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:40:33.572Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Nate+Williams",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Nate%20Williams"
+}

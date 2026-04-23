@@ -1,0 +1,9 @@
+{
+	"id": "IjMHNKK4lUlzT4C",
+	"json": "{\"id\":\"IjMHNKK4lUlzT4C\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Stivrins\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Stivrins\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex+Stivrins\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:50:03.629Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Alex+Stivrins",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Stivrins"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "YhbuE3uTiWwvPNj",
+	"json": "{\"id\":\"YhbuE3uTiWwvPNj\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Drew%20Timme\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Drew%20Timme\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Drew+Timme\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:35:42.506Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Drew+Timme",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Drew%20Timme"
+}

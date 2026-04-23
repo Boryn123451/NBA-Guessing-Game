@@ -1,0 +1,9 @@
+{
+	"id": "Kh49zDRhzEBju2h",
+	"json": "{\"id\":\"Kh49zDRhzEBju2h\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Olivier%20Sarr\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Olivier%20Sarr\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Olivier+Sarr\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:41:24.528Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Olivier+Sarr",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Olivier%20Sarr"
+}

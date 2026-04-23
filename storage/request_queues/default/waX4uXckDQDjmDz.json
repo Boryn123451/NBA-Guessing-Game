@@ -1,0 +1,9 @@
+{
+	"id": "waX4uXckDQDjmDz",
+	"json": "{\"id\":\"waX4uXckDQDjmDz\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Yuki%20Kawamura\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Yuki%20Kawamura\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Yuki+Kawamura\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:44:42.549Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Yuki+Kawamura",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Yuki%20Kawamura"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "GXadIV3Irjm5zUZ",
+	"json": "{\"id\":\"GXadIV3Irjm5zUZ\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Ivica%20Zubac\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Ivica%20Zubac\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Ivica+Zubac\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:36:39.499Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Ivica+Zubac",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Ivica%20Zubac"
+}

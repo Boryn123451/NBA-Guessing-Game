@@ -1,0 +1,9 @@
+{
+	"id": "lR8TL249CWQDeIz",
+	"json": "{\"id\":\"lR8TL249CWQDeIz\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Scales\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Scales\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex+Scales\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:49:57.619Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Alex+Scales",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Scales"
+}

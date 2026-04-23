@@ -1,0 +1,9 @@
+{
+	"id": "rYVtUZ9jYKiKG01",
+	"json": "{\"id\":\"rYVtUZ9jYKiKG01\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Garcia\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Garcia\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex+Garcia\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:49:36.620Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Alex+Garcia",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Garcia"
+}

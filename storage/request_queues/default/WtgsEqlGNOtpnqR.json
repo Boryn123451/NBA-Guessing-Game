@@ -1,0 +1,9 @@
+{
+	"id": "WtgsEqlGNOtpnqR",
+	"json": "{\"id\":\"WtgsEqlGNOtpnqR\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=OG%20Anunoby\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=OG%20Anunoby\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=OG+Anunoby\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:41:21.567Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=OG+Anunoby",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=OG%20Anunoby"
+}

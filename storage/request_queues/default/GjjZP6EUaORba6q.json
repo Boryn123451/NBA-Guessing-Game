@@ -1,0 +1,9 @@
+{
+	"id": "GjjZP6EUaORba6q",
+	"json": "{\"id\":\"GjjZP6EUaORba6q\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Morales\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Morales\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex+Morales\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:34:12.844Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Alex+Morales",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Morales"
+}

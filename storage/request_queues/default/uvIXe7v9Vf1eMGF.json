@@ -1,0 +1,9 @@
+{
+	"id": "uvIXe7v9Vf1eMGF",
+	"json": "{\"id\":\"uvIXe7v9Vf1eMGF\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Hayden%20Gray\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Hayden%20Gray\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Hayden+Gray\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:36:15.695Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Hayden+Gray",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Hayden%20Gray"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "ounGd6mU3VXX7qm",
+	"json": "{\"id\":\"ounGd6mU3VXX7qm\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Vladislav%20Goldin\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Vladislav%20Goldin\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Vladislav+Goldin\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:44:12.565Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Vladislav+Goldin",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Vladislav%20Goldin"
+}

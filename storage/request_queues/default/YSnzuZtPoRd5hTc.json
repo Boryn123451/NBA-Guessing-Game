@@ -1,0 +1,9 @@
+{
+	"id": "YSnzuZtPoRd5hTc",
+	"json": "{\"id\":\"YSnzuZtPoRd5hTc\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Keegan%20Murray\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Keegan%20Murray\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Keegan+Murray\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:38:45.527Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Keegan+Murray",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Keegan%20Murray"
+}

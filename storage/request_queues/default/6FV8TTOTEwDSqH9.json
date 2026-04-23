@@ -1,0 +1,9 @@
+{
+	"id": "6FV8TTOTEwDSqH9",
+	"json": "{\"id\":\"6FV8TTOTEwDSqH9\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jahmai%20Mashack\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jahmai%20Mashack\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jahmai+Mashack\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:37:04.794Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Jahmai+Mashack",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Jahmai%20Mashack"
+}

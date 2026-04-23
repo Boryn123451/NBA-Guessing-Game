@@ -1,0 +1,9 @@
+{
+	"id": "oGdlPomRkVqs7AC",
+	"json": "{\"id\":\"oGdlPomRkVqs7AC\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Keon%20Ellis\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Keon%20Ellis\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Keon+Ellis\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:38:51.546Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Keon+Ellis",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Keon%20Ellis"
+}

@@ -1,4 +1,5 @@
 import { DRAFT_CLUE_KEYS, DRAFT_CLUE_LABELS, getDraftPickBucketLabel } from '../lib/nba/draftMode'
+import { getPlayerEntryDraftYear } from '../lib/nba/decades'
 import type { DraftGuessResult } from '../lib/nba/draftMode'
 import { formatJerseyNumber, formatNumericDirectionSymbol } from '../lib/nba/format'
 import { PlayerAvatar } from './PlayerAvatar'
@@ -25,7 +26,7 @@ function getCellValue(result: DraftGuessResult, key: (typeof DRAFT_CLUE_KEYS)[nu
     case 'draftTeam':
       return player.draft.teamAbbreviation ?? 'N/A'
     case 'draftYear':
-      return player.draft.year ?? 'N/A'
+      return getPlayerEntryDraftYear(player) ?? 'N/A'
     case 'draftRound':
       return player.draft.isUndrafted ? 'UDFA' : formatJerseyNumber(player.draft.round)
     case 'draftPickBucket':

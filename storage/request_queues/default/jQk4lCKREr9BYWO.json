@@ -1,0 +1,9 @@
+{
+	"id": "jQk4lCKREr9BYWO",
+	"json": "{\"id\":\"jQk4lCKREr9BYWO\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Obi%20Toppin\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Obi%20Toppin\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Obi+Toppin\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:41:15.535Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Obi+Toppin",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Obi%20Toppin"
+}

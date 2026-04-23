@@ -1,0 +1,9 @@
+{
+	"id": "0PuLb1CXdfD7erL",
+	"json": "{\"id\":\"0PuLb1CXdfD7erL\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Taj%20Gibson\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Taj%20Gibson\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Taj+Gibson\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:43:30.567Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Taj+Gibson",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Taj%20Gibson"
+}

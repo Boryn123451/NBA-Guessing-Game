@@ -1,0 +1,9 @@
+{
+	"id": "5nCibcStHISvbHD",
+	"json": "{\"id\":\"5nCibcStHISvbHD\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adolph%20Hoefer\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adolph%20Hoefer\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adolph+Hoefer\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:46:21.562Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Adolph+Hoefer",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Adolph%20Hoefer"
+}

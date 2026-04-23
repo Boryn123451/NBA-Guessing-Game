@@ -1,0 +1,9 @@
+{
+	"id": "IpTbEMcC5qJHSk7",
+	"json": "{\"id\":\"IpTbEMcC5qJHSk7\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Dennis%20Schr%C3%B6der\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Dennis%20Schr%C3%B6der\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Dennis+Schr%C3%B6der\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:35:27.506Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Dennis+Schr%C3%B6der",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Dennis%20Schr%C3%B6der"
+}

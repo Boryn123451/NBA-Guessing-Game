@@ -1,0 +1,9 @@
+{
+	"id": "5p0Qy4bcBsfy1aN",
+	"json": "{\"id\":\"5p0Qy4bcBsfy1aN\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alan%20Sawyer\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alan%20Sawyer\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alan+Sawyer\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:48:39.587Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Alan+Sawyer",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Alan%20Sawyer"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "tsIlHN7DnNr7Kno",
+	"json": "{\"id\":\"tsIlHN7DnNr7Kno\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Wendell%20Carter%20Jr.\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Wendell%20Carter%20Jr.\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Wendell+Carter+Jr.\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:44:21.573Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Wendell+Carter+Jr.",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Wendell%20Carter%20Jr."
+}

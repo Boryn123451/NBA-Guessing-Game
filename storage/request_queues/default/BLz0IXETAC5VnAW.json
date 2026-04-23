@@ -1,0 +1,9 @@
+{
+	"id": "BLz0IXETAC5VnAW",
+	"json": "{\"id\":\"BLz0IXETAC5VnAW\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Max%20Shulga\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Max%20Shulga\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Max+Shulga\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:39:51.524Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Max+Shulga",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Max%20Shulga"
+}

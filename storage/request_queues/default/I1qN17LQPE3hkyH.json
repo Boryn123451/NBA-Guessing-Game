@@ -1,0 +1,9 @@
+{
+	"id": "I1qN17LQPE3hkyH",
+	"json": "{\"id\":\"I1qN17LQPE3hkyH\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Micah%20Potter\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Micah%20Potter\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Micah+Potter\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:40:06.526Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Micah+Potter",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Micah%20Potter"
+}

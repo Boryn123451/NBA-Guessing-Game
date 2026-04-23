@@ -1,0 +1,9 @@
+{
+	"id": "Dcs80fnpGFEwfT7",
+	"json": "{\"id\":\"Dcs80fnpGFEwfT7\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Kenrich%20Williams\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Kenrich%20Williams\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Kenrich+Williams\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:38:48.522Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Kenrich+Williams",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Kenrich%20Williams"
+}

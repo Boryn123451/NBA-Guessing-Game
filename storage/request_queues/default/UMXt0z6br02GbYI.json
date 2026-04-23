@@ -1,0 +1,9 @@
+{
+	"id": "UMXt0z6br02GbYI",
+	"json": "{\"id\":\"UMXt0z6br02GbYI\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Caleb%20Love\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Caleb%20Love\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Caleb+Love\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:34:39.519Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Caleb+Love",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Caleb%20Love"
+}

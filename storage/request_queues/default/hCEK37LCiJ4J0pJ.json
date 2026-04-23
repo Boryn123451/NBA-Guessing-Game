@@ -1,0 +1,9 @@
+{
+	"id": "hCEK37LCiJ4J0pJ",
+	"json": "{\"id\":\"hCEK37LCiJ4J0pJ\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Will%20Riley\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Will%20Riley\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Will+Riley\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:44:30.577Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Will+Riley",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Will%20Riley"
+}

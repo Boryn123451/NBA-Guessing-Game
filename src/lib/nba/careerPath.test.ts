@@ -16,6 +16,7 @@ describe('career path clues', () => {
         isUndrafted: true,
       },
       career: {
+        ...buildPlayerRecord().career,
         debutYear: 2022,
         finalSeasonYear: 2025,
         seasonsPlayed: 4,

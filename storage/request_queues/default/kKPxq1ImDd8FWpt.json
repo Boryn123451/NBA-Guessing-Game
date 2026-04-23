@@ -1,0 +1,9 @@
+{
+	"id": "kKPxq1ImDd8FWpt",
+	"json": "{\"id\":\"kKPxq1ImDd8FWpt\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=A.J.%20English\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=A.J.%20English\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=A.J.+English\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:45:03.577Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=A.J.+English",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=A.J.%20English"
+}

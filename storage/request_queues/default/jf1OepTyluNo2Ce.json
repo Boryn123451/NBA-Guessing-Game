@@ -1,0 +1,9 @@
+{
+	"id": "jf1OepTyluNo2Ce",
+	"json": "{\"id\":\"jf1OepTyluNo2Ce\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adam%20Harrington\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adam%20Harrington\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adam+Harrington\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:45:57.566Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Adam+Harrington",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Adam%20Harrington"
+}

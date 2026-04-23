@@ -1,0 +1,9 @@
+{
+	"id": "B7dVg0UKIlgyQyB",
+	"json": "{\"id\":\"B7dVg0UKIlgyQyB\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Quentin%20Grimes\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Quentin%20Grimes\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Quentin+Grimes\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:41:45.540Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Quentin+Grimes",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Quentin%20Grimes"
+}

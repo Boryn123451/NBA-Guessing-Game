@@ -1,0 +1,9 @@
+{
+	"id": "8aHshBkUcJMUEMh",
+	"json": "{\"id\":\"8aHshBkUcJMUEMh\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alexander%20Ellis\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alexander%20Ellis\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alexander+Ellis\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:50:06.621Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Alexander+Ellis",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Alexander%20Ellis"
+}

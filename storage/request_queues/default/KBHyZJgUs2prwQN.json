@@ -1,0 +1,9 @@
+{
+	"id": "KBHyZJgUs2prwQN",
+	"json": "{\"id\":\"KBHyZJgUs2prwQN\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=John%20Konchar\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=John%20Konchar\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=John+Konchar\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:37:39.518Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=John+Konchar",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=John%20Konchar"
+}

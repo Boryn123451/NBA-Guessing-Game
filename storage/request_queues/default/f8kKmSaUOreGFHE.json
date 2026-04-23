@@ -1,0 +1,9 @@
+{
+	"id": "f8kKmSaUOreGFHE",
+	"json": "{\"id\":\"f8kKmSaUOreGFHE\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alec%20Peters\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alec%20Peters\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alec+Peters\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:48:57.613Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Alec+Peters",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Alec%20Peters"
+}

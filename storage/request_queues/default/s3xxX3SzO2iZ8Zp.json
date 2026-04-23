@@ -1,0 +1,9 @@
+{
+	"id": "s3xxX3SzO2iZ8Zp",
+	"json": "{\"id\":\"s3xxX3SzO2iZ8Zp\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Isaiah%20Joe\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Isaiah%20Joe\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Isaiah+Joe\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:36:27.534Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Isaiah+Joe",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Isaiah%20Joe"
+}

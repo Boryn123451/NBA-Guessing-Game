@@ -1,5 +1,5 @@
+import { normalizePlayerAge } from './age'
 import { getDifficultyDefinition } from './difficulty'
-import { DateTime } from 'luxon'
 
 import { canonicalizePosition } from './normalize'
 import type {
@@ -23,31 +23,7 @@ export const CLUE_KEYS: ClueKey[] = [
 ]
 
 export function getPlayerAge(player: PlayerRecord, referenceDate: string): number | null {
-  if (player.currentAge !== null) {
-    return player.currentAge
-  }
-
-  if (!player.birthDate) {
-    return null
-  }
-
-  const birthDate = DateTime.fromISO(player.birthDate, { zone: 'utc' }).startOf('day')
-  const currentDate = DateTime.fromISO(referenceDate, { zone: 'utc' }).startOf('day')
-
-  if (!birthDate.isValid || !currentDate.isValid) {
-    return null
-  }
-
-  let age = currentDate.year - birthDate.year
-
-  if (
-    currentDate.month < birthDate.month ||
-    (currentDate.month === birthDate.month && currentDate.day < birthDate.day)
-  ) {
-    age -= 1
-  }
-
-  return age
+  return normalizePlayerAge(player.birthDate, player.currentAge, referenceDate)
 }
 
 export function getAgeBucketIndex(age: number | null): number | null {

@@ -1,0 +1,9 @@
+{
+	"id": "tbowi8WiFbxoTVU",
+	"json": "{\"id\":\"tbowi8WiFbxoTVU\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Ja'Kobe%20Walter\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Ja%27Kobe%20Walter\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Ja%27Kobe+Walter\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:36:45.514Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Ja%27Kobe+Walter",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Ja'Kobe%20Walter"
+}

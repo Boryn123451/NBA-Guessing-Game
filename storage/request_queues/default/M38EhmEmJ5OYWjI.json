@@ -1,0 +1,9 @@
+{
+	"id": "M38EhmEmJ5OYWjI",
+	"json": "{\"id\":\"M38EhmEmJ5OYWjI\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jabari%20Walker\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jabari%20Walker\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jabari+Walker\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:36:51.507Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Jabari+Walker",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Jabari%20Walker"
+}

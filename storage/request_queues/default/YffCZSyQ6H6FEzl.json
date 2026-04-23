@@ -1,0 +1,9 @@
+{
+	"id": "YffCZSyQ6H6FEzl",
+	"json": "{\"id\":\"YffCZSyQ6H6FEzl\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Reed%20Sheppard\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Reed%20Sheppard\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Reed+Sheppard\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:42:03.550Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Reed+Sheppard",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Reed%20Sheppard"
+}

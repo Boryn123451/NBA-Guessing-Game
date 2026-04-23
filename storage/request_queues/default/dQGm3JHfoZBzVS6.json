@@ -1,0 +1,9 @@
+{
+	"id": "dQGm3JHfoZBzVS6",
+	"json": "{\"id\":\"dQGm3JHfoZBzVS6\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Zaccharie%20Risacher\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Zaccharie%20Risacher\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Zaccharie+Risacher\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:44:48.572Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Zaccharie+Risacher",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Zaccharie%20Risacher"
+}

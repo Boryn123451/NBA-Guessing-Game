@@ -1,0 +1,9 @@
+{
+	"id": "1lFOglF4DrrsGYA",
+	"json": "{\"id\":\"1lFOglF4DrrsGYA\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jusuf%20Nurki%C4%87\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jusuf%20Nurki%C4%87\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jusuf+Nurki%C4%87\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:38:30.522Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Jusuf+Nurki%C4%87",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Jusuf%20Nurki%C4%87"
+}

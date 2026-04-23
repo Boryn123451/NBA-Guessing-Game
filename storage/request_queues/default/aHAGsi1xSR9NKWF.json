@@ -1,0 +1,9 @@
+{
+	"id": "aHAGsi1xSR9NKWF",
+	"json": "{\"id\":\"aHAGsi1xSR9NKWF\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Daniss%20Jenkins\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Daniss%20Jenkins\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Daniss+Jenkins\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:35:18.476Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Daniss+Jenkins",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Daniss%20Jenkins"
+}

@@ -10,6 +10,7 @@ const variant: GameVariant = {
   themeId: 'classic',
   eventId: null,
   includePostseason: false,
+  entryDecadeId: null,
 }
 
 describe('player pools', () => {
@@ -85,15 +86,20 @@ describe('player pools', () => {
       id: 21,
       displayName: 'Accessible Veteran',
       isCurrentPlayer: false,
+      birthDate: '1958-05-14',
       snapshot: {
         ...buildPlayerRecord().snapshot,
-        pointsPerGame: 12.4,
+        pointsPerGame: 21.4,
         minutesPerGame: null,
       },
       career: {
         ...buildPlayerRecord().career,
-        seasonsPlayed: 9,
-        championships: 1,
+        seasonsPlayed: 14,
+        allStarAppearances: 8,
+        allNbaSelections: 5,
+        championships: 3,
+        isHallOfFame: true,
+        accolades: ['Hall of Fame', 'All-Star x8'],
         hasRichMetadata: true,
       },
     })
@@ -101,6 +107,7 @@ describe('player pools', () => {
       id: 22,
       displayName: 'Obscure Fringe Forward',
       isCurrentPlayer: false,
+      birthDate: '1975-08-03',
       snapshot: {
         ...buildPlayerRecord().snapshot,
         pointsPerGame: 3.1,
@@ -111,6 +118,8 @@ describe('player pools', () => {
         seasonsPlayed: 2,
         championships: 0,
         allStarAppearances: 0,
+        allNbaSelections: 0,
+        accolades: [],
         hasRichMetadata: true,
       },
       draft: {
@@ -129,5 +138,93 @@ describe('player pools', () => {
         'easy',
       ).map((player) => player.id),
     ).toEqual([21])
+  })
+
+  it('keeps incomplete historical records out of impossible history pools', () => {
+    const incompleteHistory = buildPlayerRecord({
+      id: 31,
+      displayName: 'Incomplete History',
+      isCurrentPlayer: false,
+      birthDate: null,
+      position: 'N/A',
+      heightInInches: null,
+      heightCm: null,
+      headshotUrl: null,
+      draft: {
+        ...buildPlayerRecord().draft,
+        year: null,
+        isUndrafted: false,
+      },
+      career: {
+        ...buildPlayerRecord().career,
+        debutYear: null,
+        seasonsPlayed: 1,
+        accolades: [],
+      },
+    })
+    const completeHistory = buildPlayerRecord({
+      id: 32,
+      displayName: 'Complete History',
+      isCurrentPlayer: false,
+      birthDate: '1984-02-10',
+      snapshot: {
+        ...buildPlayerRecord().snapshot,
+        pointsPerGame: 10.2,
+      },
+      career: {
+        ...buildPlayerRecord().career,
+        seasonsPlayed: 8,
+        championships: 1,
+        accolades: ['NBA Champion'],
+      },
+    })
+
+    expect(
+      getPlayablePlayerPool(
+        [incompleteHistory, completeHistory],
+        {
+          ...variant,
+          playerPoolScope: 'history',
+        },
+        'impossible',
+      ).map((player) => player.id),
+    ).toEqual([32])
+  })
+
+  it('keeps answer and guess pools inside the selected entry decade', () => {
+    const nineties = buildPlayerRecord({
+      id: 41,
+      displayName: 'Nineties Star',
+      isCurrentPlayer: false,
+      entryDraftYear: 1996,
+      entryDraftYearSource: 'draft',
+      draft: {
+        ...buildPlayerRecord().draft,
+        year: 1996,
+      },
+    })
+    const twoThousands = buildPlayerRecord({
+      id: 42,
+      displayName: 'Two Thousands Star',
+      isCurrentPlayer: false,
+      entryDraftYear: 2003,
+      entryDraftYearSource: 'draft',
+      draft: {
+        ...buildPlayerRecord().draft,
+        year: 2003,
+      },
+    })
+
+    expect(
+      getPlayablePlayerPool(
+        [nineties, twoThousands],
+        {
+          ...variant,
+          playerPoolScope: 'history',
+          entryDecadeId: '1990s',
+        },
+        'impossible',
+      ).map((player) => player.id),
+    ).toEqual([41])
   })
 })

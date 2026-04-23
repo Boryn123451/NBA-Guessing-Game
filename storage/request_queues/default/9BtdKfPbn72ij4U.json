@@ -1,0 +1,9 @@
+{
+	"id": "9BtdKfPbn72ij4U",
+	"json": "{\"id\":\"9BtdKfPbn72ij4U\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Joe%20Ingles\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Joe%20Ingles\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Joe+Ingles\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:37:36.492Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Joe+Ingles",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Joe%20Ingles"
+}

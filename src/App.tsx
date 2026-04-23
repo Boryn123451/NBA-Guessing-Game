@@ -20,6 +20,7 @@ import {
   formatAge,
   formatClueModeLabel,
   formatDifficultyLabel,
+  formatEntryDecadeLabel,
   formatEventModeLabel,
   formatHeight,
   formatModeLabel,
@@ -44,6 +45,7 @@ export default function App() {
   const difficultyLabel = formatDifficultyLabel(game.activeDifficultyId)
   const themeLabel = formatThemeLabel(game.activeThemeId)
   const playerPoolScopeLabel = formatPlayerPoolScopeLabel(game.activePlayerPoolScope)
+  const entryDecadeLabel = formatEntryDecadeLabel(game.entryDecadeId)
   const eventLabel = formatEventModeLabel(game.eventId)
   const boardEyebrowLabel =
     game.activePlayerPoolScope === 'history'
@@ -53,8 +55,8 @@ export default function App() {
     game.activeMode === 'daily'
       ? 'Daily full roster'
       : game.activePlayerPoolScope === 'history'
-        ? playerPoolScopeLabel
-      : game.eventId
+        ? `${playerPoolScopeLabel} | ${entryDecadeLabel}`
+        : game.eventId
         ? eventLabel
         : themeLabel
   const revealLine =
@@ -91,6 +93,10 @@ export default function App() {
     : game.activePlayerPoolScope === 'history'
       ? 'Track the all-time trail, stay within the difficulty rules, and identify the NBA player before the board runs dry.'
       : 'Track the roster trail, stay within the difficulty rules, and identify the current NBA player before the board runs dry.'
+  const rosterMetaLine =
+    game.activePlayerPoolScope === 'history'
+      ? `History pool uses recognizability curation by difficulty${game.entryDecadeId ? ` and locks to ${entryDecadeLabel}` : ''}.`
+      : 'Transaction-aware roster filter excludes active 10-day contracts.'
   const headerMetaPills = isMobileLayout
     ? [
         game.activeMode === 'daily'
@@ -317,18 +323,20 @@ export default function App() {
             <strong>
               Roster updated {formatRefreshDate(game.dataMeta.rosterFreshness.refreshedAt)}
             </strong>
-            {!isMobileLayout ? <span>{game.dataMeta.eligibility.rules[1]}</span> : null}
+            {!isMobileLayout ? <span>{rosterMetaLine}</span> : null}
           </div>
         </div>
 
         {isMobileLayout ? (
           <details className="mobile-disclosure">
-            <summary>Board setup</summary>
+            <summary>Gameplay settings</summary>
             <VariantControls
               activePlayerCount={game.activePlayerCount}
               clueMode={game.activeClueMode}
               difficultyId={game.activeDifficultyId}
               difficultyOptions={game.difficultyOptions}
+              entryDecadeId={game.entryDecadeId}
+              entryDecadeOptions={game.entryDecadeOptions}
               activePoolSummary={game.activePlayerPoolScopeSummary}
               isCompact
               locked={game.roundLocked}
@@ -338,12 +346,14 @@ export default function App() {
               postseasonRule={game.activePostseasonRule}
               showCareerPathOption={game.showCareerPathOption}
               showDraftModeOption={game.showDraftModeOption}
+              showEntryDecadeFilter={game.showEntryDecadeFilter}
               showPracticePostseasonToggle={game.showPracticePostseasonToggle}
               showThemeFilters={game.showThemeFilters}
               themeId={game.activeThemeId}
               themeOptions={game.themeOptions}
               onClueModeChange={game.setClueMode}
               onDifficultyChange={game.setDifficulty}
+              onEntryDecadeChange={game.setEntryDecadeId}
               onPlayerPoolScopeChange={game.setPlayerPoolScope}
               onPracticeIncludePostseasonChange={game.setPracticeIncludePostseason}
               onThemeChange={game.setThemeId}
@@ -355,6 +365,8 @@ export default function App() {
             clueMode={game.activeClueMode}
             difficultyId={game.activeDifficultyId}
             difficultyOptions={game.difficultyOptions}
+            entryDecadeId={game.entryDecadeId}
+            entryDecadeOptions={game.entryDecadeOptions}
             activePoolSummary={game.activePlayerPoolScopeSummary}
             locked={game.roundLocked}
             mode={game.activeMode}
@@ -363,12 +375,14 @@ export default function App() {
             postseasonRule={game.activePostseasonRule}
             showCareerPathOption={game.showCareerPathOption}
             showDraftModeOption={game.showDraftModeOption}
+            showEntryDecadeFilter={game.showEntryDecadeFilter}
             showPracticePostseasonToggle={game.showPracticePostseasonToggle}
             showThemeFilters={game.showThemeFilters}
             themeId={game.activeThemeId}
             themeOptions={game.themeOptions}
             onClueModeChange={game.setClueMode}
             onDifficultyChange={game.setDifficulty}
+            onEntryDecadeChange={game.setEntryDecadeId}
             onPlayerPoolScopeChange={game.setPlayerPoolScope}
             onPracticeIncludePostseasonChange={game.setPracticeIncludePostseason}
             onThemeChange={game.setThemeId}
@@ -400,7 +414,13 @@ export default function App() {
           difficulty={game.activeDifficulty}
           disabled={!game.canGuess}
           guessedIds={game.guessedIds}
-          label={game.activePlayerPoolScope === 'history' ? 'Search all-time players' : 'Search eligible players'}
+          label={
+            game.activePlayerPoolScope === 'history'
+              ? game.entryDecadeId
+                ? `Search ${entryDecadeLabel} players`
+                : 'Search all-time players'
+              : 'Search eligible players'
+          }
           players={game.players}
           onGuess={game.submitGuess}
         />

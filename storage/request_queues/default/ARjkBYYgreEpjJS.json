@@ -1,0 +1,9 @@
+{
+	"id": "ARjkBYYgreEpjJS",
+	"json": "{\"id\":\"ARjkBYYgreEpjJS\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Albert%20King\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Albert%20King\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Albert+King\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:48:48.611Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Albert+King",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Albert%20King"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "kK5VoDpQ4Zg4Ch2",
+	"json": "{\"id\":\"kK5VoDpQ4Zg4Ch2\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Abrines\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Abrines\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alex+Abrines\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:49:15.603Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Alex+Abrines",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Alex%20Abrines"
+}

@@ -19,6 +19,16 @@ export type ClueMode = 'standard' | 'career' | 'draft'
 
 export type PlayerPoolScopeId = 'current' | 'history'
 
+export type EntryDecadeId =
+  | '1950s'
+  | '1960s'
+  | '1970s'
+  | '1980s'
+  | '1990s'
+  | '2000s'
+  | '2010s'
+  | '2020s'
+
 export type DifficultyId =
   | 'easy'
   | 'medium'
@@ -120,6 +130,8 @@ export interface DraftDetails {
   isUndrafted: boolean
 }
 
+export type EntryDraftYearSource = 'draft' | 'undrafted-confirmed' | 'debut-fallback' | null
+
 export interface CareerProfile {
   debutYear: number | null
   finalSeasonYear: number | null
@@ -132,7 +144,18 @@ export interface CareerProfile {
   previousTeamAbbreviations: string[]
   previousTeamNames: string[]
   allStarAppearances: number
+  allNbaSelections: number
+  allDefensiveSelections: number
   championships: number
+  finalsMvpAwards: number
+  mvpAwards: number
+  rookieOfTheYearAwards: number
+  defensivePlayerOfTheYearAwards: number
+  scoringTitles: number
+  reboundTitles: number
+  assistTitles: number
+  isHallOfFame: boolean
+  isGreatest75: boolean
   accolades: string[]
   primaryAccolade: string | null
   hasRichMetadata: boolean
@@ -179,6 +202,8 @@ export interface PlayerRecord {
   country: string | null
   college: string | null
   draft: DraftDetails
+  entryDraftYear: number | null
+  entryDraftYearSource: EntryDraftYearSource
   career: CareerProfile
   snapshot: SeasonSnapshot
   flags: ThemeFlags
@@ -217,7 +242,7 @@ export interface EligibilityMetadata {
 }
 
 export interface PlayerPoolData {
-  schemaVersion: 4
+  schemaVersion: 4 | 5
   season: string
   refreshedAt: string
   asOfDate: string
@@ -235,6 +260,7 @@ export interface PlayerPoolData {
     allStarRoster: string
     playerAwards: string
     commonPlayerInfo?: string
+    basketballReference?: string
   }
   excludedTenDayPlayers: ExcludedTenDayPlayer[]
   players: PlayerRecord[]
@@ -283,6 +309,7 @@ export interface GameVariant {
   themeId: PlayerThemeId
   eventId: EventModeId | null
   includePostseason: boolean
+  entryDecadeId: EntryDecadeId | null
 }
 
 export interface StoredGameSession {
@@ -357,6 +384,7 @@ export interface DailyHistoryEntry {
   clueMode: ClueMode
   themeId: PlayerThemeId
   eventId: EventModeId | null
+  entryDecadeId: EntryDecadeId | null
 }
 
 export interface LocalStreaks {
@@ -395,6 +423,7 @@ export interface PersistedState {
     difficulty: DifficultyId
     eventId: EventModeId | null
     practiceIncludePostseason: boolean
+    entryDecadeId: EntryDecadeId | null
   }
   settings: {
     units: UnitSystem

@@ -1,0 +1,9 @@
+{
+	"id": "MUPfek9rC7rz2ki",
+	"json": "{\"id\":\"MUPfek9rC7rz2ki\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jae'Sean%20Tate\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jae%27Sean%20Tate\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jae%27Sean+Tate\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:37:00.487Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Jae%27Sean+Tate",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Jae'Sean%20Tate"
+}

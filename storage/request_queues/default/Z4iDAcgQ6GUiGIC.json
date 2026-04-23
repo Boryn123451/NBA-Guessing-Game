@@ -1,0 +1,9 @@
+{
+	"id": "Z4iDAcgQ6GUiGIC",
+	"json": "{\"id\":\"Z4iDAcgQ6GUiGIC\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Taylor%20Hendricks\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Taylor%20Hendricks\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Taylor+Hendricks\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:43:39.548Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Taylor+Hendricks",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Taylor%20Hendricks"
+}

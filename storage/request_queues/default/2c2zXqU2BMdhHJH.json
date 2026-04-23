@@ -1,0 +1,9 @@
+{
+	"id": "2c2zXqU2BMdhHJH",
+	"json": "{\"id\":\"2c2zXqU2BMdhHJH\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aaron%20Jackson\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aaron%20Jackson\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Aaron+Jackson\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:45:24.583Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Aaron+Jackson",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Aaron%20Jackson"
+}

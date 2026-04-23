@@ -1,0 +1,9 @@
+{
+	"id": "v1QczoGH3ya8yTz",
+	"json": "{\"id\":\"v1QczoGH3ya8yTz\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jordan%20Goodwin\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jordan%20Goodwin\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jordan+Goodwin\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:37:45.530Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Jordan+Goodwin",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Jordan%20Goodwin"
+}

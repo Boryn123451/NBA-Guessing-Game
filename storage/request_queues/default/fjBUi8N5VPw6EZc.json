@@ -1,0 +1,9 @@
+{
+	"id": "fjBUi8N5VPw6EZc",
+	"json": "{\"id\":\"fjBUi8N5VPw6EZc\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Sharife%20Cooper\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Sharife%20Cooper\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Sharife+Cooper\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:42:57.553Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Sharife+Cooper",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Sharife%20Cooper"
+}

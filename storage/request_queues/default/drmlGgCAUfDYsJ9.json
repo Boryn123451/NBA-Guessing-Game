@@ -1,0 +1,9 @@
+{
+	"id": "drmlGgCAUfDYsJ9",
+	"json": "{\"id\":\"drmlGgCAUfDYsJ9\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Caleb%20Martin\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Caleb%20Martin\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Caleb+Martin\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:34:42.501Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Caleb+Martin",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Caleb%20Martin"
+}

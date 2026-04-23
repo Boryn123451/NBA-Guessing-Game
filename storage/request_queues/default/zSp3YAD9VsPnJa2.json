@@ -1,0 +1,9 @@
+{
+	"id": "zSp3YAD9VsPnJa2",
+	"json": "{\"id\":\"zSp3YAD9VsPnJa2\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Norchad%20Omier\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Norchad%20Omier\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Norchad+Omier\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:41:09.529Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Norchad+Omier",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Norchad%20Omier"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "geK80kF4YuglXN1",
+	"json": "{\"id\":\"geK80kF4YuglXN1\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alexander%20Johnson\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alexander%20Johnson\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Alexander+Johnson\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:50:09.674Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Alexander+Johnson",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Alexander%20Johnson"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "5Gf8xQNUovcbUgc",
+	"json": "{\"id\":\"5Gf8xQNUovcbUgc\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al%20Lucas\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al%20Lucas\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Al+Lucas\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:47:48.619Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Al+Lucas",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Al%20Lucas"
+}

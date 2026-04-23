@@ -1,0 +1,9 @@
+{
+	"id": "msilIb7ni7YRCkw",
+	"json": "{\"id\":\"msilIb7ni7YRCkw\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adam%20Morrison\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adam%20Morrison\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adam+Morrison\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:46:06.572Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Adam+Morrison",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Adam%20Morrison"
+}

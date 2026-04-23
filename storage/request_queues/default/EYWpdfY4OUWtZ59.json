@@ -1,0 +1,9 @@
+{
+	"id": "EYWpdfY4OUWtZ59",
+	"json": "{\"id\":\"EYWpdfY4OUWtZ59\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Brice%20Sensabaugh\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Brice%20Sensabaugh\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Brice+Sensabaugh\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:34:36.507Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Brice+Sensabaugh",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Brice%20Sensabaugh"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "8MZEAIURrQ5p46K",
+	"json": "{\"id\":\"8MZEAIURrQ5p46K\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Craig%20Porter%20Jr.\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Craig%20Porter%20Jr.\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Craig+Porter+Jr.\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:35:09.514Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Craig+Porter+Jr.",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Craig%20Porter%20Jr."
+}

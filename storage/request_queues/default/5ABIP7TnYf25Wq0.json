@@ -1,0 +1,9 @@
+{
+	"id": "5ABIP7TnYf25Wq0",
+	"json": "{\"id\":\"5ABIP7TnYf25Wq0\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=A.J.%20Lawson\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=A.J.%20Lawson\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=A.J.+Lawson\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:34:00.911Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=A.J.+Lawson",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=A.J.%20Lawson"
+}

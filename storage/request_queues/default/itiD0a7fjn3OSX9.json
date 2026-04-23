@@ -1,0 +1,9 @@
+{
+	"id": "itiD0a7fjn3OSX9",
+	"json": "{\"id\":\"itiD0a7fjn3OSX9\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jabari%20Smith%20Jr.\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jabari%20Smith%20Jr.\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jabari+Smith+Jr.\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:36:48.520Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Jabari+Smith+Jr.",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Jabari%20Smith%20Jr."
+}

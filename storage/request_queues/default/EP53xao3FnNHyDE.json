@@ -1,0 +1,9 @@
+{
+	"id": "EP53xao3FnNHyDE",
+	"json": "{\"id\":\"EP53xao3FnNHyDE\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Mike%20Conley\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Mike%20Conley\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Mike+Conley\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:40:12.533Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Mike+Conley",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Mike%20Conley"
+}

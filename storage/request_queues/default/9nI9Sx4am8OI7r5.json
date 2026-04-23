@@ -1,0 +1,9 @@
+{
+	"id": "9nI9Sx4am8OI7r5",
+	"json": "{\"id\":\"9nI9Sx4am8OI7r5\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Max%20Strus\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Max%20Strus\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Max+Strus\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:39:54.513Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Max+Strus",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Max%20Strus"
+}

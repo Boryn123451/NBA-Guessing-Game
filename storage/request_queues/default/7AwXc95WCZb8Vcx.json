@@ -1,0 +1,9 @@
+{
+	"id": "7AwXc95WCZb8Vcx",
+	"json": "{\"id\":\"7AwXc95WCZb8Vcx\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Karl-Anthony%20Towns\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Karl-Anthony%20Towns\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Karl-Anthony+Towns\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:38:36.524Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Karl-Anthony+Towns",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Karl-Anthony%20Towns"
+}

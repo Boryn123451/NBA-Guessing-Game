@@ -1,0 +1,9 @@
+{
+	"id": "VUthG6ZC0tW0QB3",
+	"json": "{\"id\":\"VUthG6ZC0tW0QB3\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Chris%20Ma%C3%B1on\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Chris%20Ma%C3%B1on\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Chris+Ma%C3%B1on\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:34:48.495Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Chris+Ma%C3%B1on",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Chris%20Ma%C3%B1on"
+}

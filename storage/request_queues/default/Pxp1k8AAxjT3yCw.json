@@ -1,0 +1,9 @@
+{
+	"id": "Pxp1k8AAxjT3yCw",
+	"json": "{\"id\":\"Pxp1k8AAxjT3yCw\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=PJ%20Hall\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=PJ%20Hall\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=PJ+Hall\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:41:42.548Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=PJ+Hall",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=PJ%20Hall"
+}

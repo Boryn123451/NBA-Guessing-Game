@@ -1,0 +1,9 @@
+{
+	"id": "R2Ps3zac1qGFftm",
+	"json": "{\"id\":\"R2Ps3zac1qGFftm\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Chaney%20Johnson\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Chaney%20Johnson\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Chaney+Johnson\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:34:45.495Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Chaney+Johnson",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Chaney%20Johnson"
+}

@@ -1,0 +1,9 @@
+{
+	"id": "TX83Bjr2VtvY6re",
+	"json": "{\"id\":\"TX83Bjr2VtvY6re\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adrian%20Caldwell\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adrian%20Caldwell\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Adrian+Caldwell\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:46:39.559Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Adrian+Caldwell",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Adrian%20Caldwell"
+}

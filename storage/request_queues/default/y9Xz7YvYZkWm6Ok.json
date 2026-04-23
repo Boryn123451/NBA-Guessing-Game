@@ -1,0 +1,9 @@
+{
+	"id": "y9Xz7YvYZkWm6Ok",
+	"json": "{\"id\":\"y9Xz7YvYZkWm6Ok\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jayson%20Kent\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jayson%20Kent\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Jayson+Kent\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:37:30.497Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Jayson+Kent",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Jayson%20Kent"
+}

@@ -1,3 +1,4 @@
+import { getPlayerEntryDraftYear } from '../lib/nba/decades'
 import { formatAge, formatHeight } from '../lib/nba/format'
 import type { DraftGuessResult } from '../lib/nba/draftMode'
 import type { ClueMode, DifficultyId, GuessResult, PlayerRecord, UnitSystem } from '../lib/nba/types'
@@ -13,46 +14,48 @@ interface PostGameExplainerProps {
   units: UnitSystem
 }
 
-function rankStandardGuesses(guesses: GuessResult[]) {
-  return guesses
-    .filter((guess) => !guess.isCorrect)
-    .map((guess) => ({
-      guess,
-      score: Object.values(guess.clues).reduce((total, clue) => {
-        if (clue.status === 'exact') {
-          return total + 2
-        }
-
-        if (clue.status === 'close') {
-          return total + 1
-        }
-
-        return total
-      }, 0),
-    }))
-    .toSorted((left, right) => right.score - left.score)
-    .slice(0, 3)
+function formatAverage(value: number | null): string {
+  return value === null ? 'N/A' : value.toFixed(1)
 }
 
-function rankDraftGuesses(guesses: DraftGuessResult[]) {
-  return guesses
-    .filter((guess) => !guess.isCorrect)
-    .map((guess) => ({
-      guess,
-      score: Object.values(guess.clues).reduce((total, clue) => {
-        if (clue.status === 'exact') {
-          return total + 2
-        }
+function getAccoladeChips(player: PlayerRecord): string[] {
+  const accoladeSet = new Set<string>()
 
-        if (clue.status === 'close') {
-          return total + 1
-        }
+  if (player.career.championships > 0) {
+    accoladeSet.add(
+      player.career.championships === 1
+        ? 'NBA Champion'
+        : `NBA Champion x${player.career.championships}`,
+    )
+  }
 
-        return total
-      }, 0),
-    }))
-    .toSorted((left, right) => right.score - left.score)
-    .slice(0, 3)
+  for (const accolade of player.career.accolades) {
+    accoladeSet.add(accolade)
+  }
+
+  return [...accoladeSet]
+}
+
+function getDraftProfile(player: PlayerRecord): {
+  primary: string
+  secondary: string
+} {
+  const entryDraftYear = getPlayerEntryDraftYear(player)
+
+  if (player.draft.isUndrafted) {
+    return {
+      primary: entryDraftYear !== null ? `Undrafted | Entry class ${entryDraftYear}` : 'Undrafted',
+      secondary:
+        player.entryDraftYearSource === 'debut-fallback'
+          ? `${player.career.preNbaPath ?? player.college ?? 'Pre-NBA path unavailable'} | Entry year falls back to NBA debut year.`
+          : player.career.preNbaPath ?? player.college ?? 'Pre-NBA path unavailable',
+    }
+  }
+
+  return {
+    primary: `${player.draft.teamAbbreviation ?? 'N/A'} | ${entryDraftYear ?? 'N/A'} | Round ${player.draft.round ?? 'N/A'} | Pick ${player.draft.pick ?? 'N/A'}`,
+    secondary: player.career.preNbaPath ?? player.college ?? 'Pre-NBA path unavailable',
+  }
 }
 
 export function PostGameExplainer({
@@ -64,86 +67,85 @@ export function PostGameExplainer({
   referenceDate,
   units,
 }: PostGameExplainerProps) {
-  const closeStandardGuesses = rankStandardGuesses(guesses)
-  const closeDraftGuesses = rankDraftGuesses(draftGuessResults)
-  const accoladeDetails = [
-    player.career.championships > 0 ? `NBA Champion x${player.career.championships}` : null,
-    ...player.career.accolades.filter(
-      (accolade) => !accolade.toLowerCase().startsWith('nba champion'),
-    ),
-  ]
-    .filter(Boolean)
-    .slice(0, 4)
-    .join(' | ')
+  void clueMode
+  void draftGuessResults
+  void guesses
+
+  const previousTeams = player.career.previousTeamNames
+  const accoladeChips = getAccoladeChips(player)
+  const draftProfile = getDraftProfile(player)
 
   return (
     <section className="explainer-panel">
       <div className="panel-heading">
-        <span className="eyebrow">Post-game explainer</span>
-        <h3>Why this answer fit</h3>
+        <span className="eyebrow">Player profile</span>
+        <h3>{player.displayName}</h3>
       </div>
 
       <div className="explainer-panel__hero">
         <div className="clue-grid__player">
           <PlayerAvatar player={player} size="md" />
           <div>
-            <strong>{player.displayName}</strong>
+            <strong>{player.teamName}</strong>
             <span>
               {player.teamAbbreviation} | {player.position} | {formatHeight(player, units)} | Age{' '}
               {formatAge(player, referenceDate, difficultyId)}
             </span>
           </div>
         </div>
-        <p>
-          {clueMode === 'draft'
-            ? `${player.displayName} fit Draft Mode through ${player.draft.teamAbbreviation ?? 'N/A'} in ${player.draft.year ?? 'N/A'}, ${player.draft.isUndrafted ? 'undrafted status' : `round ${player.draft.round ?? 'N/A'} and pick ${player.draft.pick ?? 'N/A'}`}.`
-            : `${player.displayName} fit the board through ${player.teamName}, ${player.conference}, ${player.division}, ${player.position}, and the numeric profile that stayed consistent across the round.`}
-        </p>
       </div>
 
       <div className="explainer-panel__grid">
         <article className="explainer-card">
           <span className="clue-grid__label">Draft profile</span>
-          <strong>
-            {player.draft.isUndrafted
-              ? 'Undrafted'
-              : `${player.draft.teamAbbreviation ?? 'N/A'} | ${player.draft.year ?? 'N/A'} | Round ${player.draft.round ?? 'N/A'} | Pick ${player.draft.pick ?? 'N/A'}`}
-          </strong>
-          <p>{player.career.preNbaPath ?? player.college ?? 'Pre-NBA path unavailable'}</p>
+          <strong>{draftProfile.primary}</strong>
+          <p>{draftProfile.secondary}</p>
         </article>
         <article className="explainer-card">
-          <span className="clue-grid__label">Career path</span>
-          <strong>
-            {player.career.previousTeamAbbreviations.length > 0
-              ? player.career.previousTeamAbbreviations.join(' | ')
-              : 'No prior NBA teams'}
-          </strong>
-          <p>Debut year {player.career.debutYear ?? 'N/A'} | Country {player.country ?? 'N/A'}</p>
+          <span className="clue-grid__label">Previous NBA teams</span>
+          {previousTeams.length > 0 ? (
+            <div className="explainer-chip-list">
+              {previousTeams.map((teamName) => (
+                <span key={teamName} className="explainer-chip">
+                  {teamName}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <strong>No previous NBA teams</strong>
+          )}
         </article>
         <article className="explainer-card">
-          <span className="clue-grid__label">Career accolades</span>
-          <strong>{player.career.primaryAccolade ?? 'No major accolade label available'}</strong>
-          <p>
-            {accoladeDetails || 'No extra accolade data available'}
-          </p>
+          <span className="clue-grid__label">Accolades</span>
+          {accoladeChips.length > 0 ? (
+            <div className="explainer-chip-list">
+              {accoladeChips.map((accolade) => (
+                <span key={accolade} className="explainer-chip">
+                  {accolade}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <strong>No accolade data available</strong>
+          )}
         </article>
-      </div>
-
-      <div className="explainer-panel__closers">
-        <span className="clue-grid__label">Closest guesses</span>
-        {clueMode === 'draft'
-          ? closeDraftGuesses.map(({ guess }) => (
-              <div key={guess.guess.id} className="explainer-close-row">
-                <strong>{guess.guess.displayName}</strong>
-                <span>Matched part of the draft profile but missed the full board.</span>
-              </div>
-            ))
-          : closeStandardGuesses.map(({ guess }) => (
-              <div key={guess.guess.id} className="explainer-close-row">
-                <strong>{guess.guess.displayName}</strong>
-                <span>Shared several roster clues before missing on the full profile.</span>
-              </div>
-            ))}
+        <article className="explainer-card">
+          <span className="clue-grid__label">Averages</span>
+          <div className="explainer-stat-grid">
+            <div className="explainer-stat">
+              <span className="explainer-stat__label">PTS</span>
+              <strong>{formatAverage(player.snapshot.pointsPerGame)}</strong>
+            </div>
+            <div className="explainer-stat">
+              <span className="explainer-stat__label">REB</span>
+              <strong>{formatAverage(player.snapshot.reboundsPerGame)}</strong>
+            </div>
+            <div className="explainer-stat">
+              <span className="explainer-stat__label">AST</span>
+              <strong>{formatAverage(player.snapshot.assistsPerGame)}</strong>
+            </div>
+          </div>
+        </article>
       </div>
     </section>
   )

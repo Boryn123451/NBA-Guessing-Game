@@ -1,0 +1,9 @@
+{
+	"id": "YWtHdp0TUNH4vIf",
+	"json": "{\"id\":\"YWtHdp0TUNH4vIf\",\"url\":\"https://www.basketball-reference.com/search/search.fcgi?search=Leaky%20Black\",\"loadedUrl\":\"https://www.basketball-reference.com/search/search.fcgi?search=Leaky%20Black\",\"uniqueKey\":\"https://www.basketball-reference.com/search/search.fcgi?search=Leaky+Black\",\"method\":\"GET\",\"noRetry\":false,\"retryCount\":0,\"errorMessages\":[],\"headers\":{},\"userData\":{\"__crawlee\":{\"state\":4}},\"handledAt\":\"2026-04-23T13:39:00.542Z\"}",
+	"method": "GET",
+	"orderNo": null,
+	"retryCount": 0,
+	"uniqueKey": "https://www.basketball-reference.com/search/search.fcgi?search=Leaky+Black",
+	"url": "https://www.basketball-reference.com/search/search.fcgi?search=Leaky%20Black"
+}
