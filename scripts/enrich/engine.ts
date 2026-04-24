@@ -37,8 +37,7 @@ function shouldProcessPlayer(
 }
 
 function shouldUseNbaPrimary(
-  player: PlayerRecord,
-  state: PlayerEnrichmentState,
+  mode: EnrichmentMode,
   missingFields: EnrichmentField[],
 ): boolean {
   const needsCoreBio =
@@ -48,15 +47,11 @@ function shouldUseNbaPrimary(
     return false
   }
 
-  if (player.isCurrentPlayer) {
-    return true
+  if (mode === 'repair-playwright') {
+    return false
   }
 
-  return (
-    state.sourceStates.nba.lastSuccessAt !== null ||
-    state.fieldSources.birthDate === 'nba' ||
-    state.fieldSources.entryDraftYear === 'nba'
-  )
+  return true
 }
 
 function mergeProviderResult(
@@ -245,9 +240,8 @@ export async function runEnrichment(mode: EnrichmentMode): Promise<EnrichmentRep
   console.log(`Mode: ${mode}. Selected ${selectedPlayers.length} player records.`)
 
   const bioCandidates = selectedPlayers.filter((player) => {
-    const state = statusFile.players[`${player.id}`] ?? createEmptyPlayerState(player.id)
     const missingFields = getMissingFields(player, imageManifest)
-    return shouldUseNbaPrimary(player, state, missingFields)
+    return shouldUseNbaPrimary(mode, missingFields)
   })
   const nbaProgress = createProgressTracker('NBA bio', bioCandidates.length, {
     initialMsPerItem: 900,
