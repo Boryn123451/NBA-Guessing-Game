@@ -13,6 +13,7 @@
     "refresh:data:history": "tsx scripts/refresh-player-data.ts history",
     "refresh:data:all": "tsx scripts/refresh-player-data.ts all",
     "refresh:data:images": "tsx scripts/refresh-player-data.ts images",
+    "refresh:data:career-teams": "tsx scripts/refresh-player-data.ts career-teams",
     "refresh:data:repair-missing": "tsx scripts/refresh-player-data.ts repair-missing",
     "refresh:data:add-missing": "tsx scripts/refresh-player-data.ts add-missing",
     "enrich:full": "tsx scripts/enrich/run-full.ts",

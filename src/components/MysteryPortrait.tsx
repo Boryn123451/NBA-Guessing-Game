@@ -60,7 +60,7 @@ export function MysteryPortrait({
         <p>
           {status === 'in_progress'
             ? activeSource.kind === 'fallback'
-              ? 'Official headshot missing. Static fallback portrait is loaded behind the reveal.'
+              ? 'Static fallback portrait is loaded behind the reveal.'
               : 'Read the board first. This portrait only opens on the difficulty schedule.'
             : `${player.teamName} | ${player.position}`}
         </p>

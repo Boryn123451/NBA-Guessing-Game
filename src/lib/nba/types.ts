@@ -259,6 +259,7 @@ export interface PlayerPoolData {
     franchisePlayers: string
     allStarRoster: string
     playerAwards: string
+    playerCareerStats?: string
     commonPlayerInfo?: string
     basketballReference?: string
   }

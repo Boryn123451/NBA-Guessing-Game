@@ -16,6 +16,13 @@ export function getPlayerImageSources(player: PlayerRecord): PlayerImageSource[]
   const sources: PlayerImageSource[] = []
   const fallbackSrc = fallbackManifest.fallbacks[`${player.id}`] ?? null
 
+  if (player.isCurrentPlayer && fallbackSrc) {
+    sources.push({
+      kind: 'fallback',
+      src: fallbackSrc,
+    })
+  }
+
   if (player.headshotUrl) {
     sources.push({
       kind: 'official',
@@ -23,7 +30,7 @@ export function getPlayerImageSources(player: PlayerRecord): PlayerImageSource[]
     })
   }
 
-  if (fallbackSrc) {
+  if (!player.isCurrentPlayer && fallbackSrc) {
     sources.push({
       kind: 'fallback',
       src: fallbackSrc,

@@ -52,6 +52,8 @@ const FRANCHISE_PLAYERS_SOURCE =
   'https://stats.nba.com/stats/franchiseplayers?LeagueID=00&TeamID={teamId}&PerMode=PerGame'
 const ALL_STAR_ROSTER_SOURCE = 'https://www.nba.com/allstar/{year}/roster'
 const PLAYER_AWARDS_SOURCE = 'https://stats.nba.com/stats/playerawards?PlayerID={playerId}'
+const PLAYER_CAREER_STATS_SOURCE =
+  'https://stats.nba.com/stats/playercareerstats?LeagueID=00&PerMode=Totals&PlayerID={playerId}'
 const COMMON_PLAYER_INFO_SOURCE =
   'https://stats.nba.com/stats/commonplayerinfo?LeagueID=00&PlayerID={playerId}'
 const TWO_K_RATINGS_IMAGE_BASE = 'https://www.2kratings.com/wp-content/uploads'
@@ -79,9 +81,14 @@ const PLAYER_AWARDS_TIMEOUT_MS = resolveBoundedTimeout(
   'REFRESH_PLAYER_AWARDS_TIMEOUT_MS',
   DEFAULT_REQUEST_TIMEOUT_MS,
 )
+const PLAYER_CAREER_STATS_TIMEOUT_MS = resolveBoundedTimeout(
+  'REFRESH_PLAYER_CAREER_STATS_TIMEOUT_MS',
+  DEFAULT_REQUEST_TIMEOUT_MS,
+)
 const CURRENT_BIO_CONCURRENCY = resolvePositiveInteger('REFRESH_CURRENT_BIO_CONCURRENCY', 3)
 const HISTORICAL_BIO_CONCURRENCY = resolvePositiveInteger('REFRESH_HISTORICAL_BIO_CONCURRENCY', 1)
 const PLAYER_AWARDS_CONCURRENCY = resolvePositiveInteger('REFRESH_PLAYER_AWARDS_CONCURRENCY', 2)
+const PLAYER_CAREER_STATS_CONCURRENCY = resolvePositiveInteger('REFRESH_PLAYER_CAREER_STATS_CONCURRENCY', 3)
 const COMMON_PLAYER_INFO_CACHE_MAX_AGE_MS = resolvePositiveInteger(
   'REFRESH_COMMON_PLAYER_INFO_CACHE_MAX_AGE_MS',
   14 * 24 * 60 * 60 * 1000,
@@ -125,7 +132,7 @@ type ResultValue = string | number | null
 type EnrichmentField = 'birthDate' | 'entryDraftYear'
 type EnrichmentSourceKey = 'commonPlayerInfo' | 'basketballReference'
 type EnrichmentRecordStatus = 'complete' | 'partial' | 'missing_fields' | 'failed_last_attempt'
-type RefreshMode = 'auto' | 'all' | 'current' | 'images' | 'repair-missing'
+type RefreshMode = 'auto' | 'all' | 'current' | 'images' | 'repair-missing' | 'career-teams'
 
 interface ResultSetResponse {
   resultSets: Array<{
@@ -324,6 +331,10 @@ function parseRefreshMode(argv: string[]): RefreshMode {
     return 'images'
   }
 
+  if (rawValue === 'career-teams' || rawValue === 'teams') {
+    return 'career-teams'
+  }
+
   if (rawValue === 'repair-missing' || rawValue === 'add-missing' || rawValue === 'missing') {
     return 'repair-missing'
   }
@@ -338,6 +349,10 @@ function getRequestFailureKey(url: string): string {
 
   if (url.includes('playerawards')) {
     return 'playerAwards'
+  }
+
+  if (url.includes('playercareerstats')) {
+    return 'playerCareerStats'
   }
 
   if (url.includes('drafthistory')) {
@@ -1331,6 +1346,53 @@ function buildDraftStub(row: Record<string, ResultValue>): DraftDetails {
   }
 }
 
+function getCareerTeamIdsFromPlayerCareerStats(response: ResultSetResponse | null): number[] {
+  if (!response) {
+    return []
+  }
+
+  const teamIds = new Set<number>()
+
+  for (const row of mapRows(response, 'SeasonTotalsRegularSeason')) {
+    const teamId = parseIntegerValue(row.TEAM_ID)
+
+    if (teamId !== null && TEAM_BY_ID.has(teamId)) {
+      teamIds.add(teamId)
+    }
+  }
+
+  return [...teamIds]
+}
+
+function applyCareerTeamIds(player: PlayerRecord, careerTeamIds: number[]): PlayerRecord {
+  const uniqueCareerTeamIds = [...new Set([...careerTeamIds, player.teamId])]
+    .filter((teamId) => TEAM_BY_ID.has(teamId))
+  const careerTeams = uniqueCareerTeamIds
+    .map((teamId) => TEAM_BY_ID.get(teamId))
+    .filter(isPresent)
+  const previousTeamIds = uniqueCareerTeamIds.filter((teamId) => teamId !== player.teamId)
+  const previousTeams = previousTeamIds
+    .map((teamId) => TEAM_BY_ID.get(teamId))
+    .filter(isPresent)
+
+  if (careerTeams.length === 0) {
+    return player
+  }
+
+  return {
+    ...player,
+    career: {
+      ...player.career,
+      careerTeamIds: uniqueCareerTeamIds,
+      careerTeamAbbreviations: careerTeams.map((team) => team.abbreviation),
+      careerTeamNames: careerTeams.map((team) => `${team.city} ${team.name}`),
+      previousTeamIds,
+      previousTeamAbbreviations: previousTeams.map((team) => team.abbreviation),
+      previousTeamNames: previousTeams.map((team) => `${team.city} ${team.name}`),
+    },
+  }
+}
+
 function buildThemeFlags(
   player: PlayerRecord,
   seasonStartYear: number,
@@ -2247,6 +2309,7 @@ function buildPlayerPoolData(
       franchisePlayers: FRANCHISE_PLAYERS_SOURCE,
       allStarRoster: ALL_STAR_ROSTER_SOURCE.replace('{year}', `${allStarYear}`),
       playerAwards: PLAYER_AWARDS_SOURCE,
+      playerCareerStats: PLAYER_CAREER_STATS_SOURCE,
       commonPlayerInfo: COMMON_PLAYER_INFO_SOURCE,
       basketballReference: BASKETBALL_REFERENCE_SEARCH_SOURCE,
     },
@@ -2298,6 +2361,7 @@ function buildHistoryPlayerPoolData(
       franchisePlayers: FRANCHISE_PLAYERS_SOURCE,
       allStarRoster: ALL_STAR_ROSTER_SOURCE.replace('{year}', `${allStarYear}`),
       playerAwards: PLAYER_AWARDS_SOURCE,
+      playerCareerStats: PLAYER_CAREER_STATS_SOURCE,
       commonPlayerInfo: COMMON_PLAYER_INFO_SOURCE,
       basketballReference: BASKETBALL_REFERENCE_SEARCH_SOURCE,
     },
@@ -2383,6 +2447,72 @@ function isPoolRefreshDue(
   return now.getTime() - refreshedAt >= intervalMs
 }
 
+async function repairCareerTeams(
+  currentPool: PlayerPoolData,
+  historyPool: PlayerPoolData | null,
+  cacheDirectory: string,
+  outputPath: string,
+  historyOutputPath: string,
+): Promise<void> {
+  const selectedPlayers = FORCED_PLAYER_IDS.size > 0
+    ? currentPool.players.filter((player) => FORCED_PLAYER_IDS.has(player.id))
+    : currentPool.players
+  const progress = createProgressTracker('Career team repair', selectedPlayers.length, {
+    initialMsPerItem: 900,
+  })
+  const updatedPlayers = await mapWithConcurrency(
+    selectedPlayers,
+    PLAYER_CAREER_STATS_CONCURRENCY,
+    async (player) => {
+      try {
+        const response = await fetchJsonWithCache<ResultSetResponse>(
+          PLAYER_CAREER_STATS_SOURCE.replace('{playerId}', `${player.id}`),
+          path.join(cacheDirectory, 'player-career-stats', `${player.id}.json`),
+          NBA_HEADERS,
+          PLAYER_CAREER_STATS_TIMEOUT_MS,
+          4,
+          COMMON_PLAYER_INFO_CACHE_MAX_AGE_MS,
+        )
+        const careerTeamIds = getCareerTeamIdsFromPlayerCareerStats(response)
+
+        return [player.id, applyCareerTeamIds(player, careerTeamIds)] as const
+      } finally {
+        progress.tick()
+      }
+    },
+  )
+  progress.finish()
+
+  const updatedById = new Map(updatedPlayers.map(([playerId, player]) => [playerId, player]))
+  const nextCurrentPool: PlayerPoolData = {
+    ...currentPool,
+    sources: {
+      ...currentPool.sources,
+      playerCareerStats: PLAYER_CAREER_STATS_SOURCE,
+    },
+    players: currentPool.players.map((player) => updatedById.get(player.id) ?? player),
+  }
+  const nextHistoryPool: PlayerPoolData | null = historyPool
+    ? {
+        ...historyPool,
+        sources: {
+          ...historyPool.sources,
+          playerCareerStats: PLAYER_CAREER_STATS_SOURCE,
+        },
+        players: historyPool.players.map((player) => updatedById.get(player.id) ?? player),
+      }
+    : null
+
+  await writeFile(outputPath, `${JSON.stringify(nextCurrentPool, null, 2)}\n`, 'utf8')
+
+  if (nextHistoryPool) {
+    await writeFile(historyOutputPath, `${JSON.stringify(nextHistoryPool, null, 2)}\n`, 'utf8')
+  }
+
+  flushFailedRequestSummary()
+  console.log(`Repaired career teams for ${updatedById.size} player(s).`)
+}
+
 async function main(): Promise<void> {
   const requestedMode = parseRefreshMode(process.argv)
   const now = new Date()
@@ -2440,6 +2570,21 @@ async function main(): Promise<void> {
     await writeFile(imageFallbackPath, `${JSON.stringify(imageFallbackManifest, null, 2)}\n`, 'utf8')
     console.log(
       `Built ${Object.keys(imageFallbackManifest.fallbacks).length} 2KRatings fallback images at ${imageFallbackPath}.`,
+    )
+    return
+  }
+
+  if (effectiveMode === 'career-teams') {
+    if (!existingPool) {
+      throw new Error('Current player pool is missing. Run the current refresh first.')
+    }
+
+    await repairCareerTeams(
+      existingPool,
+      existingHistoryPool,
+      cacheDirectory,
+      outputPath,
+      historyOutputPath,
     )
     return
   }
