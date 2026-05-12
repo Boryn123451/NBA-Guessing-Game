@@ -116,7 +116,7 @@ export function ProfileHubPanel({
             <article className="record-card">
               <span className="stats-strip__label">Active pack</span>
               <strong>{activeRetroThemeId}</strong>
-              <span>Decade presentation packs are bought in the shop tab.</span>
+              <span>Presentation packs are bought or temporarily activated in the shop tab.</span>
             </article>
           </div>
           <SettingsPanel

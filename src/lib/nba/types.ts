@@ -63,6 +63,7 @@ export type RetroThemeId =
   | '2000s'
   | '2010s'
   | '2020s'
+  | 'brandon-clarke'
 
 export type GameOutcome = 'in_progress' | 'won' | 'lost'
 

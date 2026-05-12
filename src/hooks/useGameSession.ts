@@ -68,7 +68,10 @@ import type {
   UnitSystem,
 } from '../lib/nba/types'
 import { sanitizeDisplayName } from '../lib/profile/profile'
-import { getRetroThemeDefinition } from '../lib/profile/retroThemes'
+import {
+  getRetroThemeDefinition,
+  isRetroThemeAvailable,
+} from '../lib/profile/retroThemes'
 import {
   applyCompletedRoundProgression,
   claimWeeklyQuestReward,
@@ -988,10 +991,7 @@ export function useGameSession() {
 
   function setRetroThemeId(retroThemeId: PersistedState['settings']['retroThemeId']): void {
     setState((previousState) => {
-      if (
-        retroThemeId !== '2020s' &&
-        !previousState.profile.unlockedRetroThemeIds.includes(retroThemeId)
-      ) {
+      if (!isRetroThemeAvailable(previousState.profile, retroThemeId, now)) {
         return previousState
       }
 

@@ -6,9 +6,25 @@ export interface RetroThemeDefinition {
   description: string
   cost: number
   previewLine: string
+  categoryLabel?: string
+  freeUntilIso?: string
+  freeUntilLabel?: string
 }
 
+export const BRANDON_CLARKE_RETRO_THEME_ID: RetroThemeId = 'brandon-clarke'
+export const BRANDON_CLARKE_THEME_FREE_UNTIL_ISO = '2026-05-15T03:59:59Z'
+
 export const RETRO_THEME_DEFINITIONS: RetroThemeDefinition[] = [
+  {
+    id: BRANDON_CLARKE_RETRO_THEME_ID,
+    label: 'Brandon Clarke Tribute',
+    description: 'Black Memphis tribute skin with Grizzlies blue, gold accents, Clarke portrait art, and memorial framing.',
+    cost: 150,
+    previewLine: 'Black base, Memphis inserts, #15 memorial energy.',
+    categoryLabel: 'Tribute pack',
+    freeUntilIso: BRANDON_CLARKE_THEME_FREE_UNTIL_ISO,
+    freeUntilLabel: 'Free for everyone until May 14, 2026, 11:59 PM ET.',
+  },
   {
     id: '1950s',
     label: '1950s',
@@ -73,6 +89,31 @@ const RETRO_THEME_BY_ID = new Map(
 
 export function getRetroThemeDefinition(themeId: RetroThemeId): RetroThemeDefinition {
   return RETRO_THEME_BY_ID.get(themeId) ?? RETRO_THEME_DEFINITIONS.at(-1) ?? RETRO_THEME_DEFINITIONS[0]
+}
+
+export function isRetroThemeTemporarilyFree(
+  themeId: RetroThemeId,
+  now: Date = new Date(),
+): boolean {
+  const theme = getRetroThemeDefinition(themeId)
+
+  if (!theme.freeUntilIso) {
+    return false
+  }
+
+  return now.getTime() <= Date.parse(theme.freeUntilIso)
+}
+
+export function isRetroThemeAvailable(
+  profile: LocalProfile,
+  themeId: RetroThemeId,
+  now: Date = new Date(),
+): boolean {
+  const theme = getRetroThemeDefinition(themeId)
+
+  return theme.cost === 0 ||
+    profile.unlockedRetroThemeIds.includes(themeId) ||
+    isRetroThemeTemporarilyFree(themeId, now)
 }
 
 export function canUnlockRetroTheme(profile: LocalProfile, themeId: RetroThemeId): boolean {

@@ -29,6 +29,11 @@ import {
   formatRefreshDate,
   formatThemeLabel,
 } from './lib/nba/format'
+import { getPlayerImageSources } from './lib/nba/images'
+import {
+  BRANDON_CLARKE_RETRO_THEME_ID,
+  isRetroThemeAvailable,
+} from './lib/profile/retroThemes'
 
 type MobileView = 'play' | 'quests' | 'profile'
 
@@ -49,6 +54,18 @@ export default function App() {
   const entryDecadeLabel = formatEntryDecadeLabel(game.entryDecadeId)
   const eventLabel = formatEventModeLabel(game.eventId)
   const activeMemorialTribute = game.activeEventModes.find((eventMode) => eventMode.tribute)?.tribute ?? null
+  const isMemorialThemeForced = activeMemorialTribute !== null
+  const selectedRetroThemeIsAvailable = isRetroThemeAvailable(game.profile, game.settings.retroThemeId)
+  const activeVisualRetroThemeId = isMemorialThemeForced
+    ? BRANDON_CLARKE_RETRO_THEME_ID
+    : selectedRetroThemeIsAvailable
+      ? game.settings.retroThemeId
+      : '2020s'
+  const brandonClarkePlayer = game.players.find((player) => player.id === 1629634)
+  const brandonClarkeImageSrc = brandonClarkePlayer
+    ? getPlayerImageSources(brandonClarkePlayer)[0]?.src ?? `${import.meta.env.BASE_URL}player-images/1629634.png`
+    : `${import.meta.env.BASE_URL}player-images/1629634.png`
+  const memphisLogoSrc = 'https://cdn.nba.com/logos/nba/1610612763/primary/L/logo.svg'
   const boardEyebrowLabel =
     game.activePlayerPoolScope === 'history'
       ? 'Guess an NBA player from history'
@@ -149,8 +166,8 @@ export default function App() {
   useEffect(() => {
     document.documentElement.dataset.theme = game.settings.theme
     document.documentElement.dataset.device = isMobileLayout ? 'mobile' : 'desktop'
-    document.documentElement.dataset.pack = game.settings.retroThemeId
-  }, [game.settings.retroThemeId, game.settings.theme, isMobileLayout])
+    document.documentElement.dataset.pack = activeVisualRetroThemeId
+  }, [activeVisualRetroThemeId, game.settings.theme, isMobileLayout])
 
   useEffect(() => {
     if (!shareStatus) {
@@ -201,7 +218,7 @@ export default function App() {
   const profileContent = (
     <ProfileHubPanel
       key={`${game.profile.profileId}:${game.profile.displayName}`}
-      activeRetroThemeId={game.settings.retroThemeId}
+      activeRetroThemeId={activeVisualRetroThemeId}
       exportPayload={game.exportPayload}
       isCompact={isMobileLayout}
       isStorageAvailable={game.isStorageAvailable}
@@ -503,6 +520,13 @@ export default function App() {
   return (
     <div className={`app-shell ${isMobileLayout ? 'app-shell--mobile' : ''}`}>
       <div className="app-shell__backdrop" />
+      {activeVisualRetroThemeId === BRANDON_CLARKE_RETRO_THEME_ID ? (
+        <div className="app-shell__tribute-art" aria-hidden="true">
+          <img className="app-shell__tribute-logo" src={memphisLogoSrc} alt="" />
+          <img className="app-shell__tribute-player" src={brandonClarkeImageSrc} alt="" />
+          <span>15</span>
+        </div>
+      ) : null}
 
       <header className={`app-header ${isMobileLayout ? 'is-mobile' : ''}`}>
         <div className="app-header__brand">

@@ -204,6 +204,7 @@ function sanitizeRetroThemeId(value: unknown): RetroThemeId {
     case '2000s':
     case '2010s':
     case '2020s':
+    case 'brandon-clarke':
       return value
     case 'newsprint':
       return '1950s'

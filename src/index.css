@@ -223,6 +223,30 @@
   --accent-strong: #c7560d;
 }
 
+:root[data-pack='brandon-clarke'] {
+  color-scheme: dark;
+  --pack-light-bg: #030307;
+  --pack-light-surface: rgba(5, 8, 16, 0.9);
+  --pack-light-surface-strong: rgba(8, 12, 22, 0.98);
+  --pack-light-panel-border: rgba(93, 118, 169, 0.32);
+  --pack-light-text: #f7f8fb;
+  --pack-light-muted: #aab6d0;
+  --pack-light-shadow: 0 30px 90px rgba(0, 0, 0, 0.72);
+  --pack-dark-bg: #030307;
+  --pack-dark-surface: rgba(5, 8, 16, 0.9);
+  --pack-dark-surface-strong: rgba(8, 12, 22, 0.98);
+  --pack-dark-panel-border: rgba(93, 118, 169, 0.32);
+  --pack-dark-text: #f7f8fb;
+  --pack-dark-muted: #aab6d0;
+  --pack-dark-shadow: 0 30px 90px rgba(0, 0, 0, 0.72);
+  --accent: #5d76a9;
+  --accent-strong: #f5b112;
+  --exact: #5d76a9;
+  --close: #f5b112;
+  --miss: #4b5567;
+  --unknown: #737f98;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -241,6 +265,14 @@ body {
     radial-gradient(circle at top, rgba(231, 111, 29, 0.24), transparent 34%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 22%),
     var(--bg);
+}
+
+:root[data-pack='brandon-clarke'] body {
+  background:
+    radial-gradient(circle at 18% 8%, rgba(93, 118, 169, 0.38), transparent 32%),
+    radial-gradient(circle at 86% 12%, rgba(245, 177, 18, 0.18), transparent 24%),
+    linear-gradient(135deg, rgba(18, 23, 63, 0.5), transparent 42%),
+    #030307;
 }
 
 button,
@@ -285,6 +317,53 @@ button {
     linear-gradient(90deg, transparent 0 8%, rgba(255, 255, 255, 0.04) 8% 8.25%, transparent 8.25% 100%),
     linear-gradient(180deg, transparent 0 13%, rgba(255, 255, 255, 0.03) 13% 13.25%, transparent 13.25% 100%),
     radial-gradient(circle at top, rgba(231, 111, 29, 0.14), transparent 34%);
+}
+
+:root[data-pack='brandon-clarke'] .app-shell__backdrop {
+  background:
+    linear-gradient(90deg, transparent 0 11%, rgba(93, 118, 169, 0.18) 11% 11.25%, transparent 11.25% 100%),
+    linear-gradient(0deg, transparent 0 18%, rgba(245, 177, 18, 0.09) 18% 18.2%, transparent 18.2% 100%),
+    radial-gradient(circle at 75% 30%, rgba(93, 118, 169, 0.22), transparent 28%);
+  opacity: 1;
+}
+
+.app-shell__tribute-art {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.app-shell__tribute-logo,
+.app-shell__tribute-player {
+  position: absolute;
+  filter: drop-shadow(0 34px 80px rgba(0, 0, 0, 0.75));
+  opacity: 0.2;
+}
+
+.app-shell__tribute-logo {
+  right: clamp(1rem, 7vw, 7rem);
+  top: clamp(4rem, 8vw, 7rem);
+  width: min(30vw, 18rem);
+}
+
+.app-shell__tribute-player {
+  left: max(-3rem, -4vw);
+  bottom: -2rem;
+  width: min(34vw, 20rem);
+  border-radius: 999px;
+  opacity: 0.16;
+}
+
+.app-shell__tribute-art span {
+  position: absolute;
+  right: clamp(1rem, 8vw, 8rem);
+  bottom: clamp(2rem, 10vw, 8rem);
+  color: rgba(245, 177, 18, 0.12);
+  font-size: clamp(8rem, 18vw, 18rem);
+  font-weight: 900;
+  letter-spacing: -0.08em;
 }
 
 .app-header,
@@ -1701,6 +1780,57 @@ button:hover {
   box-shadow: inset 0 0 0 1px rgba(231, 111, 29, 0.2);
 }
 
+.theme-pack-card--brandon-clarke {
+  position: relative;
+  overflow: hidden;
+  min-height: 15rem;
+  border-color: rgba(93, 118, 169, 0.48);
+  color: #f7f8fb;
+  background:
+    linear-gradient(145deg, rgba(5, 8, 16, 0.96), rgba(18, 23, 63, 0.82)),
+    #030307;
+}
+
+.theme-pack-card--brandon-clarke::before {
+  content: '';
+  position: absolute;
+  right: -1.2rem;
+  bottom: -1.4rem;
+  width: 8.5rem;
+  height: 8.5rem;
+  background: url('https://cdn.nba.com/logos/nba/1610612763/primary/L/logo.svg') center / contain no-repeat;
+  opacity: 0.16;
+  filter: grayscale(0.1);
+}
+
+.theme-pack-card--brandon-clarke::after {
+  content: '15';
+  position: absolute;
+  right: 1rem;
+  top: 3.4rem;
+  color: rgba(245, 177, 18, 0.12);
+  font-size: 5.2rem;
+  font-weight: 900;
+  letter-spacing: -0.08em;
+}
+
+.theme-pack-card--brandon-clarke > * {
+  position: relative;
+  z-index: 1;
+}
+
+.theme-pack-card--brandon-clarke p,
+.theme-pack-card--brandon-clarke span {
+  color: rgba(247, 248, 251, 0.78);
+}
+
+.theme-pack-card--brandon-clarke.is-active {
+  border-color: rgba(245, 177, 18, 0.62);
+  box-shadow:
+    inset 0 0 0 1px rgba(245, 177, 18, 0.24),
+    0 22px 60px rgba(5, 8, 16, 0.34);
+}
+
 .theme-pack-card__header {
   display: flex;
   justify-content: space-between;
@@ -1725,6 +1855,13 @@ button:hover {
   font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0.06em;
+}
+
+.theme-pack-card__limited {
+  color: #f5b112;
+  font-size: 0.82rem;
+  font-style: normal;
+  font-weight: 800;
 }
 
 .explainer-panel__closers {
