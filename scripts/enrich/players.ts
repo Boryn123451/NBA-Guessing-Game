@@ -4,6 +4,10 @@ import { enrichConfig } from './config'
 import { readJsonFile, writeJsonFile } from './cache'
 import type { EnrichmentField, LoadedPools } from './types'
 
+function hasUsableLocalImageFallback(imageUrl: string | undefined): boolean {
+  return Boolean(imageUrl && !/^https?:\/\//i.test(imageUrl))
+}
+
 export async function loadPools(): Promise<LoadedPools> {
   const current = await readJsonFile<PlayerPoolData>(enrichConfig.currentPoolPath)
   const history = await readJsonFile<PlayerPoolData>(enrichConfig.historyPoolPath)
@@ -46,7 +50,10 @@ export function getMissingFields(
     missingFields.push('entryDraftYear')
   }
 
-  if (player.isCurrentPlayer && !imageManifest?.fallbacks?.[`${player.id}`]) {
+  if (
+    player.isCurrentPlayer &&
+    !hasUsableLocalImageFallback(imageManifest?.fallbacks?.[`${player.id}`])
+  ) {
     missingFields.push('imageFallback')
   }
 

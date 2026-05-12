@@ -9,6 +9,7 @@ import { EventModesPanel } from './components/EventModesPanel'
 import { GuessInput } from './components/GuessInput'
 import { GuessLedger } from './components/GuessLedger'
 import { LateRoundCluesPanel } from './components/LateRoundCluesPanel'
+import { MemorialTributePanel } from './components/MemorialTributePanel'
 import { MysteryPortrait } from './components/MysteryPortrait'
 import { PostGameExplainer } from './components/PostGameExplainer'
 import { ProfileHubPanel } from './components/ProfileHubPanel'
@@ -47,6 +48,7 @@ export default function App() {
   const playerPoolScopeLabel = formatPlayerPoolScopeLabel(game.activePlayerPoolScope)
   const entryDecadeLabel = formatEntryDecadeLabel(game.entryDecadeId)
   const eventLabel = formatEventModeLabel(game.eventId)
+  const activeMemorialTribute = game.activeEventModes.find((eventMode) => eventMode.tribute)?.tribute ?? null
   const boardEyebrowLabel =
     game.activePlayerPoolScope === 'history'
       ? 'Guess an NBA player from history'
@@ -93,10 +95,14 @@ export default function App() {
     : game.activePlayerPoolScope === 'history'
       ? 'Track the all-time trail, stay within the difficulty rules, and identify the NBA player before the board runs dry.'
       : 'Track the roster trail, stay within the difficulty rules, and identify the current NBA player before the board runs dry.'
+  const excludedEliminatedPlayoffTeamCount =
+    game.dataMeta.eligibility.excludedEliminatedPlayoffTeamCount ?? 0
   const rosterMetaLine =
     game.activePlayerPoolScope === 'history'
       ? `History pool uses recognizability curation by difficulty${game.entryDecadeId ? ` and locks to ${entryDecadeLabel}` : ''}.`
-      : 'Transaction-aware roster filter excludes active 10-day contracts.'
+      : excludedEliminatedPlayoffTeamCount > 0
+        ? `Transaction-aware roster excludes active 10-day contracts and ${excludedEliminatedPlayoffTeamCount} eliminated playoff teams.`
+        : 'Transaction-aware roster filter excludes active 10-day contracts.'
   const headerMetaPills = isMobileLayout
     ? [
         game.activeMode === 'daily'
@@ -314,6 +320,8 @@ export default function App() {
       ) : null}
 
       <section className="workspace__board">
+        {activeMemorialTribute ? <MemorialTributePanel tribute={activeMemorialTribute} /> : null}
+
         <div className={`board-heading ${isMobileLayout ? 'is-compact' : ''}`}>
           <div>
             <span className="eyebrow">{boardEyebrowLabel}</span>

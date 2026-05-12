@@ -40,6 +40,7 @@ export type EventModeId =
   | 'opening-week'
   | 'christmas-games'
   | 'all-star-weekend'
+  | 'brandon-clarke-tribute'
   | 'trade-deadline-week'
   | 'playoff-mode'
   | 'finals-mode'
@@ -235,9 +236,17 @@ export interface RosterFreshnessMetadata {
 export interface EligibilityMetadata {
   rosterStatusRequired: boolean
   transactionAwareTenDayExclusion: boolean
+  playoffEliminationAware?: boolean
   rosterPlayerCount: number
   eligiblePlayerCount: number
   excludedActiveTenDayCount: number
+  excludedEliminatedPlayoffTeamCount?: number
+  excludedEliminatedPlayoffPlayerCount?: number
+  excludedEliminatedPlayoffTeams?: Array<{
+    id: number
+    abbreviation: string
+    name: string
+  }>
   rules: string[]
 }
 
@@ -253,6 +262,7 @@ export interface PlayerPoolData {
     bioStats: string
     transactions: string
     schedule: string
+    playoffBracket?: string
     standings: string
     advancedStats: string
     draftHistory: string
@@ -282,13 +292,20 @@ export interface PlayerMovementRow {
 export interface ScheduledGameTeam {
   teamId: number
   teamTricode?: string
+  teamName?: string
+  teamCity?: string
+  score?: number
 }
 
 export interface ScheduledGame {
   gameId: string
+  gameStatus?: number
   gameDateTimeUTC?: string
   gameDateUTC: string
+  gameDateEst?: string
   gameLabel?: string
+  seriesGameNumber?: string
+  seriesText?: string
   homeTeam: ScheduledGameTeam
   awayTeam: ScheduledGameTeam
 }

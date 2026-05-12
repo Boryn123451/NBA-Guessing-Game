@@ -299,6 +299,7 @@ button {
 .settings-panel,
 .bonus-panel,
 .event-panel,
+.tribute-panel,
 .quest-panel,
 .profile-panel {
   border: 1px solid var(--panel-border);
@@ -319,6 +320,7 @@ button {
 .settings-panel,
 .bonus-panel,
 .event-panel,
+.tribute-panel,
 .quest-panel,
 .profile-panel {
   border-radius: 28px;
@@ -359,6 +361,7 @@ button {
 .snapshot-card p,
 .guess-ledger__player span,
 .event-panel__copy,
+.tribute-panel__body p,
 .quest-panel__copy,
 .profile-panel__warning,
 .badge-card p,
@@ -1085,6 +1088,33 @@ button {
 
 .event-card {
   border-top: 3px solid var(--event-accent);
+}
+
+.tribute-panel {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 1.1rem;
+  border-color: rgba(93, 118, 169, 0.45);
+  background:
+    linear-gradient(135deg, rgba(93, 118, 169, 0.18), rgba(18, 23, 42, 0.03)),
+    var(--surface);
+}
+
+.tribute-panel__body {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.tribute-panel__expiry {
+  width: fit-content;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid rgba(93, 118, 169, 0.35);
+  border-radius: 999px;
+  color: var(--text);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .event-card strong,

@@ -12,9 +12,19 @@ export interface PlayerImageSource {
   src: string
 }
 
+function resolveManifestImageSrc(src: string): string {
+  if (/^https?:\/\//i.test(src) || src.startsWith('data:')) {
+    return src
+  }
+
+  return `${import.meta.env.BASE_URL}${src.replace(/^\/+/, '')}`
+}
+
 export function getPlayerImageSources(player: PlayerRecord): PlayerImageSource[] {
   const sources: PlayerImageSource[] = []
-  const fallbackSrc = fallbackManifest.fallbacks[`${player.id}`] ?? null
+  const fallbackSrc = fallbackManifest.fallbacks[`${player.id}`]
+    ? resolveManifestImageSrc(fallbackManifest.fallbacks[`${player.id}`])
+    : null
 
   if (player.isCurrentPlayer && fallbackSrc) {
     sources.push({

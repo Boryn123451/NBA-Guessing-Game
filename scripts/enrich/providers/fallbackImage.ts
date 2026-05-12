@@ -1,3 +1,4 @@
+import { mkdir, stat, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
 import { enrichConfig } from '../config'
@@ -6,6 +7,7 @@ import type { ProviderResult } from '../types'
 import type { PlayerRecord } from '../../../src/lib/nba/types'
 
 const TWO_K_RATINGS_IMAGE_BASE = 'https://www.2kratings.com/wp-content/uploads'
+const PLAYER_IMAGE_PUBLIC_DIRECTORY = 'player-images'
 let nextFallbackImageRequestAt = 0
 let fallbackImageRequestCount = 0
 
@@ -40,26 +42,50 @@ function buildCandidates(player: PlayerRecord): string[] {
   return [...candidates]
 }
 
-async function headExists(url: string): Promise<boolean> {
+function buildLocalImageManifestPath(playerId: number): string {
+  return `${PLAYER_IMAGE_PUBLIC_DIRECTORY}/${playerId}.png`
+}
+
+function buildLocalImagePath(playerId: number): string {
+  return path.join(enrichConfig.playerImageDirectory, `${playerId}.png`)
+}
+
+function isLocalImageManifestPath(value: string | null | undefined): boolean {
+  return Boolean(value && !/^https?:\/\//i.test(value))
+}
+
+async function fileExists(filePath: string): Promise<boolean> {
   try {
-    const waitMs = Math.max(0, nextFallbackImageRequestAt - Date.now())
+    const fileStat = await stat(filePath)
+    return fileStat.isFile() && fileStat.size > 0
+  } catch {
+    return false
+  }
+}
 
-    if (waitMs > 0) {
-      await new Promise((resolve) => setTimeout(resolve, waitMs))
-    }
+async function throttleFallbackImageRequest(): Promise<void> {
+  const waitMs = Math.max(0, nextFallbackImageRequestAt - Date.now())
 
-    fallbackImageRequestCount += 1
-    const applyBatchCooldown =
-      enrichConfig.fallbackImageBatchSize > 0 &&
-      fallbackImageRequestCount % enrichConfig.fallbackImageBatchSize === 0
-    nextFallbackImageRequestAt =
-      Date.now() +
-      (applyBatchCooldown
-        ? enrichConfig.fallbackImageBatchCooldownMs
-        : enrichConfig.fallbackImageMinDelayMs)
+  if (waitMs > 0) {
+    await new Promise((resolve) => setTimeout(resolve, waitMs))
+  }
 
-    const response = await fetch(url, {
-      method: 'HEAD',
+  fallbackImageRequestCount += 1
+  const applyBatchCooldown =
+    enrichConfig.fallbackImageBatchSize > 0 &&
+    fallbackImageRequestCount % enrichConfig.fallbackImageBatchSize === 0
+  nextFallbackImageRequestAt =
+    Date.now() +
+    (applyBatchCooldown
+      ? enrichConfig.fallbackImageBatchCooldownMs
+      : enrichConfig.fallbackImageMinDelayMs)
+}
+
+async function downloadImage(candidateUrl: string, playerId: number): Promise<string | null> {
+  try {
+    await throttleFallbackImageRequest()
+
+    const response = await fetch(candidateUrl, {
       signal: AbortSignal.timeout(enrichConfig.httpTimeoutMs),
       headers: {
         'User-Agent': 'Mozilla/5.0',
@@ -67,17 +93,46 @@ async function headExists(url: string): Promise<boolean> {
       },
     })
 
-    return response.ok
+    if (!response.ok || !response.headers.get('content-type')?.startsWith('image/')) {
+      return null
+    }
+
+    await mkdir(enrichConfig.playerImageDirectory, { recursive: true })
+    await writeFile(buildLocalImagePath(playerId), Buffer.from(await response.arrayBuffer()))
+    return buildLocalImageManifestPath(playerId)
   } catch {
-    return false
+    return null
   }
 }
 
-export async function fetchFallbackImage(player: PlayerRecord): Promise<ProviderResult | null> {
+export async function fetchFallbackImage(
+  player: PlayerRecord,
+  options: { forceDownload?: boolean } = {},
+): Promise<ProviderResult | null> {
   const parsedCachePath = path.join(enrichConfig.parsedDirectory, 'fallback-image', `${player.id}.json`)
   const cachedParsed = await readJsonFile<ProviderResult>(parsedCachePath)
+  const localImageManifestPath = buildLocalImageManifestPath(player.id)
+  const localImagePath = buildLocalImagePath(player.id)
+  const localImageExists = await fileExists(localImagePath)
 
-  if (cachedParsed && (await isFileFresh(parsedCachePath, enrichConfig.imageManifestMaxAgeMs))) {
+  if (!options.forceDownload && localImageExists && await isFileFresh(localImagePath, enrichConfig.imageManifestMaxAgeMs)) {
+    return {
+      source: 'fallbackImage',
+      transport: 'http',
+      url: localImageManifestPath,
+      fetchedAt: new Date().toISOString(),
+      fromCache: true,
+      imageFallbackUrl: localImageManifestPath,
+    }
+  }
+
+  if (
+    !options.forceDownload &&
+    cachedParsed &&
+    isLocalImageManifestPath(cachedParsed.imageFallbackUrl) &&
+    localImageExists &&
+    (await isFileFresh(parsedCachePath, enrichConfig.imageManifestMaxAgeMs))
+  ) {
     return {
       ...cachedParsed,
       fromCache: true,
@@ -85,14 +140,16 @@ export async function fetchFallbackImage(player: PlayerRecord): Promise<Provider
   }
 
   for (const candidateUrl of buildCandidates(player)) {
-    if (await headExists(candidateUrl)) {
+    const localFallbackUrl = await downloadImage(candidateUrl, player.id)
+
+    if (localFallbackUrl) {
       const result: ProviderResult = {
         source: 'fallbackImage',
         transport: 'http',
         url: candidateUrl,
         fetchedAt: new Date().toISOString(),
         fromCache: false,
-        imageFallbackUrl: candidateUrl,
+        imageFallbackUrl: localFallbackUrl,
       }
 
       await writeJsonFile(parsedCachePath, result)

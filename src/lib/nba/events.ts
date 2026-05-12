@@ -7,6 +7,17 @@ interface EventWindow {
   day: number
 }
 
+interface FixedEventWindow {
+  startsAtIso: string
+  endsAtIso: string
+}
+
+export interface MemorialTribute {
+  title: string
+  expiresLabel: string
+  body: string[]
+}
+
 export interface EventModeDefinition {
   id: EventModeId
   title: string
@@ -14,10 +25,12 @@ export interface EventModeDefinition {
   description: string
   priority: number
   accentColor: string
-  start: EventWindow
-  end: EventWindow
+  start?: EventWindow
+  end?: EventWindow
+  fixedWindow?: FixedEventWindow
   badgeRewardId: BadgeId | null
   specialRuleText: string | null
+  tribute?: MemorialTribute
   filter: (player: PlayerRecord) => boolean
 }
 
@@ -41,6 +54,18 @@ const CHRISTMAS_TEAM_ABBREVIATIONS = new Set([
   'BOS',
   'PHI',
 ])
+
+const BRANDON_CLARKE_TRIBUTE: MemorialTribute = {
+  title: 'Rest in peace, Brandon Clarke',
+  expiresLabel: 'Visible until May 14, 2026, 11:59 PM ET.',
+  body: [
+    'Today, we witnessed one of the saddest moments the basketball world has seen in recent years. Memphis Grizzlies forward Brandon Clarke has passed away at the age of 29.',
+    "Clarke was more than just a talented player \u2014 he was one of the emotional and energetic pillars of the Grizzlies' young core. A member of the 2020 NBA All-Rookie First Team, he quickly became known for his elite efficiency around the rim, explosive athleticism, shot blocking, and relentless impact on both ends of the floor.",
+    "Before entering the NBA, he starred at Gonzaga, where he established himself as one of college basketball's best defenders and most efficient forwards. In Memphis, he helped shape the identity of one of the toughest young teams in the league during the early 2020s.",
+    'Unfortunately, injuries had plagued him since 2023 and slowed down a career that once looked incredibly promising.',
+    'Rest in peace, Brandon Clarke \u{1F56F}\uFE0F',
+  ],
+}
 
 export const EVENT_MODE_DEFINITIONS: EventModeDefinition[] = [
   {
@@ -94,6 +119,22 @@ export const EVENT_MODE_DEFINITIONS: EventModeDefinition[] = [
     badgeRewardId: 'event-mode-winner',
     specialRuleText: 'Pool favors players with previous NBA teams on record.',
     filter: (player) => player.career.previousTeamIds.length > 0,
+  },
+  {
+    id: 'brandon-clarke-tribute',
+    title: 'Brandon Clarke Tribute',
+    subtitle: 'Memphis remembers #15.',
+    description: 'A temporary tribute board for Brandon Clarke and the Memphis Grizzlies.',
+    priority: 100,
+    accentColor: '#5d76a9',
+    fixedWindow: {
+      startsAtIso: '2026-05-12T00:00:00-04:00',
+      endsAtIso: '2026-05-14T23:59:59-04:00',
+    },
+    badgeRewardId: null,
+    specialRuleText: 'Temporary tribute pool narrows to Memphis players.',
+    tribute: BRANDON_CLARKE_TRIBUTE,
+    filter: (player) => player.teamAbbreviation === 'MEM' || player.id === 1629634,
   },
   {
     id: 'playoff-mode',
@@ -158,6 +199,17 @@ function getWindowForYear(
   year: number,
   timeZone: string,
 ): { start: DateTime; end: DateTime } {
+  if (eventMode.fixedWindow) {
+    return {
+      start: DateTime.fromISO(eventMode.fixedWindow.startsAtIso).setZone(timeZone),
+      end: DateTime.fromISO(eventMode.fixedWindow.endsAtIso).setZone(timeZone),
+    }
+  }
+
+  if (!eventMode.start || !eventMode.end) {
+    throw new Error(`Event ${eventMode.id} is missing a date window.`)
+  }
+
   const start = DateTime.fromObject(
     {
       year,

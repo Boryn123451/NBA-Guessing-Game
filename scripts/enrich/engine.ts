@@ -124,7 +124,7 @@ function updateImageManifest(
   return {
     schemaVersion: 1,
     generatedAt,
-    source: imageManifest?.source ?? '2KRatings static image fallback manifest',
+    source: imageManifest?.source ?? 'Local mirrored 2KRatings fallback images',
     fallbacks: {
       ...(imageManifest?.fallbacks ?? {}),
       [`${playerId}`]: imageUrl,
@@ -350,7 +350,10 @@ export async function runEnrichment(mode: EnrichmentMode): Promise<EnrichmentRep
 
   const imageCandidates = selectedPlayers.filter((player) => {
     const nextPlayer = updatedById.get(player.id) ?? player
-    return nextPlayer.isCurrentPlayer && getMissingFields(nextPlayer, imageManifest).includes('imageFallback')
+    return (
+      nextPlayer.isCurrentPlayer &&
+      (mode === 'full' || getMissingFields(nextPlayer, imageManifest).includes('imageFallback'))
+    )
   })
   const imageProgress = createProgressTracker('Fallback images', imageCandidates.length, {
     initialMsPerItem: 180,
@@ -361,7 +364,7 @@ export async function runEnrichment(mode: EnrichmentMode): Promise<EnrichmentRep
     statusFile.players[`${player.id}`] = state
 
     try {
-      const result = await fetchFallbackImage(player)
+      const result = await fetchFallbackImage(player, { forceDownload: mode === 'full' })
 
       if (!result?.imageFallbackUrl) {
         return
@@ -372,7 +375,7 @@ export async function runEnrichment(mode: EnrichmentMode): Promise<EnrichmentRep
       state.sourceStates.fallbackImage.lastSuccessAt = result.fetchedAt
       state.sourceStates.fallbackImage.lastFailureAt = null
       state.sourceStates.fallbackImage.lastFailureMessage = null
-      state.sourceStates.fallbackImage.lastUrl = result.imageFallbackUrl
+      state.sourceStates.fallbackImage.lastUrl = result.url ?? result.imageFallbackUrl
       state.sourceStates.fallbackImage.transport = 'http'
       state.fieldSources.imageFallback = 'fallbackImage'
     } catch (error) {

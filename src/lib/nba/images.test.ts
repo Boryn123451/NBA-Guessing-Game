@@ -16,8 +16,8 @@ describe('player image sources', () => {
 
     expect(sources[0]).toMatchObject({
       kind: 'fallback',
-      src: 'https://www.2kratings.com/wp-content/uploads/LeBron-James-2K-Rating.png',
     })
+    expect(sources[0].src).toMatch(/player-images\/2544\.png$/)
     expect(sources[1]).toMatchObject({
       kind: 'official',
       src: 'https://cdn.nba.com/headshots/nba/latest/1040x760/2544.png',

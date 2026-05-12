@@ -44,6 +44,8 @@ const ADVANCED_PLAYER_STATS_SOURCE =
   'https://stats.nba.com/stats/leaguedashplayerstats?College=&Conference=&Country=&DateFrom=&DateTo=&Division=&DraftPick=&DraftYear=&GameScope=&GameSegment=&Height=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PORound=0&PaceAdjust=N&PerMode=PerGame&Period=0&PlayerExperience=&PlayerPosition=&PlusMinus=N&Rank=N&Season={season}&SeasonSegment=&SeasonType=Regular+Season&ShotClockRange=&StarterBench=&TeamID=0&TwoWay=0&VsConference=&VsDivision=&Weight='
 const TRANSACTION_SOURCE = 'https://stats.nba.com/js/data/playermovement/NBA_Player_Movement.json'
 const SCHEDULE_SOURCE = 'https://cdn.nba.com/static/json/staticData/scheduleLeagueV2_1.json'
+const PLAYOFF_BRACKET_SOURCE =
+  'https://cdn.nba.com/static/json/staticData/brackets/{seasonYear}/PlayoffBracket.json'
 const STANDINGS_SOURCE =
   'https://stats.nba.com/stats/leaguestandingsv3?LeagueID=00&Season={season}&SeasonType=Regular%20Season'
 const DRAFT_HISTORY_SOURCE =
@@ -57,6 +59,7 @@ const PLAYER_CAREER_STATS_SOURCE =
 const COMMON_PLAYER_INFO_SOURCE =
   'https://stats.nba.com/stats/commonplayerinfo?LeagueID=00&PlayerID={playerId}'
 const TWO_K_RATINGS_IMAGE_BASE = 'https://www.2kratings.com/wp-content/uploads'
+const PLAYER_IMAGE_PUBLIC_DIRECTORY = 'player-images'
 const BASKETBALL_REFERENCE_BASE_URL = 'https://www.basketball-reference.com'
 const BASKETBALL_REFERENCE_SEARCH_SOURCE =
   'https://www.basketball-reference.com/search/search.fcgi?search={query}'
@@ -156,9 +159,30 @@ interface PlayerMovementResponse {
   }
 }
 
+interface PlayoffBracketSeries {
+  seriesStatus?: number
+  seriesWinner?: number
+  highSeedId?: number
+  lowSeedId?: number
+  highSeedSeriesWins?: number
+  lowSeedSeriesWins?: number
+}
+
+interface PlayoffBracketResponse {
+  bracket?: {
+    playoffBracketSeries?: PlayoffBracketSeries[]
+  }
+}
+
 interface StandingSnapshot {
   playoffRank: number | null
   playoffPicture: boolean | null
+}
+
+interface ExcludedPlayoffTeam {
+  id: number
+  abbreviation: string
+  name: string
 }
 
 interface PlayerIdentity {
@@ -1292,6 +1316,123 @@ function buildStandingMap(rows: Array<Record<string, ResultValue>>): Map<number,
   )
 }
 
+function getPlayoffSeriesKey(gameId: string): string | null {
+  return /^004\d{7}$/.test(gameId) ? gameId.slice(0, -1) : null
+}
+
+function getGameWinnerTeamId(game: ScheduledGame): number | null {
+  const homeScore = game.homeTeam.score
+  const awayScore = game.awayTeam.score
+
+  if (
+    typeof homeScore !== 'number' ||
+    typeof awayScore !== 'number' ||
+    !Number.isFinite(homeScore) ||
+    !Number.isFinite(awayScore) ||
+    homeScore === awayScore
+  ) {
+    return null
+  }
+
+  return homeScore > awayScore ? game.homeTeam.teamId : game.awayTeam.teamId
+}
+
+function buildExcludedPlayoffTeam(teamId: number): ExcludedPlayoffTeam | null {
+  const team = TEAM_BY_ID.get(teamId)
+
+  if (!team) {
+    return null
+  }
+
+  return {
+    id: team.id,
+    abbreviation: team.abbreviation,
+    name: `${team.city} ${team.name}`,
+  }
+}
+
+function deriveEliminatedPlayoffTeams(games: ScheduledGame[]): ExcludedPlayoffTeam[] {
+  const seriesByKey = new Map<string, {
+    teamIds: Set<number>
+    winsByTeamId: Map<number, number>
+  }>()
+
+  for (const game of games) {
+    const seriesKey = getPlayoffSeriesKey(game.gameId)
+
+    if (!seriesKey || game.gameStatus !== 3 || game.homeTeam.teamId === 0 || game.awayTeam.teamId === 0) {
+      continue
+    }
+
+    const winnerTeamId = getGameWinnerTeamId(game)
+
+    if (winnerTeamId === null) {
+      continue
+    }
+
+    const series = seriesByKey.get(seriesKey) ?? {
+      teamIds: new Set<number>(),
+      winsByTeamId: new Map<number, number>(),
+    }
+    series.teamIds.add(game.homeTeam.teamId)
+    series.teamIds.add(game.awayTeam.teamId)
+    series.winsByTeamId.set(winnerTeamId, (series.winsByTeamId.get(winnerTeamId) ?? 0) + 1)
+    seriesByKey.set(seriesKey, series)
+  }
+
+  const eliminatedTeamIds = new Set<number>()
+
+  for (const series of seriesByKey.values()) {
+    const winnerEntry = [...series.winsByTeamId.entries()].find(([, wins]) => wins >= 4)
+
+    if (!winnerEntry) {
+      continue
+    }
+
+    const [winnerTeamId] = winnerEntry
+
+    for (const teamId of series.teamIds) {
+      if (teamId !== winnerTeamId) {
+        eliminatedTeamIds.add(teamId)
+      }
+    }
+  }
+
+  return [...eliminatedTeamIds]
+    .map(buildExcludedPlayoffTeam)
+    .filter(isPresent)
+    .toSorted((left, right) => left.abbreviation.localeCompare(right.abbreviation))
+}
+
+function deriveEliminatedPlayoffTeamsFromBracket(
+  response: PlayoffBracketResponse | null,
+): ExcludedPlayoffTeam[] {
+  const eliminatedTeamIds = new Set<number>()
+
+  for (const series of response?.bracket?.playoffBracketSeries ?? []) {
+    const winnerTeamId = series.seriesWinner ?? 0
+
+    if (series.seriesStatus !== 3 || winnerTeamId === 0) {
+      continue
+    }
+
+    const teamIds = [series.highSeedId, series.lowSeedId].filter(
+      (teamId): teamId is number => typeof teamId === 'number' && teamId > 0,
+    )
+
+    for (const teamId of teamIds) {
+      if (teamId !== winnerTeamId) {
+        eliminatedTeamIds.add(teamId)
+      }
+    }
+  }
+
+  return [...eliminatedTeamIds]
+    .map(buildExcludedPlayoffTeam)
+    .filter(isPresent)
+    .toSorted((left, right) => left.abbreviation.localeCompare(right.abbreviation))
+}
+
 function buildBaseSnapshot(
   row: Record<string, ResultValue>,
   standingSnapshot: StandingSnapshot | undefined,
@@ -1446,11 +1587,32 @@ function build2KRatingsFallbackCandidates(player: PlayerRecord): string[] {
   return [...candidates]
 }
 
-async function headExists(url: string, timeoutMs = 2500): Promise<boolean> {
+function createLocalFallbackImageManifestPath(playerId: number): string {
+  return `${PLAYER_IMAGE_PUBLIC_DIRECTORY}/${playerId}.png`
+}
+
+function createLocalFallbackImagePath(publicDirectory: string, playerId: number): string {
+  return path.join(publicDirectory, PLAYER_IMAGE_PUBLIC_DIRECTORY, `${playerId}.png`)
+}
+
+async function hasLocalFallbackImage(publicDirectory: string, playerId: number): Promise<boolean> {
   try {
-    await throttleSourceRequest(url)
-    const response = await fetch(url, {
-      method: 'HEAD',
+    const imageStat = await stat(createLocalFallbackImagePath(publicDirectory, playerId))
+    return imageStat.isFile() && imageStat.size > 0
+  } catch {
+    return false
+  }
+}
+
+async function downloadFallbackImage(
+  player: PlayerRecord,
+  candidateUrl: string,
+  publicDirectory: string,
+  timeoutMs = DEFAULT_REQUEST_TIMEOUT_MS,
+): Promise<string | null> {
+  try {
+    await throttleSourceRequest(candidateUrl)
+    const response = await fetch(candidateUrl, {
       signal: AbortSignal.timeout(timeoutMs),
       headers: {
         'User-Agent': 'Mozilla/5.0',
@@ -1458,11 +1620,42 @@ async function headExists(url: string, timeoutMs = 2500): Promise<boolean> {
       },
     })
 
-    return response.ok
+    if (!response.ok || !response.headers.get('content-type')?.startsWith('image/')) {
+      return null
+    }
+
+    const imageDirectory = path.join(publicDirectory, PLAYER_IMAGE_PUBLIC_DIRECTORY)
+    await mkdir(imageDirectory, { recursive: true })
+    await writeFile(
+      createLocalFallbackImagePath(publicDirectory, player.id),
+      Buffer.from(await response.arrayBuffer()),
+    )
+
+    return createLocalFallbackImageManifestPath(player.id)
   } catch (error) {
-    applyThrottlePenalty(url, error)
-    return false
+    applyThrottlePenalty(candidateUrl, error)
+    return null
   }
+}
+
+async function resolveFallbackImage(
+  player: PlayerRecord,
+  publicDirectory: string,
+  forceDownload = false,
+): Promise<string | null> {
+  if (!forceDownload && await hasLocalFallbackImage(publicDirectory, player.id)) {
+    return createLocalFallbackImageManifestPath(player.id)
+  }
+
+  for (const candidateUrl of build2KRatingsFallbackCandidates(player)) {
+    const imagePath = await downloadFallbackImage(player, candidateUrl, publicDirectory)
+
+    if (imagePath) {
+      return imagePath
+    }
+  }
+
+  return null
 }
 
 interface AwardCounts {
@@ -2269,6 +2462,8 @@ function buildPlayerPoolData(
   rosterPlayerCount: number,
   eligiblePlayerCount: number,
   activeTenDayPlayers: PlayerPoolData['excludedTenDayPlayers'],
+  eliminatedPlayoffTeams: ExcludedPlayoffTeam[],
+  eliminatedPlayoffPlayerCount: number,
   players: PlayerRecord[],
   usingExistingPoolFallback: boolean,
   allStarYear: number,
@@ -2286,12 +2481,17 @@ function buildPlayerPoolData(
     eligibility: {
       rosterStatusRequired: true,
       transactionAwareTenDayExclusion: true,
+      playoffEliminationAware: true,
       rosterPlayerCount,
       eligiblePlayerCount,
       excludedActiveTenDayCount: activeTenDayPlayers.length,
+      excludedEliminatedPlayoffTeamCount: eliminatedPlayoffTeams.length,
+      excludedEliminatedPlayoffPlayerCount: eliminatedPlayoffPlayerCount,
+      excludedEliminatedPlayoffTeams: eliminatedPlayoffTeams,
       rules: [
         'Only current NBA roster rows with ROSTER_STATUS = 1 are eligible.',
         'Players on active 10-day contracts are excluded using transaction and schedule data.',
+        'Players from teams eliminated in completed playoff series are excluded using NBA playoff bracket data, with schedule data as fallback.',
         'Guess lists and mystery-player pools are generated from the same eligible player set.',
         usingExistingPoolFallback
           ? 'Core NBA endpoints were unavailable during this refresh, so the previous generated pool was rehydrated and re-enriched.'
@@ -2303,6 +2503,7 @@ function buildPlayerPoolData(
       bioStats: BIO_STATS_SOURCE.replace('{season}', season),
       transactions: TRANSACTION_SOURCE,
       schedule: SCHEDULE_SOURCE,
+      playoffBracket: PLAYOFF_BRACKET_SOURCE.replace('{seasonYear}', season.slice(0, 4)),
       standings: STANDINGS_SOURCE.replace('{season}', season),
       advancedStats: ADVANCED_PLAYER_STATS_SOURCE.replace('{season}', season),
       draftHistory: DRAFT_HISTORY_SOURCE,
@@ -2355,6 +2556,7 @@ function buildHistoryPlayerPoolData(
       bioStats: BIO_STATS_SOURCE.replace('{season}', season),
       transactions: TRANSACTION_SOURCE,
       schedule: SCHEDULE_SOURCE,
+      playoffBracket: PLAYOFF_BRACKET_SOURCE.replace('{seasonYear}', season.slice(0, 4)),
       standings: STANDINGS_SOURCE.replace('{season}', season),
       advancedStats: ADVANCED_PLAYER_STATS_SOURCE.replace('{season}', season),
       draftHistory: DRAFT_HISTORY_SOURCE,
@@ -2386,9 +2588,14 @@ async function buildImageFallbackManifest(
   players: PlayerRecord[],
   refreshedAt: string,
   existingManifest: PlayerImageFallbackManifest | null,
+  publicDirectory: string,
   missingOnly = false,
 ): Promise<PlayerImageFallbackManifest> {
-  const existingFallbacks = { ...(existingManifest?.fallbacks ?? {}) }
+  const existingFallbacks = Object.fromEntries(
+    Object.entries(existingManifest?.fallbacks ?? {}).filter(([, imagePath]) =>
+      !/^https?:\/\//i.test(imagePath),
+    ),
+  )
   const candidates = missingOnly
     ? players.filter((player) => !existingFallbacks[`${player.id}`])
     : players
@@ -2401,10 +2608,10 @@ async function buildImageFallbackManifest(
   )
   const imageFallbackEntries = await mapWithConcurrency(candidates, 16, async (player) => {
     try {
-      for (const candidateUrl of build2KRatingsFallbackCandidates(player)) {
-        if (await headExists(candidateUrl)) {
-          return [player.id, candidateUrl] as const
-        }
+      const imagePath = await resolveFallbackImage(player, publicDirectory, !missingOnly)
+
+      if (imagePath) {
+        return [player.id, imagePath] as const
       }
 
       return null
@@ -2417,7 +2624,7 @@ async function buildImageFallbackManifest(
   return {
     schemaVersion: 1,
     generatedAt: refreshedAt,
-    source: '2KRatings static image fallback manifest',
+    source: 'Local mirrored 2KRatings fallback images',
     fallbacks: {
       ...existingFallbacks,
       ...Object.fromEntries(
@@ -2529,6 +2736,7 @@ async function main(): Promise<void> {
   const currentFileDirectory = path.dirname(fileURLToPath(import.meta.url))
   const cacheDirectory = path.resolve(currentFileDirectory, `.cache/nba/${season}`)
   const outputDirectory = path.resolve(currentFileDirectory, '../src/data/generated')
+  const publicDirectory = path.resolve(currentFileDirectory, '../public')
   const outputPath = path.join(outputDirectory, 'player-pool.json')
   const historyOutputPath = path.join(outputDirectory, 'history-player-pool.json')
   const imageFallbackPath = path.join(outputDirectory, 'player-image-fallbacks.json')
@@ -2565,6 +2773,7 @@ async function main(): Promise<void> {
       existingPool.players,
       refreshedAt,
       existingImageFallbackManifest,
+      publicDirectory,
     )
     await mkdir(outputDirectory, { recursive: true })
     await writeFile(imageFallbackPath, `${JSON.stringify(imageFallbackManifest, null, 2)}\n`, 'utf8')
@@ -2640,6 +2849,7 @@ async function main(): Promise<void> {
           nextCurrentPlayers,
           refreshedAt,
           existingImageFallbackManifest,
+          publicDirectory,
           true,
         )
       : existingImageFallbackManifest
@@ -2706,6 +2916,8 @@ async function main(): Promise<void> {
   let rosterPlayers: PlayerRecord[] = []
   let historicalRosterRows: Array<Record<string, ResultValue>> = []
   let activeTenDayPlayers: PlayerPoolData['excludedTenDayPlayers'] = []
+  let eliminatedPlayoffTeams: ExcludedPlayoffTeam[] = []
+  let eliminatedPlayoffPlayerCount = 0
   let baseEligiblePlayers: PlayerRecord[] = []
   let historyPlayers: PlayerRecord[] = []
   let rosterPlayerCount = 0
@@ -2720,6 +2932,7 @@ async function main(): Promise<void> {
       bioStatsResponse,
       advancedPlayerStatsResponse,
       scheduleResponse,
+      playoffBracketResponse,
       movementResponse,
       standingsResponse,
     ] =
@@ -2756,6 +2969,16 @@ async function main(): Promise<void> {
           {
             'User-Agent': 'Mozilla/5.0',
             Accept: 'application/json, text/plain, */*',
+          },
+          CORE_SOURCE_TIMEOUT_MS,
+        ),
+        fetchJsonWithStaleFallback<PlayoffBracketResponse>(
+          PLAYOFF_BRACKET_SOURCE.replace('{seasonYear}', `${seasonStartYear}`),
+          path.join(cacheDirectory, 'core', 'playoff-bracket.json'),
+          {
+            'User-Agent': 'Mozilla/5.0',
+            Referer: 'https://www.nba.com/playoffs',
+            Accept: 'application/json,text/plain,*/*',
           },
           CORE_SOURCE_TIMEOUT_MS,
         ),
@@ -2811,7 +3034,18 @@ async function main(): Promise<void> {
     })
 
     const excludedIds = new Set(activeTenDayPlayers.map((player) => player.id))
-    baseEligiblePlayers = rosterPlayers.filter((player) => !excludedIds.has(player.id))
+    eliminatedPlayoffTeams = deriveEliminatedPlayoffTeamsFromBracket(playoffBracketResponse)
+
+    if (eliminatedPlayoffTeams.length === 0) {
+      eliminatedPlayoffTeams = deriveEliminatedPlayoffTeams(games)
+    }
+    const eliminatedPlayoffTeamIds = new Set(eliminatedPlayoffTeams.map((team) => team.id))
+    eliminatedPlayoffPlayerCount = rosterPlayers.filter(
+      (player) => !excludedIds.has(player.id) && eliminatedPlayoffTeamIds.has(player.teamId),
+    ).length
+    baseEligiblePlayers = rosterPlayers.filter(
+      (player) => !excludedIds.has(player.id) && !eliminatedPlayoffTeamIds.has(player.teamId),
+    )
     rosterPlayerCount = rosterPlayers.length
     draftYears = [...new Set(baseEligiblePlayers.map((player) => player.draft.year).filter(isPresent))]
   } catch (error) {
@@ -2825,6 +3059,8 @@ async function main(): Promise<void> {
       coerceExistingPlayerRecord(player, seasonStartYear),
     )
     activeTenDayPlayers = existingPool.excludedTenDayPlayers ?? []
+    eliminatedPlayoffTeams = existingPool.eligibility?.excludedEliminatedPlayoffTeams ?? []
+    eliminatedPlayoffPlayerCount = existingPool.eligibility?.excludedEliminatedPlayoffPlayerCount ?? 0
     baseEligiblePlayers = rosterPlayers
     rosterPlayerCount = existingPool.eligibility?.rosterPlayerCount ?? rosterPlayers.length
     draftYears = []
@@ -2837,9 +3073,11 @@ async function main(): Promise<void> {
   }
 
   const excludedIds = new Set(activeTenDayPlayers.map((player) => player.id))
+  const excludedPlayoffTeamIds = new Set(eliminatedPlayoffTeams.map((team) => team.id))
   const historicalRowsForPool = historicalRosterRows.filter((row) => {
     const playerId = parseIntegerValue(row.PERSON_ID)
-    return playerId !== null && !excludedIds.has(playerId)
+    const teamId = parseIntegerValue(row.TEAM_ID)
+    return playerId !== null && !excludedIds.has(playerId) && !excludedPlayoffTeamIds.has(teamId ?? 0)
   })
   const playerIdentities = new Map<number, PlayerIdentity>()
 
@@ -2895,6 +3133,8 @@ async function main(): Promise<void> {
       rosterPlayerCount,
       baseEligiblePlayers.length,
       activeTenDayPlayers,
+      eliminatedPlayoffTeams,
+      eliminatedPlayoffPlayerCount,
       baseEligiblePlayers.toSorted((left, right) => left.displayName.localeCompare(right.displayName)),
       usingExistingPoolFallback,
       allStarYear,
@@ -3122,28 +3362,13 @@ async function main(): Promise<void> {
     )
   }
 
-  const imageFallbackEntries = await mapWithConcurrency(eligiblePlayers, 16, async (player) => {
-    for (const candidateUrl of build2KRatingsFallbackCandidates(player)) {
-      if (await headExists(candidateUrl)) {
-        return [player.id, candidateUrl] as const
-      }
-    }
-
-    return null
-  })
-  const imageFallbackManifest: PlayerImageFallbackManifest =
-    imageFallbackEntries.some(isPresent) || !existingImageFallbackManifest
-      ? {
-          schemaVersion: 1,
-          generatedAt: refreshedAt,
-          source: '2KRatings static image fallback manifest',
-          fallbacks: Object.fromEntries(
-            imageFallbackEntries
-              .filter(isPresent)
-              .map(([playerId, url]) => [`${playerId}`, url]),
-          ),
-        }
-      : existingImageFallbackManifest
+  const imageFallbackManifest = await buildImageFallbackManifest(
+    rosterPlayers,
+    refreshedAt,
+    existingImageFallbackManifest,
+    publicDirectory,
+    true,
+  )
 
   await writeGeneratedPools(
     outputDirectory,
@@ -3156,6 +3381,8 @@ async function main(): Promise<void> {
       rosterPlayerCount,
       eligiblePlayers.length,
       activeTenDayPlayers,
+      eliminatedPlayoffTeams,
+      eliminatedPlayoffPlayerCount,
       eligiblePlayers,
       usingExistingPoolFallback,
       allStarYear,
@@ -3174,7 +3401,7 @@ async function main(): Promise<void> {
   flushFailedRequestSummary()
 
   console.log(
-    `Wrote ${eligiblePlayers.length} current players to ${outputPath}. Wrote ${historyPlayers.length} history players to ${historyOutputPath}. Excluded ${activeTenDayPlayers.length} active 10-day contracts. Built ${Object.keys(imageFallbackManifest.fallbacks).length} 2KRatings fallback images.`,
+    `Wrote ${eligiblePlayers.length} current players to ${outputPath}. Wrote ${historyPlayers.length} history players to ${historyOutputPath}. Excluded ${activeTenDayPlayers.length} active 10-day contracts and ${eliminatedPlayoffPlayerCount} players from ${eliminatedPlayoffTeams.length} eliminated playoff teams. Built ${Object.keys(imageFallbackManifest.fallbacks).length} 2KRatings fallback images.`,
   )
 }
 

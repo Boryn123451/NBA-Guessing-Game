@@ -18,6 +18,8 @@ const scriptsDirectory = path.resolve(currentDirectory, '..')
 export const enrichConfig = {
   scriptsDirectory,
   generatedDirectory: path.resolve(scriptsDirectory, '../src/data/generated'),
+  publicDirectory: path.resolve(scriptsDirectory, '../public'),
+  playerImageDirectory: path.resolve(scriptsDirectory, '../public/player-images'),
   currentPoolPath: path.resolve(scriptsDirectory, '../src/data/generated/player-pool.json'),
   historyPoolPath: path.resolve(scriptsDirectory, '../src/data/generated/history-player-pool.json'),
   imageManifestPath: path.resolve(scriptsDirectory, '../src/data/generated/player-image-fallbacks.json'),
