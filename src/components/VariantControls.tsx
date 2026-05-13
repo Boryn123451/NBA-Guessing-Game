@@ -124,34 +124,19 @@ export function VariantControls({
 
       <div className="variant-controls__group">
         <span className="settings-panel__label">Difficulty</span>
-        {isCompact ? (
-          <select
-            className="variant-controls__select"
-            disabled={locked}
-            value={difficultyId}
-            onChange={(event) => onDifficultyChange(event.target.value as DifficultyId)}
-          >
-            {difficultyOptions.map((difficulty) => (
-              <option key={difficulty.id} value={difficulty.id}>
-                {difficulty.label}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <div className="variant-controls__chips">
-            {difficultyOptions.map((difficulty) => (
-              <button
-                key={difficulty.id}
-                className={`theme-chip ${difficulty.id === difficultyId ? 'is-active' : ''}`}
-                type="button"
-                disabled={locked}
-                onClick={() => onDifficultyChange(difficulty.id)}
-              >
-                <span>{difficulty.label}</span>
-              </button>
-            ))}
-          </div>
-        )}
+        <div className="variant-controls__chips">
+          {difficultyOptions.map((difficulty) => (
+            <button
+              key={difficulty.id}
+              className={`theme-chip ${difficulty.id === difficultyId ? 'is-active' : ''}`}
+              type="button"
+              disabled={locked}
+              onClick={() => onDifficultyChange(difficulty.id)}
+            >
+              <span>{difficulty.label}</span>
+            </button>
+          ))}
+        </div>
         <div className="variant-controls__summary">
           <span className="variant-controls__summary-copy">{activeDifficulty.description}</span>
           {locked ? <strong>Difficulty locks after the first guess.</strong> : null}
@@ -191,35 +176,20 @@ export function VariantControls({
       {mode === 'practice' ? (
         <div className="variant-controls__group">
           <span className="settings-panel__label">Player Pool</span>
-          {isCompact ? (
-            <select
-              className="variant-controls__select"
-              disabled={locked}
-              value={playerPoolScope}
-              onChange={(event) => onPlayerPoolScopeChange(event.target.value as PlayerPoolScopeId)}
-            >
-              {playerPoolScopeOptions.map((scope) => (
-                <option key={scope.id} value={scope.id} disabled={scope.disabled}>
-                  {scope.count !== null ? `${scope.label} (${scope.count})` : scope.label}
-                </option>
-              ))}
-            </select>
-          ) : (
-            <div className="variant-controls__chips">
-              {playerPoolScopeOptions.map((scope) => (
-                <button
-                  key={scope.id}
-                  className={`theme-chip ${scope.id === playerPoolScope ? 'is-active' : ''}`}
-                  type="button"
-                  disabled={locked || scope.disabled}
-                  onClick={() => onPlayerPoolScopeChange(scope.id)}
-                >
-                  <span>{scope.label}</span>
-                  {scope.count !== null ? <strong>{scope.count}</strong> : null}
-                </button>
-              ))}
-            </div>
-          )}
+          <div className="variant-controls__chips">
+            {playerPoolScopeOptions.map((scope) => (
+              <button
+                key={scope.id}
+                className={`theme-chip ${scope.id === playerPoolScope ? 'is-active' : ''}`}
+                type="button"
+                disabled={locked || scope.disabled}
+                onClick={() => onPlayerPoolScopeChange(scope.id)}
+              >
+                <span>{scope.label}</span>
+                {scope.count !== null ? <strong>{scope.count}</strong> : null}
+              </button>
+            ))}
+          </div>
           <div className="variant-controls__summary">
             <span className="variant-controls__summary-copy">
               {activeScopeDescription}
@@ -234,45 +204,20 @@ export function VariantControls({
       {mode === 'practice' && showEntryDecadeFilter ? (
         <div className="variant-controls__group">
           <span className="settings-panel__label">Era</span>
-          {isCompact ? (
-            <select
-              className="variant-controls__select"
-              disabled={locked}
-              value={entryDecadeId ?? 'all'}
-              onChange={(event) =>
-                onEntryDecadeChange(
-                  event.target.value === 'all'
-                    ? null
-                    : (event.target.value as EntryDecadeId),
-                )
-              }
-            >
-              {entryDecadeOptions.map((option) => (
-                <option
-                  key={option.id ?? 'all'}
-                  value={option.id ?? 'all'}
-                  disabled={option.disabled}
-                >
-                  {`${option.label} (${option.count})`}
-                </option>
-              ))}
-            </select>
-          ) : (
-            <div className="variant-controls__chips">
-              {entryDecadeOptions.map((option) => (
-                <button
-                  key={option.id ?? 'all'}
-                  className={`theme-chip ${option.id === entryDecadeId ? 'is-active' : ''}`}
-                  type="button"
-                  disabled={locked || option.disabled}
-                  onClick={() => onEntryDecadeChange(option.id)}
-                >
-                  <span>{option.label}</span>
-                  <strong>{option.count}</strong>
-                </button>
-              ))}
-            </div>
-          )}
+          <div className="variant-controls__chips">
+            {entryDecadeOptions.map((option) => (
+              <button
+                key={option.id ?? 'all'}
+                className={`theme-chip ${option.id === entryDecadeId ? 'is-active' : ''}`}
+                type="button"
+                disabled={locked || option.disabled}
+                onClick={() => onEntryDecadeChange(option.id)}
+              >
+                <span>{option.label}</span>
+                <strong>{option.count}</strong>
+              </button>
+            ))}
+          </div>
           <div className="variant-controls__summary">
             <span className="variant-controls__summary-copy">
               Era filters use the normalized entry class year for both the answer pool and the search list.
@@ -343,35 +288,20 @@ export function VariantControls({
       {mode === 'practice' && showThemeFilters ? (
         <div className="variant-controls__group">
           <span className="settings-panel__label">Theme</span>
-          {isCompact ? (
-            <select
-              className="variant-controls__select"
-              disabled={locked}
-              value={themeId}
-              onChange={(event) => onThemeChange(event.target.value as PlayerThemeId)}
-            >
-              {themeOptions.map((theme) => (
-                <option key={theme.id} value={theme.id}>
-                  {theme.label} ({theme.count})
-                </option>
-              ))}
-            </select>
-          ) : (
-            <div className="variant-controls__chips">
-              {themeOptions.map((theme) => (
-                <button
-                  key={theme.id}
-                  className={`theme-chip ${theme.id === themeId ? 'is-active' : ''}`}
-                  type="button"
-                  disabled={locked}
-                  onClick={() => onThemeChange(theme.id)}
-                >
-                  <span>{theme.label}</span>
-                  <strong>{theme.count}</strong>
-                </button>
-              ))}
-            </div>
-          )}
+          <div className="variant-controls__chips">
+            {themeOptions.map((theme) => (
+              <button
+                key={theme.id}
+                className={`theme-chip ${theme.id === themeId ? 'is-active' : ''}`}
+                type="button"
+                disabled={locked}
+                onClick={() => onThemeChange(theme.id)}
+              >
+                <span>{theme.label}</span>
+                <strong>{theme.count}</strong>
+              </button>
+            ))}
+          </div>
         </div>
       ) : null}
 
