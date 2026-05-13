@@ -61,7 +61,7 @@ const COMMON_PLAYER_INFO_SOURCE =
 const TWO_K_RATINGS_IMAGE_BASE = 'https://www.2kratings.com/wp-content/uploads'
 const PLAYER_IMAGE_PUBLIC_DIRECTORY = 'player-images'
 const BRANDON_CLARKE_PLAYER_ID = 1629634
-const BRANDON_CLARKE_TRIBUTE_ROSTER_END_ISO = '2026-05-15T03:59:59Z'
+const EXCLUDED_CURRENT_PLAYER_IDS = new Set([BRANDON_CLARKE_PLAYER_ID])
 const BASKETBALL_REFERENCE_BASE_URL = 'https://www.basketball-reference.com'
 const BASKETBALL_REFERENCE_SEARCH_SOURCE =
   'https://www.basketball-reference.com/search/search.fcgi?search={query}'
@@ -1433,37 +1433,6 @@ function deriveEliminatedPlayoffTeamsFromBracket(
     .map(buildExcludedPlayoffTeam)
     .filter(isPresent)
     .toSorted((left, right) => left.abbreviation.localeCompare(right.abbreviation))
-}
-
-function shouldPreserveBrandonClarkeRosterSpot(now: Date): boolean {
-  return now.getTime() <= Date.parse(BRANDON_CLARKE_TRIBUTE_ROSTER_END_ISO)
-}
-
-function ensureTemporaryBrandonClarkeRosterSpot(
-  rosterPlayers: PlayerRecord[],
-  existingPool: PlayerPoolData | null,
-  now: Date,
-  seasonStartYear: number,
-): PlayerRecord[] {
-  if (
-    !shouldPreserveBrandonClarkeRosterSpot(now) ||
-    rosterPlayers.some((player) => player.id === BRANDON_CLARKE_PLAYER_ID)
-  ) {
-    return rosterPlayers
-  }
-
-  const existingBrandonClarke = existingPool?.players.find(
-    (player) => player.id === BRANDON_CLARKE_PLAYER_ID,
-  )
-
-  if (!existingBrandonClarke) {
-    return rosterPlayers
-  }
-
-  return [
-    ...rosterPlayers,
-    coerceExistingPlayerRecord(existingBrandonClarke, seasonStartYear),
-  ]
 }
 
 function buildBaseSnapshot(
@@ -3052,12 +3021,7 @@ async function main(): Promise<void> {
     rosterPlayers = rosterRows
       .map((row) => normalizePlayer(row, ageMap, statMap, standingMap, seasonStartYear))
       .filter((player): player is PlayerRecord => player !== null)
-    rosterPlayers = ensureTemporaryBrandonClarkeRosterSpot(
-      rosterPlayers,
-      existingPool,
-      now,
-      seasonStartYear,
-    )
+      .filter((player) => !EXCLUDED_CURRENT_PLAYER_IDS.has(player.id))
     const games = scheduleResponse.leagueSchedule.gameDates.flatMap((date) => date.games)
     activeTenDayPlayers = deriveActiveTenDayContracts(
       movementResponse.NBA_Player_Movement.rows,
@@ -3094,9 +3058,9 @@ async function main(): Promise<void> {
 
     console.warn('Core NBA refresh failed. Rebuilding from the existing generated pool instead.', error)
     usingExistingPoolFallback = true
-    rosterPlayers = existingPool.players.map((player) =>
-      coerceExistingPlayerRecord(player, seasonStartYear),
-    )
+    rosterPlayers = existingPool.players
+      .map((player) => coerceExistingPlayerRecord(player, seasonStartYear))
+      .filter((player) => !EXCLUDED_CURRENT_PLAYER_IDS.has(player.id))
     activeTenDayPlayers = existingPool.excludedTenDayPlayers ?? []
     eliminatedPlayoffTeams = existingPool.eligibility?.excludedEliminatedPlayoffTeams ?? []
     eliminatedPlayoffPlayerCount = existingPool.eligibility?.excludedEliminatedPlayoffPlayerCount ?? 0
@@ -3142,7 +3106,7 @@ async function main(): Promise<void> {
 
   const currentEligibleIds = new Set(baseEligiblePlayers.map((player) => player.id))
   const preservedInactiveHistoryPlayers = (existingHistoryPool?.players ?? [])
-    .filter((player) => !player.isCurrentPlayer)
+    .filter((player) => !player.isCurrentPlayer || player.id === BRANDON_CLARKE_PLAYER_ID)
     .map((player) => coerceExistingPlayerRecord(player, seasonStartYear))
   const coreHistoryPlayers = usingExistingPoolFallback
     ? historyPlayers

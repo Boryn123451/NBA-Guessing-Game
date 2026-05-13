@@ -1,10 +1,10 @@
 {
   "schemaVersion": 5,
   "season": "2025-26",
-  "refreshedAt": "2026-05-13T10:34:50.254Z",
+  "refreshedAt": "2026-05-13T10:43:56.807Z",
   "asOfDate": "2026-05-13",
   "rosterFreshness": {
-    "refreshedAt": "2026-05-13T10:34:50.254Z",
+    "refreshedAt": "2026-05-13T10:43:56.807Z",
     "asOfDate": "2026-05-13",
     "season": "2025-26"
   },
@@ -12,8 +12,8 @@
     "rosterStatusRequired": true,
     "transactionAwareTenDayExclusion": true,
     "playoffEliminationAware": true,
-    "rosterPlayerCount": 530,
-    "eligiblePlayerCount": 357,
+    "rosterPlayerCount": 529,
+    "eligiblePlayerCount": 356,
     "excludedActiveTenDayCount": 0,
     "excludedEliminatedPlayoffTeamCount": 10,
     "excludedEliminatedPlayoffPlayerCount": 173,
@@ -3474,95 +3474,6 @@
         "isUnder25": true
       },
       "searchText": "brandin podziemski gsw golden state warriors g usa"
-    },
-    {
-      "id": 1629634,
-      "slug": "brandon-clarke",
-      "displayName": "Brandon Clarke",
-      "firstName": "Brandon",
-      "lastName": "Clarke",
-      "isCurrentPlayer": true,
-      "isDefunctFranchise": false,
-      "teamId": 1610612763,
-      "teamAbbreviation": "MEM",
-      "teamName": "Memphis Grizzlies",
-      "conference": "West",
-      "division": "Southwest",
-      "position": "F",
-      "positionTokens": [
-        "F"
-      ],
-      "heightInInches": 80,
-      "heightCm": 203,
-      "currentAge": 29,
-      "birthDate": "1996-09-19",
-      "jerseyNumber": 15,
-      "headshotUrl": "https://cdn.nba.com/headshots/nba/latest/1040x760/1629634.png",
-      "country": "Canada",
-      "college": "Gonzaga",
-      "draft": {
-        "year": 2019,
-        "round": 1,
-        "pick": 21,
-        "teamId": 1610612760,
-        "teamAbbreviation": "OKC",
-        "teamName": "Oklahoma City Thunder",
-        "isUndrafted": false
-      },
-      "entryDraftYear": 2019,
-      "entryDraftYearSource": "draft",
-      "career": {
-        "debutYear": 2019,
-        "finalSeasonYear": 2025,
-        "seasonsPlayed": 7,
-        "preNbaPath": "Gonzaga",
-        "careerTeamIds": [
-          1610612763
-        ],
-        "careerTeamAbbreviations": [
-          "MEM"
-        ],
-        "careerTeamNames": [
-          "Memphis Grizzlies"
-        ],
-        "previousTeamIds": [],
-        "previousTeamAbbreviations": [],
-        "previousTeamNames": [],
-        "allStarAppearances": 0,
-        "allNbaSelections": 0,
-        "allDefensiveSelections": 0,
-        "championships": 0,
-        "finalsMvpAwards": 0,
-        "mvpAwards": 0,
-        "rookieOfTheYearAwards": 0,
-        "defensivePlayerOfTheYearAwards": 0,
-        "scoringTitles": 0,
-        "reboundTitles": 0,
-        "assistTitles": 0,
-        "isHallOfFame": false,
-        "isGreatest75": false,
-        "accolades": [
-          "All-Rookie Team"
-        ],
-        "primaryAccolade": "All-Rookie Team",
-        "hasRichMetadata": true
-      },
-      "snapshot": {
-        "pointsPerGame": 4,
-        "reboundsPerGame": 3,
-        "assistsPerGame": 0.5,
-        "minutesPerGame": 10.2,
-        "playoffPicture": false,
-        "playoffRank": 13,
-        "careerAccoladeLabel": "All-Rookie Team"
-      },
-      "flags": {
-        "isRookie": false,
-        "isInternational": true,
-        "isAllStar": false,
-        "isUnder25": false
-      },
-      "searchText": "brandon clarke mem memphis grizzlies f canada"
     },
     {
       "id": 1641706,
