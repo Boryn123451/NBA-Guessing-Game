@@ -1,22 +1,23 @@
 {
   "schemaVersion": 5,
   "season": "2025-26",
-  "refreshedAt": "2026-05-13T10:43:56.807Z",
+  "refreshedAt": "2026-05-13T17:51:59.011Z",
   "asOfDate": "2026-05-13",
   "rosterFreshness": {
-    "refreshedAt": "2026-05-13T10:43:56.807Z",
+    "refreshedAt": "2026-05-13T17:51:59.011Z",
     "asOfDate": "2026-05-13",
     "season": "2025-26"
   },
   "eligibility": {
     "rosterStatusRequired": false,
-    "transactionAwareTenDayExclusion": true,
+    "transactionAwareTenDayExclusion": false,
+    "transactionAwareTenDayToggle": true,
     "rosterPlayerCount": 0,
     "eligiblePlayerCount": 4953,
     "excludedActiveTenDayCount": 0,
     "rules": [
       "All-time history uses the official NBA historical player index for the same season snapshot.",
-      "Active 10-day contract players are excluded from the shared current-day pool.",
+      "Active 10-day contract players are tracked for current-roster runtime filtering.",
       "Historical players are enriched with official NBA data first, then Basketball-Reference only for missing fields.",
       "History mode stays practice-only so Daily remains deterministic on the current roster."
     ]

@@ -10,6 +10,7 @@ const variant: GameVariant = {
   themeId: 'classic',
   eventId: null,
   includePostseason: false,
+  includeTenDayContracts: false,
   entryDecadeId: null,
 }
 

@@ -93,8 +93,20 @@ import {
 
 const currentPlayerPool = loadCurrentPlayerPool()
 const currentPlayers = currentPlayerPool.players
+const activeTenDayContractPlayerIds = new Set(
+  currentPlayerPool.excludedTenDayPlayers.map((player) => player.id),
+)
+const activeTenDayContractCount = currentPlayerPool.excludedTenDayPlayers.length
 
 type HistoryPoolStatus = 'loading' | 'ready' | 'error'
+
+interface TenDayContractRule {
+  includeTenDayContracts: boolean
+  locked: boolean
+  label: string
+  helpText: string
+  count: number
+}
 
 interface PlayerPoolScopeOption {
   id: PlayerPoolScopeId
@@ -146,10 +158,13 @@ function resolveVariantForDifficulty(
   eventId: PersistedState['preferences']['eventId'],
   difficultyId: DifficultyId,
   includePostseason: boolean,
+  includeTenDayContracts: boolean,
   playerPoolScope: PlayerPoolScopeId,
   entryDecadeId: EntryDecadeId | null,
 ): GameVariant {
   const normalizedClueMode = sanitizeClueModeForDifficulty(clueMode, difficultyId)
+  const normalizedIncludeTenDayContracts =
+    difficultyId === 'elite-ball-knowledge' ? true : includeTenDayContracts
 
   if (playerPoolScope === 'history') {
     return normalizeVariant({
@@ -158,6 +173,7 @@ function resolveVariantForDifficulty(
       themeId: 'classic',
       eventId: null,
       includePostseason: false,
+      includeTenDayContracts: false,
       entryDecadeId,
     })
   }
@@ -168,8 +184,54 @@ function resolveVariantForDifficulty(
     themeId,
     eventId,
     includePostseason,
+    includeTenDayContracts: normalizedIncludeTenDayContracts,
     entryDecadeId: null,
   })
+}
+
+function resolveTenDayContractRule(
+  mode: GameMode,
+  playerPoolScope: PlayerPoolScopeId,
+  difficultyId: DifficultyId,
+  requestedIncludeTenDayContracts: boolean,
+): TenDayContractRule {
+  if (playerPoolScope === 'history') {
+    return {
+      includeTenDayContracts: false,
+      locked: true,
+      label: '10-day ignored',
+      helpText: 'All-time practice is built from historical eligibility and ignores live 10-day status.',
+      count: activeTenDayContractCount,
+    }
+  }
+
+  if (difficultyId === 'elite-ball-knowledge') {
+    return {
+      includeTenDayContracts: true,
+      locked: true,
+      label: '10-day locked on',
+      helpText: 'Elite Ball Knowledge always includes active 10-day contract players.',
+      count: activeTenDayContractCount,
+    }
+  }
+
+  if (mode === 'daily') {
+    return {
+      includeTenDayContracts: true,
+      locked: true,
+      label: '10-day locked on',
+      helpText: 'Daily uses the shared live roster, including active 10-day contract players when present.',
+      count: activeTenDayContractCount,
+    }
+  }
+
+  return {
+    includeTenDayContracts: requestedIncludeTenDayContracts,
+    locked: false,
+    label: requestedIncludeTenDayContracts ? '10-day on' : '10-day off',
+    helpText: 'Practice can include or exclude active 10-day contract players before the first guess.',
+    count: activeTenDayContractCount,
+  }
 }
 
 function resolveVariantFromState(
@@ -198,9 +260,17 @@ function resolveVariantFromState(
       themeId: 'classic',
       eventId: null,
       includePostseason: postseasonRule.includePostseason,
+      includeTenDayContracts: true,
       entryDecadeId: null,
     })
   }
+
+  const tenDayContractRule = resolveTenDayContractRule(
+    state.preferences.mode,
+    playerPoolScope,
+    state.preferences.difficulty,
+    state.preferences.includeTenDayContracts,
+  )
 
   return resolveVariantForDifficulty(
     state.preferences.clueMode,
@@ -208,9 +278,20 @@ function resolveVariantFromState(
     state.preferences.eventId,
     state.preferences.difficulty,
     postseasonRule.includePostseason,
+    tenDayContractRule.includeTenDayContracts,
     playerPoolScope,
     state.preferences.entryDecadeId,
   )
+}
+
+function filterCurrentPlayersForTenDayContracts(
+  includeTenDayContracts: boolean,
+): PlayerRecord[] {
+  if (includeTenDayContracts || activeTenDayContractPlayerIds.size === 0) {
+    return currentPlayers
+  }
+
+  return currentPlayers.filter((player) => !activeTenDayContractPlayerIds.has(player.id))
 }
 
 function getPlayersForVariant(
@@ -221,11 +302,11 @@ function getPlayersForVariant(
 ): PlayerRecord[] {
   const sourcePlayers =
     mode === 'daily' || variant.playerPoolScope === 'current'
-      ? currentPlayers
+      ? filterCurrentPlayersForTenDayContracts(variant.includeTenDayContracts)
       : historyPlayers
 
   if (mode === 'daily') {
-    return currentPlayers
+    return sourcePlayers
   }
 
   const filteredPlayers = getPlayablePlayerPool(sourcePlayers, variant, difficultyId)
@@ -556,6 +637,12 @@ export function useGameSession() {
           dailyDateKey,
           hydratedState.preferences.practiceIncludePostseason,
         )
+  const activeTenDayContractRule = resolveTenDayContractRule(
+    hydratedState.preferences.mode,
+    activeVariant.playerPoolScope,
+    activeDifficultyId,
+    hydratedState.preferences.includeTenDayContracts,
+  )
   const sessionKey = getSessionKey(
     hydratedState.preferences.mode,
     dailyDateKey,
@@ -596,7 +683,16 @@ export function useGameSession() {
     lastGuessedPlayer,
     status: activeSession.status,
   })
-  const themeOptions = getThemeOptions(currentPlayers)
+  const currentScopeTenDayContractRule = resolveTenDayContractRule(
+    hydratedState.preferences.mode,
+    'current',
+    activeDifficultyId,
+    hydratedState.preferences.includeTenDayContracts,
+  )
+  const currentScopePlayers = filterCurrentPlayersForTenDayContracts(
+    currentScopeTenDayContractRule.includeTenDayContracts,
+  )
+  const themeOptions = getThemeOptions(currentScopePlayers)
   const dailyCompletionEntry = findDailyCompletionEntry(hydratedState, dailyDateKey)
   const dailyLockedOut =
     hydratedState.preferences.mode === 'daily' && dailyCompletionEntry !== null
@@ -642,7 +738,7 @@ export function useGameSession() {
       id: 'current',
       label: getPlayerPoolScopeDefinition('current').label,
       description: getPlayerPoolScopeDefinition('current').description,
-      count: currentPlayers.length,
+      count: currentScopePlayers.length,
       disabled: false,
     },
     {
@@ -969,6 +1065,30 @@ export function useGameSession() {
     })
   }
 
+  function setIncludeTenDayContracts(includeTenDayContracts: boolean): void {
+    setState((previousState) => {
+      const preparedState = ensureHydratedStateLocal(previousState)
+      const { session } = resolveSessionForState(preparedState)
+
+      if (
+        preparedState.preferences.mode !== 'practice' ||
+        preparedState.preferences.playerPoolScope !== 'current' ||
+        preparedState.preferences.difficulty === 'elite-ball-knowledge' ||
+        (session.status === 'in_progress' && session.guessIds.length > 0)
+      ) {
+        return preparedState
+      }
+
+      return {
+        ...preparedState,
+        preferences: {
+          ...preparedState.preferences,
+          includeTenDayContracts,
+        },
+      }
+    })
+  }
+
   function setUnits(units: UnitSystem): void {
     setState((previousState) => ({
       ...previousState,
@@ -1144,17 +1264,25 @@ export function useGameSession() {
         const preparedState = ensureHydratedStateLocal(previousState)
         const difficultyId = preparedState.preferences.difficulty
         const nextMode: GameMode = 'practice'
+        const nextPlayerPoolScope = resolveRequestedPlayerPoolScope(
+          nextMode,
+          preparedState.preferences.playerPoolScope,
+          historyReady,
+        )
+        const nextTenDayContractRule = resolveTenDayContractRule(
+          nextMode,
+          nextPlayerPoolScope,
+          difficultyId,
+          preparedState.preferences.includeTenDayContracts,
+        )
         const nextVariant = resolveVariantForDifficulty(
           preparedState.preferences.clueMode,
           preparedState.preferences.themeId,
           preparedState.preferences.eventId,
           difficultyId,
           preparedState.preferences.practiceIncludePostseason,
-          resolveRequestedPlayerPoolScope(
-            nextMode,
-            preparedState.preferences.playerPoolScope,
-            historyReady,
-          ),
+          nextTenDayContractRule.includeTenDayContracts,
+          nextPlayerPoolScope,
           preparedState.preferences.entryDecadeId,
         )
         const players = getPlayersForVariant(
@@ -1210,6 +1338,7 @@ export function useGameSession() {
     activePostseasonRule,
     activeSession,
     activeTarget,
+    activeTenDayContractRule,
     activeThemeId: activeVariant.themeId,
     canGuess,
     canRevealBonusClue,
@@ -1259,6 +1388,7 @@ export function useGameSession() {
     setDisplayName,
     setEntryDecadeId,
     setEventId,
+    setIncludeTenDayContracts,
     setMode,
     setPlayerPoolScope,
     setPracticeIncludePostseason,
@@ -1291,6 +1421,8 @@ export function useGameSession() {
     showEventModes:
       hydratedState.preferences.mode === 'practice' && activeVariant.playerPoolScope === 'current',
     showPracticePostseasonToggle:
+      hydratedState.preferences.mode === 'practice' && activeVariant.playerPoolScope === 'current',
+    showTenDayContractToggle:
       hydratedState.preferences.mode === 'practice' && activeVariant.playerPoolScope === 'current',
     showEntryDecadeFilter:
       hydratedState.preferences.mode === 'practice' && activeVariant.playerPoolScope === 'history',

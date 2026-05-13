@@ -1,16 +1,17 @@
 {
   "schemaVersion": 5,
   "season": "2025-26",
-  "refreshedAt": "2026-05-13T10:43:56.807Z",
+  "refreshedAt": "2026-05-13T17:51:59.011Z",
   "asOfDate": "2026-05-13",
   "rosterFreshness": {
-    "refreshedAt": "2026-05-13T10:43:56.807Z",
+    "refreshedAt": "2026-05-13T17:51:59.011Z",
     "asOfDate": "2026-05-13",
     "season": "2025-26"
   },
   "eligibility": {
     "rosterStatusRequired": true,
-    "transactionAwareTenDayExclusion": true,
+    "transactionAwareTenDayExclusion": false,
+    "transactionAwareTenDayToggle": true,
     "playoffEliminationAware": true,
     "rosterPlayerCount": 529,
     "eligiblePlayerCount": 356,
@@ -71,7 +72,7 @@
     ],
     "rules": [
       "Only current NBA roster rows with ROSTER_STATUS = 1 are eligible.",
-      "Players on active 10-day contracts are excluded using transaction and schedule data.",
+      "Players on active 10-day contracts remain in the generated roster and are toggled at runtime; Elite Ball Knowledge always includes them.",
       "Players from teams eliminated in completed playoff series are excluded using NBA playoff bracket data, with schedule data as fallback.",
       "Guess lists and mystery-player pools are generated from the same eligible player set.",
       "Current roster data was refreshed directly from NBA sources."

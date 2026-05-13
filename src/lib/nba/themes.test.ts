@@ -41,6 +41,7 @@ describe('theme filtering', () => {
       themeId: 'all-stars',
       eventId: null,
       includePostseason: false,
+      includeTenDayContracts: false,
       entryDecadeId: null,
     })
 

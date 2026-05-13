@@ -133,6 +133,7 @@ interface LegacyPersistedStateV5 {
     difficulty?: unknown
     eventId?: unknown
     practiceIncludePostseason?: unknown
+    includeTenDayContracts?: unknown
     entryDecadeId?: unknown
   }
   settings?: {
@@ -619,12 +620,12 @@ function migrateV3SessionKey(sessionKey: string): string {
 
   if (/^\d{4}-\d{2}-\d{2}$/.test(parts[0] ?? '')) {
     const [dateKey, clueMode, themeId, difficultyId] = parts
-    return [dateKey, clueMode, themeId, 'none', 'reg', difficultyId].join(':')
+    return [dateKey, clueMode, themeId, 'none', 'reg', 'no-ten-day', difficultyId].join(':')
   }
 
   if (parts.length === 3) {
     const [clueMode, themeId, difficultyId] = parts
-    return [clueMode, themeId, 'none', 'reg', difficultyId].join(':')
+    return ['current', clueMode, themeId, 'none', 'reg', 'no-ten-day', difficultyId].join(':')
   }
 
   return sessionKey
@@ -633,12 +634,16 @@ function migrateV3SessionKey(sessionKey: string): string {
 function migrateV5PracticeSessionKey(sessionKey: string): string {
   const parts = sessionKey.split(':')
 
-  if (parts.length === 6) {
+  if (parts.length === 7) {
     return sessionKey
   }
 
+  if (parts.length === 6) {
+    return [...parts.slice(0, 5), 'no-ten-day', parts[5]].join(':')
+  }
+
   if (parts.length === 5) {
-    return ['current', ...parts].join(':')
+    return ['current', ...parts.slice(0, 4), 'no-ten-day', parts[4]].join(':')
   }
 
   return sessionKey
@@ -658,6 +663,7 @@ export function createDefaultState(
       difficulty: DEFAULT_DIFFICULTY_ID,
       eventId: null,
       practiceIncludePostseason: false,
+      includeTenDayContracts: false,
       entryDecadeId: null,
     },
     settings: {
@@ -701,6 +707,7 @@ function migrateLegacyStateV1(
       difficulty: DEFAULT_DIFFICULTY_ID,
       eventId: null,
       practiceIncludePostseason: false,
+      includeTenDayContracts: false,
       entryDecadeId: null,
     },
     settings: {
@@ -736,6 +743,7 @@ function migrateLegacyStateV2(
       difficulty: DEFAULT_DIFFICULTY_ID,
       eventId: null,
       practiceIncludePostseason: false,
+      includeTenDayContracts: false,
       entryDecadeId: null,
     },
     settings: {
@@ -779,6 +787,7 @@ function migrateLegacyStateV3(
       difficulty: sanitizeDifficultyId(parsed.preferences?.difficulty),
       eventId: null,
       practiceIncludePostseason: false,
+      includeTenDayContracts: false,
       entryDecadeId: null,
     },
     settings: {
@@ -822,6 +831,7 @@ function migrateLegacyStateV4(
       difficulty: sanitizeDifficultyId(parsed.preferences?.difficulty),
       eventId: sanitizeEventId(parsed.preferences?.eventId),
       practiceIncludePostseason: false,
+      includeTenDayContracts: false,
       entryDecadeId: null,
     },
     settings: {
@@ -855,6 +865,7 @@ function migrateLegacyStateV5(
       difficulty: sanitizeDifficultyId(parsed.preferences?.difficulty),
       eventId: sanitizeEventId(parsed.preferences?.eventId),
       practiceIncludePostseason: parsed.preferences?.practiceIncludePostseason === true,
+      includeTenDayContracts: parsed.preferences?.includeTenDayContracts === true,
       entryDecadeId: sanitizeEntryDecade(parsed.preferences?.entryDecadeId),
     },
     settings: {
@@ -905,6 +916,7 @@ export function coercePersistedState(
         difficulty: sanitizeDifficultyId(value.preferences?.difficulty),
         eventId: sanitizeEventId(value.preferences?.eventId),
         practiceIncludePostseason: value.preferences?.practiceIncludePostseason === true,
+        includeTenDayContracts: value.preferences?.includeTenDayContracts === true,
         entryDecadeId: sanitizeEntryDecade(value.preferences?.entryDecadeId),
       },
       settings: {

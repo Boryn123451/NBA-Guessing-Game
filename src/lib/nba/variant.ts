@@ -6,6 +6,7 @@ export const DEFAULT_GAME_VARIANT: GameVariant = {
   themeId: 'classic',
   eventId: null,
   includePostseason: false,
+  includeTenDayContracts: false,
   entryDecadeId: null,
 }
 
@@ -16,6 +17,7 @@ export function normalizeVariant(variant: GameVariant): GameVariant {
     themeId: variant.themeId,
     eventId: variant.eventId,
     includePostseason: variant.includePostseason,
+    includeTenDayContracts: variant.includeTenDayContracts,
     entryDecadeId: variant.entryDecadeId ?? null,
   }
 }
@@ -29,6 +31,7 @@ export function getVariantKey(variant: GameVariant): string {
     normalizedVariant.themeId,
     normalizedVariant.eventId ?? 'none',
     normalizedVariant.includePostseason ? 'post' : 'reg',
+    normalizedVariant.includeTenDayContracts ? 'ten-day' : 'no-ten-day',
   ]
 
   if (normalizedVariant.entryDecadeId) {

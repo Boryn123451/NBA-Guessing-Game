@@ -2482,7 +2482,8 @@ function buildPlayerPoolData(
     },
     eligibility: {
       rosterStatusRequired: true,
-      transactionAwareTenDayExclusion: true,
+      transactionAwareTenDayExclusion: false,
+      transactionAwareTenDayToggle: true,
       playoffEliminationAware: true,
       rosterPlayerCount,
       eligiblePlayerCount,
@@ -2492,7 +2493,7 @@ function buildPlayerPoolData(
       excludedEliminatedPlayoffTeams: eliminatedPlayoffTeams,
       rules: [
         'Only current NBA roster rows with ROSTER_STATUS = 1 are eligible.',
-        'Players on active 10-day contracts are excluded using transaction and schedule data.',
+        'Players on active 10-day contracts remain in the generated roster and are toggled at runtime; Elite Ball Knowledge always includes them.',
         'Players from teams eliminated in completed playoff series are excluded using NBA playoff bracket data, with schedule data as fallback.',
         'Guess lists and mystery-player pools are generated from the same eligible player set.',
         usingExistingPoolFallback
@@ -2542,13 +2543,14 @@ function buildHistoryPlayerPoolData(
     },
     eligibility: {
       rosterStatusRequired: false,
-      transactionAwareTenDayExclusion: true,
+      transactionAwareTenDayExclusion: false,
+      transactionAwareTenDayToggle: true,
       rosterPlayerCount,
       eligiblePlayerCount: players.length,
       excludedActiveTenDayCount: activeTenDayPlayers.length,
       rules: [
         'All-time history uses the official NBA historical player index for the same season snapshot.',
-        'Active 10-day contract players are excluded from the shared current-day pool.',
+        'Active 10-day contract players are tracked for current-roster runtime filtering.',
         'Historical players are enriched with official NBA data first, then Basketball-Reference only for missing fields.',
         'History mode stays practice-only so Daily remains deterministic on the current roster.',
       ],
@@ -3036,7 +3038,6 @@ async function main(): Promise<void> {
       }
     })
 
-    const excludedIds = new Set(activeTenDayPlayers.map((player) => player.id))
     eliminatedPlayoffTeams = deriveEliminatedPlayoffTeamsFromBracket(playoffBracketResponse)
 
     if (eliminatedPlayoffTeams.length === 0) {
@@ -3044,10 +3045,10 @@ async function main(): Promise<void> {
     }
     const eliminatedPlayoffTeamIds = new Set(eliminatedPlayoffTeams.map((team) => team.id))
     eliminatedPlayoffPlayerCount = rosterPlayers.filter(
-      (player) => !excludedIds.has(player.id) && eliminatedPlayoffTeamIds.has(player.teamId),
+      (player) => eliminatedPlayoffTeamIds.has(player.teamId),
     ).length
     baseEligiblePlayers = rosterPlayers.filter(
-      (player) => !excludedIds.has(player.id) && !eliminatedPlayoffTeamIds.has(player.teamId),
+      (player) => !eliminatedPlayoffTeamIds.has(player.teamId),
     )
     rosterPlayerCount = rosterPlayers.length
     draftYears = [...new Set(baseEligiblePlayers.map((player) => player.draft.year).filter(isPresent))]
@@ -3404,7 +3405,7 @@ async function main(): Promise<void> {
   flushFailedRequestSummary()
 
   console.log(
-    `Wrote ${eligiblePlayers.length} current players to ${outputPath}. Wrote ${historyPlayers.length} history players to ${historyOutputPath}. Excluded ${activeTenDayPlayers.length} active 10-day contracts and ${eliminatedPlayoffPlayerCount} players from ${eliminatedPlayoffTeams.length} eliminated playoff teams. Built ${Object.keys(imageFallbackManifest.fallbacks).length} 2KRatings fallback images.`,
+    `Wrote ${eligiblePlayers.length} current players to ${outputPath}. Wrote ${historyPlayers.length} history players to ${historyOutputPath}. Tracked ${activeTenDayPlayers.length} active 10-day contracts and excluded ${eliminatedPlayoffPlayerCount} players from ${eliminatedPlayoffTeams.length} eliminated playoff teams. Built ${Object.keys(imageFallbackManifest.fallbacks).length} 2KRatings fallback images.`,
   )
 }
 

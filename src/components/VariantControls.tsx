@@ -50,12 +50,21 @@ interface VariantControlsProps {
   showDraftModeOption: boolean
   showEntryDecadeFilter: boolean
   showPracticePostseasonToggle: boolean
+  showTenDayContractToggle: boolean
   showThemeFilters: boolean
+  tenDayContractRule: {
+    includeTenDayContracts: boolean
+    locked: boolean
+    label: string
+    helpText: string
+    count: number
+  }
   postseasonRule: PostseasonRule
   onClueModeChange: (clueMode: ClueMode) => void
   onDifficultyChange: (difficultyId: DifficultyId) => void
   onEntryDecadeChange: (decadeId: EntryDecadeId | null) => void
   onPlayerPoolScopeChange: (scopeId: PlayerPoolScopeId) => void
+  onIncludeTenDayContractsChange: (enabled: boolean) => void
   onPracticeIncludePostseasonChange: (enabled: boolean) => void
   onThemeChange: (themeId: PlayerThemeId) => void
 }
@@ -74,6 +83,7 @@ export function VariantControls({
   onClueModeChange,
   onDifficultyChange,
   onEntryDecadeChange,
+  onIncludeTenDayContractsChange,
   onPlayerPoolScopeChange,
   onPracticeIncludePostseasonChange,
   onThemeChange,
@@ -84,7 +94,9 @@ export function VariantControls({
   showDraftModeOption,
   showEntryDecadeFilter,
   showPracticePostseasonToggle,
+  showTenDayContractToggle,
   showThemeFilters,
+  tenDayContractRule,
   themeId,
   themeOptions,
 }: VariantControlsProps) {
@@ -286,6 +298,36 @@ export function VariantControls({
           <div className="variant-controls__summary">
             <span className="variant-controls__summary-copy">{postseasonRule.helpText}</span>
             <strong>{postseasonRule.label}</strong>
+          </div>
+        </div>
+      ) : null}
+
+      {mode === 'practice' && showTenDayContractToggle ? (
+        <div className="variant-controls__group">
+          <span className="settings-panel__label">10-Day Contracts</span>
+          <div className="toggle-row">
+            <button
+              className={`toggle-chip ${tenDayContractRule.includeTenDayContracts ? 'is-active' : ''}`}
+              type="button"
+              disabled={tenDayContractRule.locked || locked || tenDayContractRule.count === 0}
+              onClick={() =>
+                onIncludeTenDayContractsChange(!tenDayContractRule.includeTenDayContracts)
+              }
+            >
+              {tenDayContractRule.includeTenDayContracts ? '10-Day On' : '10-Day Off'}
+            </button>
+          </div>
+          <div className="variant-controls__summary">
+            <span className="variant-controls__summary-copy">
+              {tenDayContractRule.count > 0
+                ? tenDayContractRule.helpText
+                : 'No active 10-day contracts in the latest roster refresh.'}
+            </span>
+            <strong>
+              {tenDayContractRule.count > 0
+                ? `${tenDayContractRule.label} | ${tenDayContractRule.count} active`
+                : 'No active 10-day contracts'}
+            </strong>
           </div>
         </div>
       ) : null}

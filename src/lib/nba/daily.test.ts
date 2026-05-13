@@ -10,6 +10,7 @@ const defaultVariant: GameVariant = {
   themeId: 'classic',
   eventId: null,
   includePostseason: false,
+  includeTenDayContracts: false,
   entryDecadeId: null,
 }
 
@@ -54,6 +55,7 @@ describe('daily helpers', () => {
       themeId: 'under-25',
       eventId: 'playoff-mode',
       includePostseason: true,
+      includeTenDayContracts: true,
       entryDecadeId: '1990s',
     }
 

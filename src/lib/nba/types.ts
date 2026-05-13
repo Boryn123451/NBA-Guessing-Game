@@ -237,6 +237,7 @@ export interface RosterFreshnessMetadata {
 export interface EligibilityMetadata {
   rosterStatusRequired: boolean
   transactionAwareTenDayExclusion: boolean
+  transactionAwareTenDayToggle?: boolean
   playoffEliminationAware?: boolean
   rosterPlayerCount: number
   eligiblePlayerCount: number
@@ -328,6 +329,7 @@ export interface GameVariant {
   themeId: PlayerThemeId
   eventId: EventModeId | null
   includePostseason: boolean
+  includeTenDayContracts: boolean
   entryDecadeId: EntryDecadeId | null
 }
 
@@ -442,6 +444,7 @@ export interface PersistedState {
     difficulty: DifficultyId
     eventId: EventModeId | null
     practiceIncludePostseason: boolean
+    includeTenDayContracts: boolean
     entryDecadeId: EntryDecadeId | null
   }
   settings: {

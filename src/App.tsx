@@ -114,12 +114,16 @@ export default function App() {
       : 'Track the roster trail, stay within the difficulty rules, and identify the current NBA player before the board runs dry.'
   const excludedEliminatedPlayoffTeamCount =
     game.dataMeta.eligibility.excludedEliminatedPlayoffTeamCount ?? 0
+  const tenDayRosterSegment =
+    game.activeTenDayContractRule.count > 0
+      ? `${game.activeTenDayContractRule.includeTenDayContracts ? 'includes' : 'excludes'} ${game.activeTenDayContractRule.count} active 10-day contract${game.activeTenDayContractRule.count === 1 ? '' : 's'}`
+      : 'has no active 10-day contracts'
   const rosterMetaLine =
     game.activePlayerPoolScope === 'history'
       ? `History pool uses recognizability curation by difficulty${game.entryDecadeId ? ` and locks to ${entryDecadeLabel}` : ''}.`
       : excludedEliminatedPlayoffTeamCount > 0
-        ? `Transaction-aware roster excludes active 10-day contracts and ${excludedEliminatedPlayoffTeamCount} eliminated playoff teams.`
-        : 'Transaction-aware roster filter excludes active 10-day contracts.'
+        ? `Transaction-aware roster ${tenDayRosterSegment} and excludes ${excludedEliminatedPlayoffTeamCount} eliminated playoff teams.`
+        : `Transaction-aware roster ${tenDayRosterSegment}.`
   const headerMetaPills = isMobileLayout
     ? [
         game.activeMode === 'daily'
@@ -378,12 +382,15 @@ export default function App() {
               showDraftModeOption={game.showDraftModeOption}
               showEntryDecadeFilter={game.showEntryDecadeFilter}
               showPracticePostseasonToggle={game.showPracticePostseasonToggle}
+              showTenDayContractToggle={game.showTenDayContractToggle}
               showThemeFilters={game.showThemeFilters}
+              tenDayContractRule={game.activeTenDayContractRule}
               themeId={game.activeThemeId}
               themeOptions={game.themeOptions}
               onClueModeChange={game.setClueMode}
               onDifficultyChange={game.setDifficulty}
               onEntryDecadeChange={game.setEntryDecadeId}
+              onIncludeTenDayContractsChange={game.setIncludeTenDayContracts}
               onPlayerPoolScopeChange={game.setPlayerPoolScope}
               onPracticeIncludePostseasonChange={game.setPracticeIncludePostseason}
               onThemeChange={game.setThemeId}
@@ -407,12 +414,15 @@ export default function App() {
             showDraftModeOption={game.showDraftModeOption}
             showEntryDecadeFilter={game.showEntryDecadeFilter}
             showPracticePostseasonToggle={game.showPracticePostseasonToggle}
+            showTenDayContractToggle={game.showTenDayContractToggle}
             showThemeFilters={game.showThemeFilters}
+            tenDayContractRule={game.activeTenDayContractRule}
             themeId={game.activeThemeId}
             themeOptions={game.themeOptions}
             onClueModeChange={game.setClueMode}
             onDifficultyChange={game.setDifficulty}
             onEntryDecadeChange={game.setEntryDecadeId}
+            onIncludeTenDayContractsChange={game.setIncludeTenDayContracts}
             onPlayerPoolScopeChange={game.setPlayerPoolScope}
             onPracticeIncludePostseasonChange={game.setPracticeIncludePostseason}
             onThemeChange={game.setThemeId}
@@ -438,7 +448,7 @@ export default function App() {
         ) : null}
 
         <GuessInput
-          key={`${game.activePlayerPoolScope}:${game.activeClueMode}:${game.activeThemeId}:${game.eventId ?? 'none'}:${game.activeDifficultyId}:${game.activePostseasonRule.includePostseason ? 'post' : 'reg'}`}
+          key={`${game.activePlayerPoolScope}:${game.activeClueMode}:${game.activeThemeId}:${game.eventId ?? 'none'}:${game.activeDifficultyId}:${game.activePostseasonRule.includePostseason ? 'post' : 'reg'}:${game.activeTenDayContractRule.includeTenDayContracts ? 'ten-day' : 'no-ten-day'}`}
           blockedTeamId={game.blockedTeamId}
           closeGuessFeedback={game.closeGuessFeedback}
           difficulty={game.activeDifficulty}
