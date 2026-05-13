@@ -157,7 +157,15 @@ export function GuessInput({
                     aria-disabled={isDisabled}
                     disabled={isDisabled}
                     onMouseEnter={() => setHighlightedIndex(index)}
-                    onClick={() => commitGuess(player)}
+                    onPointerDown={(event) => {
+                      event.preventDefault()
+                      commitGuess(player)
+                    }}
+                    onClick={(event) => {
+                      if (event.detail === 0) {
+                        commitGuess(player)
+                      }
+                    }}
                   >
                     <span className="guess-box__option-player">
                       <PlayerAvatar player={player} />
