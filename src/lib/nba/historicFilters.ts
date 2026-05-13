@@ -78,11 +78,23 @@ function hasAccoladeSignal(player: PlayerRecord): boolean {
 function getCareerScoringSignal(player: PlayerRecord): number {
   const pointsPerGame = player.snapshot.pointsPerGame ?? 0
 
+  if (pointsPerGame >= 30) {
+    return 30
+  }
+
+  if (pointsPerGame >= 25) {
+    return 24
+  }
+
   if (pointsPerGame >= 20) {
-    return 8
+    return 18
   }
 
   if (pointsPerGame >= 15) {
+    return 10
+  }
+
+  if (pointsPerGame >= 10) {
     return 4
   }
 
@@ -92,12 +104,54 @@ function getCareerScoringSignal(player: PlayerRecord): number {
 function getLongevitySignal(player: PlayerRecord): number {
   const seasonsPlayed = player.career.seasonsPlayed ?? 0
 
+  if (seasonsPlayed >= 15) {
+    return 18
+  }
+
   if (seasonsPlayed >= 12) {
-    return 8
+    return 14
+  }
+
+  if (seasonsPlayed >= 10) {
+    return 10
   }
 
   if (seasonsPlayed >= 7) {
-    return 4
+    return 6
+  }
+
+  if (seasonsPlayed >= 4) {
+    return 3
+  }
+
+  return 0
+}
+
+function getDraftPickSignal(player: PlayerRecord): number {
+  const pick = player.draft.pick
+
+  if (pick === null) {
+    return 0
+  }
+
+  if (pick === 1) {
+    return 16
+  }
+
+  if (pick <= 3) {
+    return 12
+  }
+
+  if (pick <= 5) {
+    return 10
+  }
+
+  if (pick <= 14) {
+    return 6
+  }
+
+  if (pick <= 30) {
+    return 3
   }
 
   return 0
@@ -105,6 +159,9 @@ function getLongevitySignal(player: PlayerRecord): number {
 
 function hasEasyAnchor(player: PlayerRecord): boolean {
   const careerCounts = getCareerCounts(player)
+  const pointsPerGame = player.snapshot.pointsPerGame ?? 0
+  const seasonsPlayed = player.career.seasonsPlayed ?? 0
+  const draftPick = player.draft.pick
 
   return (
     careerCounts.isHallOfFame ||
@@ -112,19 +169,26 @@ function hasEasyAnchor(player: PlayerRecord): boolean {
     careerCounts.mvpAwards >= 1 ||
     careerCounts.allStarAppearances >= 5 ||
     careerCounts.allNbaSelections >= 4 ||
-    careerCounts.championships >= 3
+    careerCounts.championships >= 3 ||
+    (seasonsPlayed >= 10 && pointsPerGame >= 18) ||
+    (draftPick !== null && draftPick <= 5 && pointsPerGame >= 15)
   )
 }
 
 function hasMediumAnchor(player: PlayerRecord): boolean {
   const careerCounts = getCareerCounts(player)
+  const pointsPerGame = player.snapshot.pointsPerGame ?? 0
+  const seasonsPlayed = player.career.seasonsPlayed ?? 0
+  const draftPick = player.draft.pick
 
   return (
     careerCounts.isHallOfFame ||
     careerCounts.allStarAppearances >= 2 ||
     careerCounts.allNbaSelections >= 2 ||
     careerCounts.championships >= 1 ||
-    (player.career.seasonsPlayed ?? 0) >= 10
+    seasonsPlayed >= 7 ||
+    pointsPerGame >= 12 ||
+    (draftPick !== null && draftPick <= 30)
   )
 }
 
@@ -213,31 +277,38 @@ export function getHistoricVisibilityScore(player: PlayerRecord): number {
     Math.min(careerCounts.defensivePlayerOfTheYearAwards, 2) * 6 +
     Math.min(careerCounts.rookieOfTheYearAwards, 1) * 4 +
     getCareerScoringSignal(player) +
-    getLongevitySignal(player)
+    getLongevitySignal(player) +
+    getDraftPickSignal(player)
   )
 }
 
 function isEasyHistoricEligible(player: PlayerRecord): boolean {
   return (
-    getHistoricCompletenessScore(player) >= 7 &&
-    getHistoricVisibilityScore(player) >= 65 &&
+    getHistoricCompletenessScore(player) >= 5 &&
+    getHistoricVisibilityScore(player) >= 32 &&
     hasEasyAnchor(player)
   )
 }
 
 function isMediumHistoricEligible(player: PlayerRecord): boolean {
   return (
-    getHistoricCompletenessScore(player) >= 6 &&
-    getHistoricVisibilityScore(player) >= 35 &&
+    getHistoricCompletenessScore(player) >= 5 &&
+    getHistoricVisibilityScore(player) >= 20 &&
     hasMediumAnchor(player)
   )
 }
 
 function isHardHistoricEligible(player: PlayerRecord): boolean {
+  const pointsPerGame = player.snapshot.pointsPerGame ?? 0
+  const seasonsPlayed = player.career.seasonsPlayed ?? 0
+  const draftPick = player.draft.pick
+
   return (
-    getHistoricCompletenessScore(player) >= 5 &&
-    getHistoricVisibilityScore(player) >= 18 &&
-    (player.career.seasonsPlayed ?? 0) >= 6
+    getHistoricCompletenessScore(player) >= 4 &&
+    getHistoricVisibilityScore(player) >= 10 &&
+    (seasonsPlayed >= 3 ||
+      pointsPerGame >= 8 ||
+      (draftPick !== null && draftPick <= 30))
   )
 }
 

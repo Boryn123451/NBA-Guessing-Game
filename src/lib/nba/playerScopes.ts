@@ -9,8 +9,9 @@ export interface PlayerPoolScopeDefinition {
 export const PLAYER_POOL_SCOPE_DEFINITIONS: PlayerPoolScopeDefinition[] = [
   {
     id: 'current',
-    label: 'Current players only',
-    description: 'Uses the refreshed active NBA roster pool.',
+    label: 'Current eligible players',
+    description:
+      'Uses the refreshed active NBA roster after automated playoff-elimination and optional 10-day filtering.',
   },
   {
     id: 'history',

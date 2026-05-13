@@ -7,7 +7,7 @@ import { buildPlayerRecord } from '../lib/nba/testUtils'
 import { GuessInput } from './GuessInput'
 
 describe('GuessInput', () => {
-  it('commits a player selection on pointer down before blur can close the list', async () => {
+  it('commits a player selection on mouse down before blur can close the list', async () => {
     const user = userEvent.setup()
     const onGuess = vi.fn()
     const brandonClarke = buildPlayerRecord({
@@ -31,7 +31,7 @@ describe('GuessInput', () => {
     )
 
     await user.type(screen.getByRole('combobox'), 'brandon')
-    fireEvent.pointerDown(screen.getByRole('option', { name: /brandon clarke/i }))
+    fireEvent.mouseDown(screen.getByRole('option', { name: /brandon clarke/i }))
 
     expect(onGuess).toHaveBeenCalledWith(1629634)
   })

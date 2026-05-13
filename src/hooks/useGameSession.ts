@@ -631,6 +631,8 @@ export function useGameSession() {
 
   const activeDifficultyId = hydratedState.preferences.difficulty
   const activeDifficulty = getDifficultyDefinition(activeDifficultyId)
+  const selectedPlayerPoolScope =
+    hydratedState.preferences.mode === 'daily' ? 'current' : hydratedState.preferences.playerPoolScope
   const activeVariant = resolveVariantFromState(hydratedState, dailyDateKey, historyReady)
   const activePlayers = getPlayersForVariant(
     hydratedState.preferences.mode,
@@ -1437,11 +1439,11 @@ export function useGameSession() {
     showCareerPathOption: activeDifficulty.clueAvailability.careerPathMode,
     showDraftModeOption: activeDifficulty.clueAvailability.draftMode,
     showEventModes:
-      hydratedState.preferences.mode === 'practice' && activeVariant.playerPoolScope === 'current',
+      hydratedState.preferences.mode === 'practice' && selectedPlayerPoolScope === 'current',
     showPracticePostseasonToggle:
-      hydratedState.preferences.mode === 'practice' && activeVariant.playerPoolScope === 'current',
+      hydratedState.preferences.mode === 'practice' && selectedPlayerPoolScope === 'current',
     showTenDayContractToggle:
-      hydratedState.preferences.mode === 'practice' && activeVariant.playerPoolScope === 'current',
+      hydratedState.preferences.mode === 'practice' && selectedPlayerPoolScope === 'current',
     showEntryDecadeFilter:
       hydratedState.preferences.mode === 'practice' && activeVariant.playerPoolScope === 'history',
     showSeasonSnapshot:
@@ -1449,7 +1451,8 @@ export function useGameSession() {
       activeVariant.clueMode === 'standard' &&
       activeVariant.playerPoolScope === 'current',
     showThemeFilters:
-      hydratedState.preferences.mode === 'practice' && activeVariant.playerPoolScope === 'current',
+      hydratedState.preferences.mode === 'practice' && selectedPlayerPoolScope === 'current',
+    selectedPlayerPoolScope,
     startPracticeGame,
     stats: hydratedState.stats,
     submitGuess,

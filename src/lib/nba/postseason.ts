@@ -41,6 +41,7 @@ export function resolvePostseasonRule(
     includePostseason: practiceIncludePostseason,
     locked: false,
     label: practiceIncludePostseason ? 'Postseason on' : 'Postseason off',
-    helpText: 'Practice can include or exclude postseason context without affecting Daily.',
+    helpText:
+      'Practice can include or exclude postseason clue context without changing the roster size or Daily.',
   }
 }

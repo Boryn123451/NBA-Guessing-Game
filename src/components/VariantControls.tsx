@@ -277,7 +277,13 @@ export function VariantControls({
             <span className="variant-controls__summary-copy">
               Era filters use the normalized entry class year for both the answer pool and the search list.
             </span>
-            {entryDecadeId ? <strong>{entryDecadeId} only</strong> : <strong>All eras</strong>}
+            {locked ? (
+              <strong>Era locks after the first guess.</strong>
+            ) : entryDecadeId ? (
+              <strong>{entryDecadeId} only</strong>
+            ) : (
+              <strong>All eras</strong>
+            )}
           </div>
         </div>
       ) : null}
@@ -305,23 +311,25 @@ export function VariantControls({
       {mode === 'practice' && showTenDayContractToggle ? (
         <div className="variant-controls__group">
           <span className="settings-panel__label">10-Day Contracts</span>
-          <div className="toggle-row">
-            <button
-              className={`toggle-chip ${tenDayContractRule.includeTenDayContracts ? 'is-active' : ''}`}
-              type="button"
-              disabled={tenDayContractRule.locked || locked || tenDayContractRule.count === 0}
-              onClick={() =>
-                onIncludeTenDayContractsChange(!tenDayContractRule.includeTenDayContracts)
-              }
-            >
-              {tenDayContractRule.includeTenDayContracts ? '10-Day On' : '10-Day Off'}
-            </button>
-          </div>
+          {tenDayContractRule.count > 0 ? (
+            <div className="toggle-row">
+              <button
+                className={`toggle-chip ${tenDayContractRule.includeTenDayContracts ? 'is-active' : ''}`}
+                type="button"
+                disabled={tenDayContractRule.locked || locked}
+                onClick={() =>
+                  onIncludeTenDayContractsChange(!tenDayContractRule.includeTenDayContracts)
+                }
+              >
+                {tenDayContractRule.includeTenDayContracts ? '10-Day On' : '10-Day Off'}
+              </button>
+            </div>
+          ) : null}
           <div className="variant-controls__summary">
             <span className="variant-controls__summary-copy">
               {tenDayContractRule.count > 0
                 ? tenDayContractRule.helpText
-                : 'No active 10-day contracts in the latest roster refresh.'}
+                : 'The latest roster refresh has zero active 10-day contracts, so there is no pool delta to toggle.'}
             </span>
             <strong>
               {tenDayContractRule.count > 0

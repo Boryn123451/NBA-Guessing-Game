@@ -375,7 +375,7 @@ export default function App() {
               isCompact
               locked={game.roundLocked}
               mode={game.activeMode}
-              playerPoolScope={game.activePlayerPoolScope}
+              playerPoolScope={game.selectedPlayerPoolScope}
               playerPoolScopeOptions={game.playerPoolScopeOptions}
               postseasonRule={game.activePostseasonRule}
               showCareerPathOption={game.showCareerPathOption}
@@ -407,7 +407,7 @@ export default function App() {
             activePoolSummary={game.activePlayerPoolScopeSummary}
             locked={game.roundLocked}
             mode={game.activeMode}
-            playerPoolScope={game.activePlayerPoolScope}
+            playerPoolScope={game.selectedPlayerPoolScope}
             playerPoolScopeOptions={game.playerPoolScopeOptions}
             postseasonRule={game.activePostseasonRule}
             showCareerPathOption={game.showCareerPathOption}
@@ -448,7 +448,7 @@ export default function App() {
         ) : null}
 
         <GuessInput
-          key={`${game.activePlayerPoolScope}:${game.activeClueMode}:${game.activeThemeId}:${game.eventId ?? 'none'}:${game.activeDifficultyId}:${game.activePostseasonRule.includePostseason ? 'post' : 'reg'}:${game.activeTenDayContractRule.includeTenDayContracts ? 'ten-day' : 'no-ten-day'}`}
+          key={`${game.activePlayerPoolScope}:${game.entryDecadeId ?? 'all'}:${game.activeClueMode}:${game.activeThemeId}:${game.eventId ?? 'none'}:${game.activeDifficultyId}:${game.activePostseasonRule.includePostseason ? 'post' : 'reg'}:${game.activeTenDayContractRule.includeTenDayContracts ? 'ten-day' : 'no-ten-day'}`}
           blockedTeamId={game.blockedTeamId}
           closeGuessFeedback={game.closeGuessFeedback}
           difficulty={game.activeDifficulty}
