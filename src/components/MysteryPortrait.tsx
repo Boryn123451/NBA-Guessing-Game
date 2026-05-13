@@ -24,6 +24,7 @@ export function MysteryPortrait({
 }: MysteryPortraitProps) {
   const { activeSource, onError } = useResolvedPlayerImage(player)
   const revealStage = getRevealStage(difficulty, wrongGuessCount, status, silhouetteRevealed)
+  const memorialImageClass = player.id === 1629634 ? ' is-brandon-clarke-portrait' : ''
 
   return (
     <section className={`mystery-panel ${isCompact ? 'is-compact' : ''}`}>
@@ -43,7 +44,7 @@ export function MysteryPortrait({
       >
         <img
           alt={status === 'in_progress' ? 'Hidden mystery player' : player.displayName}
-          className="mystery-panel__image"
+          className={`mystery-panel__image${memorialImageClass}`}
           src={activeSource.src}
           onError={onError}
         />

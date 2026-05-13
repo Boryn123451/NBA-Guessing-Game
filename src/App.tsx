@@ -167,7 +167,12 @@ export default function App() {
     document.documentElement.dataset.theme = game.settings.theme
     document.documentElement.dataset.device = isMobileLayout ? 'mobile' : 'desktop'
     document.documentElement.dataset.pack = activeVisualRetroThemeId
-  }, [activeVisualRetroThemeId, game.settings.theme, isMobileLayout])
+    if (isMemorialThemeForced) {
+      document.documentElement.dataset.tribute = BRANDON_CLARKE_RETRO_THEME_ID
+    } else {
+      delete document.documentElement.dataset.tribute
+    }
+  }, [activeVisualRetroThemeId, game.settings.theme, isMemorialThemeForced, isMobileLayout])
 
   useEffect(() => {
     if (!shareStatus) {

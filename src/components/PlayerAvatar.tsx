@@ -11,9 +11,10 @@ export function PlayerAvatar({
   size = 'sm',
 }: PlayerAvatarProps) {
   const { activeSource, onError } = useResolvedPlayerImage(player)
+  const memorialClass = player.id === 1629634 ? ' is-brandon-clarke-portrait' : ''
 
   return (
-    <span className={`player-avatar player-avatar--${size}`}>
+    <span className={`player-avatar player-avatar--${size}${memorialClass}`}>
       <img
         alt=""
         loading="lazy"

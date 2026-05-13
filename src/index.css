@@ -366,6 +366,14 @@ button {
   letter-spacing: -0.08em;
 }
 
+:root[data-tribute='brandon-clarke'] .is-brandon-clarke-portrait img {
+  filter: grayscale(1) contrast(1.06);
+}
+
+:root[data-tribute='brandon-clarke'] img.is-brandon-clarke-portrait {
+  --portrait-memorial-grayscale: 1;
+}
+
 .app-header,
 .workspace__hero,
 .workspace__board,
@@ -604,7 +612,7 @@ button {
   transform: scale(var(--portrait-scale));
   filter:
     blur(var(--portrait-blur))
-    grayscale(var(--portrait-grayscale))
+    grayscale(max(var(--portrait-grayscale), var(--portrait-memorial-grayscale, 0)))
     brightness(var(--portrait-brightness));
   transition: filter 240ms ease, transform 240ms ease;
 }
