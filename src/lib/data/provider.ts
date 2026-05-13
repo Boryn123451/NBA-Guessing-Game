@@ -1,6 +1,8 @@
 import currentPlayerPool from '../../data/generated/player-pool.json'
 import type { PlayerPoolData } from '../nba/types'
 
+const historyPoolUrl = new URL('../../data/generated/history-player-pool.json', import.meta.url).href
+
 export interface PlayerDataProvider {
   loadCurrent(): PlayerPoolData
   loadHistory(): Promise<PlayerPoolData>
@@ -15,9 +17,13 @@ class BundledPlayerProvider implements PlayerDataProvider {
 
   loadHistory(): Promise<PlayerPoolData> {
     if (!this.historyPoolPromise) {
-      this.historyPoolPromise = import('../../data/generated/history-player-pool.json').then(
-        (module) => module.default as unknown as PlayerPoolData,
-      )
+      this.historyPoolPromise = fetch(historyPoolUrl).then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to load historical player pool: ${response.status}`)
+        }
+
+        return (await response.json()) as PlayerPoolData
+      })
     }
 
     return this.historyPoolPromise

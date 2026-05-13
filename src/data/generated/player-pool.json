@@ -1,10 +1,10 @@
 {
   "schemaVersion": 5,
   "season": "2025-26",
-  "refreshedAt": "2026-05-13T17:51:59.011Z",
+  "refreshedAt": "2026-05-13T18:05:10.879Z",
   "asOfDate": "2026-05-13",
   "rosterFreshness": {
-    "refreshedAt": "2026-05-13T17:51:59.011Z",
+    "refreshedAt": "2026-05-13T18:05:10.879Z",
     "asOfDate": "2026-05-13",
     "season": "2025-26"
   },
@@ -1490,17 +1490,20 @@
         "careerTeamIds": [
           1610612742,
           1610612747,
-          1610612740
+          1610612740,
+          1610612764
         ],
         "careerTeamAbbreviations": [
           "DAL",
           "LAL",
-          "NOP"
+          "NOP",
+          "WAS"
         ],
         "careerTeamNames": [
           "Dallas Mavericks",
           "Los Angeles Lakers",
-          "New Orleans Pelicans"
+          "New Orleans Pelicans",
+          "Washington Wizards"
         ],
         "previousTeamIds": [
           1610612742,
@@ -5996,21 +5999,24 @@
           1610612742,
           1610612744,
           1610612747,
-          1610612750
+          1610612750,
+          1610612764
         ],
         "careerTeamAbbreviations": [
           "BKN",
           "DAL",
           "GSW",
           "LAL",
-          "MIN"
+          "MIN",
+          "WAS"
         ],
         "careerTeamNames": [
           "Brooklyn Nets",
           "Dallas Mavericks",
           "Golden State Warriors",
           "Los Angeles Lakers",
-          "Minnesota Timberwolves"
+          "Minnesota Timberwolves",
+          "Washington Wizards"
         ],
         "previousTeamIds": [
           1610612751,
@@ -9863,13 +9869,16 @@
         "seasonsPlayed": 2,
         "preNbaPath": "TCU",
         "careerTeamIds": [
-          1610612741
+          1610612741,
+          1610612759
         ],
         "careerTeamAbbreviations": [
-          "CHI"
+          "CHI",
+          "SAS"
         ],
         "careerTeamNames": [
-          "Chicago Bulls"
+          "Chicago Bulls",
+          "San Antonio Spurs"
         ],
         "previousTeamIds": [
           1610612741
@@ -31718,19 +31727,22 @@
           1610612751,
           1610612765,
           1610612763,
-          1610612752
+          1610612752,
+          1610612766
         ],
         "careerTeamAbbreviations": [
           "BKN",
           "DET",
           "MEM",
-          "NYK"
+          "NYK",
+          "CHA"
         ],
         "careerTeamNames": [
           "Brooklyn Nets",
           "Detroit Pistons",
           "Memphis Grizzlies",
-          "New York Knicks"
+          "New York Knicks",
+          "Charlotte Hornets"
         ],
         "previousTeamIds": [
           1610612751,

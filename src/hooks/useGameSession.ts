@@ -98,7 +98,7 @@ const activeTenDayContractPlayerIds = new Set(
 )
 const activeTenDayContractCount = currentPlayerPool.excludedTenDayPlayers.length
 
-type HistoryPoolStatus = 'loading' | 'ready' | 'error'
+type HistoryPoolStatus = 'idle' | 'loading' | 'ready' | 'error'
 
 interface TenDayContractRule {
   includeTenDayContracts: boolean
@@ -394,9 +394,14 @@ export function useGameSession() {
     status: HistoryPoolStatus
     data: PlayerPoolData | null
   }>({
-    status: 'loading',
+    status:
+      state.preferences.mode === 'practice' && state.preferences.playerPoolScope === 'history'
+        ? 'loading'
+        : 'idle',
     data: null,
   })
+  const historyPoolRequested =
+    state.preferences.mode === 'practice' && state.preferences.playerPoolScope === 'history'
 
   const syncClock = useEffectEvent(() => {
     setNow(new Date())
@@ -408,6 +413,10 @@ export function useGameSession() {
   }, [])
 
   useEffect(() => {
+    if (!historyPoolRequested || historyPoolState.status !== 'loading') {
+      return
+    }
+
     let cancelled = false
 
     loadHistoricalPlayerPool()
@@ -435,7 +444,7 @@ export function useGameSession() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [historyPoolRequested, historyPoolState.status])
 
   const historyReady = historyPoolState.status === 'ready' && historyPoolState.data !== null
   const historyPlayers = historyPoolState.data?.players ?? currentPlayers
@@ -749,9 +758,11 @@ export function useGameSession() {
           ? getHistoricPoolSummary(activeDifficultyId)
           : historyPoolState.status === 'error'
             ? 'All-time data failed to load in this session.'
-            : 'Loading the all-time player pool.',
+            : historyPoolState.status === 'loading'
+              ? 'Loading the all-time player pool.'
+              : 'Select to lazy-load the all-time player pool.',
       count: historyPoolState.data?.players.length ?? null,
-      disabled: historyPoolState.status !== 'ready',
+      disabled: historyPoolState.status === 'error',
     },
   ]
   const historyBaseVariant =
@@ -904,8 +915,15 @@ export function useGameSession() {
   }
 
   function setPlayerPoolScope(playerPoolScope: PlayerPoolScopeId): void {
-    if (playerPoolScope === 'history' && historyPoolState.status !== 'ready') {
-      return
+    if (
+      playerPoolScope === 'history' &&
+      historyPoolState.status !== 'ready' &&
+      historyPoolState.status !== 'loading'
+    ) {
+      setHistoryPoolState({
+        status: 'loading',
+        data: null,
+      })
     }
 
     setState((previousState) => {

@@ -1,0 +1,2134 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-05-13T18:05:10.879Z",
+  "season": "2025-26",
+  "asOfDate": "2026-05-13",
+  "totals": {
+    "currentPlayers": 356,
+    "historyPlayers": 4953,
+    "local2kFallbackImages": 509
+  },
+  "eligibility": {
+    "rosterPlayerCount": 529,
+    "eligiblePlayerCount": 356,
+    "activeTenDayContracts": [],
+    "eliminatedPlayoffTeams": [
+      {
+        "id": 1610612737,
+        "abbreviation": "ATL",
+        "name": "Atlanta Hawks"
+      },
+      {
+        "id": 1610612738,
+        "abbreviation": "BOS",
+        "name": "Boston Celtics"
+      },
+      {
+        "id": 1610612743,
+        "abbreviation": "DEN",
+        "name": "Denver Nuggets"
+      },
+      {
+        "id": 1610612745,
+        "abbreviation": "HOU",
+        "name": "Houston Rockets"
+      },
+      {
+        "id": 1610612747,
+        "abbreviation": "LAL",
+        "name": "Los Angeles Lakers"
+      },
+      {
+        "id": 1610612753,
+        "abbreviation": "ORL",
+        "name": "Orlando Magic"
+      },
+      {
+        "id": 1610612755,
+        "abbreviation": "PHI",
+        "name": "Philadelphia 76ers"
+      },
+      {
+        "id": 1610612756,
+        "abbreviation": "PHX",
+        "name": "Phoenix Suns"
+      },
+      {
+        "id": 1610612757,
+        "abbreviation": "POR",
+        "name": "Portland Trail Blazers"
+      },
+      {
+        "id": 1610612761,
+        "abbreviation": "TOR",
+        "name": "Toronto Raptors"
+      }
+    ],
+    "excludedEliminatedPlayoffPlayerCount": 173
+  },
+  "images": {
+    "currentMissingOfficialHeadshot": {
+      "total": 0,
+      "truncated": false,
+      "sample": []
+    },
+    "currentMissing2kFallback": {
+      "total": 16,
+      "truncated": false,
+      "sample": [
+        {
+          "id": 1642259,
+          "displayName": "Alex Sarr",
+          "teamAbbreviation": "WAS",
+          "teamName": "Washington Wizards",
+          "reasons": [
+            "Missing local 2KRatings fallback image"
+          ],
+          "hasOfficialHeadshot": true
+        },
+        {
+          "id": 1630162,
+          "displayName": "Anthony Edwards",
+          "teamAbbreviation": "MIN",
+          "teamName": "Minnesota Timberwolves",
+          "reasons": [
+            "Missing local 2KRatings fallback image"
+          ],
+          "hasOfficialHeadshot": true
+        },
+        {
+          "id": 1643016,
+          "displayName": "Bez Mbeng",
+          "teamAbbreviation": "UTA",
+          "teamName": "Utah Jazz",
+          "reasons": [
+            "Missing local 2KRatings fallback image"
+          ],
+          "hasOfficialHeadshot": true
+        },
+        {
+          "id": 1626171,
+          "displayName": "Bobby Portis",
+          "teamAbbreviation": "MIL",
+          "teamName": "Milwaukee Bucks",
+          "reasons": [
+            "Missing local 2KRatings fallback image"
+          ],
+          "hasOfficialHeadshot": true
+        },
+        {
+          "id": 1626156,
+          "displayName": "D'Angelo Russell",
+          "teamAbbreviation": "WAS",
+          "teamName": "Washington Wizards",
+          "reasons": [
+            "Missing local 2KRatings fallback image"
+          ],
+          "hasOfficialHeadshot": true
+        },
+        {
+          "id": 202710,
+          "displayName": "Jimmy Butler III",
+          "teamAbbreviation": "GSW",
+          "teamName": "Golden State Warriors",
+          "reasons": [
+            "Missing local 2KRatings fallback image"
+          ],
+          "hasOfficialHeadshot": true
+        },
+        {
+          "id": 1629162,
+          "displayName": "Jordan McLaughlin",
+          "teamAbbreviation": "SAS",
+          "teamName": "San Antonio Spurs",
+          "reasons": [
+            "Missing local 2KRatings fallback image"
+          ],
+          "hasOfficialHeadshot": true
+        },
+        {
+          "id": 1630577,
+          "displayName": "Julian Champagnie",
+          "teamAbbreviation": "SAS",
+          "teamName": "San Antonio Spurs",
+          "reasons": [
+            "Missing local 2KRatings fallback image"
+          ],
+          "hasOfficialHeadshot": true
+        },
+        {
+          "id": 1626157,
+          "displayName": "Karl-Anthony Towns",
+          "teamAbbreviation": "NYK",
+          "teamName": "New York Knicks",
+          "reasons": [
+            "Missing local 2KRatings fallback image"
+          ],
+          "hasOfficialHeadshot": true
+        },
+        {
+          "id": 1642273,
+          "displayName": "Kyshawn George",
+          "teamAbbreviation": "WAS",
+          "teamName": "Washington Wizards",
+          "reasons": [
+            "Missing local 2KRatings fallback image"
+          ],
+          "hasOfficialHeadshot": true
+        },
+        {
+          "id": 1629675,
+          "displayName": "Naz Reid",
+          "teamAbbreviation": "MIN",
+          "teamName": "Minnesota Timberwolves",
+          "reasons": [
+            "Missing local 2KRatings fallback image"
+          ],
+          "hasOfficialHeadshot": true
+        },
+        {
+          "id": 1641842,
+          "displayName": "Ronald Holland II",
+          "teamAbbreviation": "DET",
+          "teamName": "Detroit Pistons",
+          "reasons": [
+            "Missing local 2KRatings fallback image"
+          ],
+          "hasOfficialHeadshot": true
+        },
+        {
+          "id": 1630241,
+          "displayName": "Sam Merrill",
+          "teamAbbreviation": "CLE",
+          "teamName": "Cleveland Cavaliers",
+          "reasons": [
+            "Missing local 2KRatings fallback image"
+          ],
+          "hasOfficialHeadshot": true
+        },
+        {
+          "id": 1627752,
+          "displayName": "Taurean Prince",
+          "teamAbbreviation": "MIL",
+          "teamName": "Milwaukee Bucks",
+          "reasons": [
+            "Missing local 2KRatings fallback image"
+          ],
+          "hasOfficialHeadshot": true
+        },
+        {
+          "id": 1630214,
+          "displayName": "Xavier Tillman",
+          "teamAbbreviation": "CHA",
+          "teamName": "Charlotte Hornets",
+          "reasons": [
+            "Missing local 2KRatings fallback image"
+          ],
+          "hasOfficialHeadshot": true
+        },
+        {
+          "id": 1642389,
+          "displayName": "Zyon Pullin",
+          "teamAbbreviation": "MIN",
+          "teamName": "Minnesota Timberwolves",
+          "reasons": [
+            "Missing local 2KRatings fallback image"
+          ],
+          "hasOfficialHeadshot": true
+        }
+      ]
+    },
+    "currentMissingPlayableImage": {
+      "total": 0,
+      "truncated": false,
+      "sample": []
+    }
+  },
+  "careerTeams": {
+    "previousTeamInconsistencies": {
+      "total": 0,
+      "truncated": false,
+      "sample": []
+    },
+    "singleTeamVeteranAudit": {
+      "total": 39,
+      "truncated": false,
+      "sample": [
+        {
+          "id": 1630598,
+          "displayName": "Aaron Wiggins",
+          "teamAbbreviation": "OKC",
+          "teamName": "Oklahoma City Thunder",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 5,
+          "debutYear": 2021,
+          "careerTeamAbbreviations": [
+            "OKC"
+          ]
+        },
+        {
+          "id": 1631260,
+          "displayName": "AJ Green",
+          "teamAbbreviation": "MIL",
+          "teamName": "Milwaukee Bucks",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 4,
+          "debutYear": 2022,
+          "careerTeamAbbreviations": [
+            "MIL"
+          ]
+        },
+        {
+          "id": 1629614,
+          "displayName": "Andrew Nembhard",
+          "teamAbbreviation": "IND",
+          "teamName": "Indiana Pacers",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 4,
+          "debutYear": 2022,
+          "careerTeamAbbreviations": [
+            "IND"
+          ]
+        },
+        {
+          "id": 1630162,
+          "displayName": "Anthony Edwards",
+          "teamAbbreviation": "MIN",
+          "teamName": "Minnesota Timberwolves",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 6,
+          "debutYear": 2020,
+          "careerTeamAbbreviations": [
+            "MIN"
+          ]
+        },
+        {
+          "id": 1630264,
+          "displayName": "Anthony Gill",
+          "teamAbbreviation": "WAS",
+          "teamName": "Washington Wizards",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 6,
+          "debutYear": 2020,
+          "careerTeamAbbreviations": [
+            "WAS"
+          ]
+        },
+        {
+          "id": 1628389,
+          "displayName": "Bam Adebayo",
+          "teamAbbreviation": "MIA",
+          "teamName": "Miami Heat",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 9,
+          "debutYear": 2017,
+          "careerTeamAbbreviations": [
+            "MIA"
+          ]
+        },
+        {
+          "id": 1630595,
+          "displayName": "Cade Cunningham",
+          "teamAbbreviation": "DET",
+          "teamName": "Detroit Pistons",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 5,
+          "debutYear": 2021,
+          "careerTeamAbbreviations": [
+            "DET"
+          ]
+        },
+        {
+          "id": 1631096,
+          "displayName": "Chet Holmgren",
+          "teamAbbreviation": "OKC",
+          "teamName": "Oklahoma City Thunder",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 4,
+          "debutYear": 2022,
+          "careerTeamAbbreviations": [
+            "OKC"
+          ]
+        },
+        {
+          "id": 1630549,
+          "displayName": "Day'Ron Sharpe",
+          "teamAbbreviation": "BKN",
+          "teamName": "Brooklyn Nets",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 5,
+          "debutYear": 2021,
+          "careerTeamAbbreviations": [
+            "BKN"
+          ]
+        },
+        {
+          "id": 1629731,
+          "displayName": "Dean Wade",
+          "teamAbbreviation": "CLE",
+          "teamName": "Cleveland Cavaliers",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 7,
+          "debutYear": 2019,
+          "careerTeamAbbreviations": [
+            "CLE"
+          ]
+        },
+        {
+          "id": 1630170,
+          "displayName": "Devin Vassell",
+          "teamAbbreviation": "SAS",
+          "teamName": "San Antonio Spurs",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 6,
+          "debutYear": 2020,
+          "careerTeamAbbreviations": [
+            "SAS"
+          ]
+        },
+        {
+          "id": 203110,
+          "displayName": "Draymond Green",
+          "teamAbbreviation": "GSW",
+          "teamName": "Golden State Warriors",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 14,
+          "debutYear": 2012,
+          "careerTeamAbbreviations": [
+            "GSW"
+          ]
+        },
+        {
+          "id": 1630596,
+          "displayName": "Evan Mobley",
+          "teamAbbreviation": "CLE",
+          "teamName": "Cleveland Cavaliers",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 5,
+          "debutYear": 2021,
+          "careerTeamAbbreviations": [
+            "CLE"
+          ]
+        },
+        {
+          "id": 203507,
+          "displayName": "Giannis Antetokounmpo",
+          "teamAbbreviation": "MIL",
+          "teamName": "Milwaukee Bucks",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 13,
+          "debutYear": 2013,
+          "careerTeamAbbreviations": [
+            "MIL"
+          ]
+        },
+        {
+          "id": 1630529,
+          "displayName": "Herbert Jones",
+          "teamAbbreviation": "NOP",
+          "teamName": "New Orleans Pelicans",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 5,
+          "debutYear": 2021,
+          "careerTeamAbbreviations": [
+            "NOP"
+          ]
+        },
+        {
+          "id": 1630191,
+          "displayName": "Isaiah Stewart",
+          "teamAbbreviation": "DET",
+          "teamName": "Detroit Pistons",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 6,
+          "debutYear": 2020,
+          "careerTeamAbbreviations": [
+            "DET"
+          ]
+        },
+        {
+          "id": 1629630,
+          "displayName": "Ja Morant",
+          "teamAbbreviation": "MEM",
+          "teamName": "Memphis Grizzlies",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 7,
+          "debutYear": 2019,
+          "careerTeamAbbreviations": [
+            "MEM"
+          ]
+        },
+        {
+          "id": 1630183,
+          "displayName": "Jaden McDaniels",
+          "teamAbbreviation": "MIN",
+          "teamName": "Minnesota Timberwolves",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 6,
+          "debutYear": 2020,
+          "careerTeamAbbreviations": [
+            "MIN"
+          ]
+        },
+        {
+          "id": 1631105,
+          "displayName": "Jalen Duren",
+          "teamAbbreviation": "DET",
+          "teamName": "Detroit Pistons",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 4,
+          "debutYear": 2022,
+          "careerTeamAbbreviations": [
+            "DET"
+          ]
+        },
+        {
+          "id": 1631114,
+          "displayName": "Jalen Williams",
+          "teamAbbreviation": "OKC",
+          "teamName": "Oklahoma City Thunder",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 4,
+          "debutYear": 2022,
+          "careerTeamAbbreviations": [
+            "OKC"
+          ]
+        },
+        {
+          "id": 1631119,
+          "displayName": "Jaylin Williams",
+          "teamAbbreviation": "OKC",
+          "teamName": "Oklahoma City Thunder",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 4,
+          "debutYear": 2022,
+          "careerTeamAbbreviations": [
+            "OKC"
+          ]
+        },
+        {
+          "id": 1631099,
+          "displayName": "Keegan Murray",
+          "teamAbbreviation": "SAC",
+          "teamName": "Sacramento Kings",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 4,
+          "debutYear": 2022,
+          "careerTeamAbbreviations": [
+            "SAC"
+          ]
+        },
+        {
+          "id": 1629640,
+          "displayName": "Keldon Johnson",
+          "teamAbbreviation": "SAS",
+          "teamName": "San Antonio Spurs",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 7,
+          "debutYear": 2019,
+          "careerTeamAbbreviations": [
+            "SAS"
+          ]
+        },
+        {
+          "id": 1630163,
+          "displayName": "LaMelo Ball",
+          "teamAbbreviation": "CHA",
+          "teamName": "Charlotte Hornets",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 6,
+          "debutYear": 2020,
+          "careerTeamAbbreviations": [
+            "CHA"
+          ]
+        },
+        {
+          "id": 1629652,
+          "displayName": "Luguentz Dort",
+          "teamAbbreviation": "OKC",
+          "teamName": "Oklahoma City Thunder",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 7,
+          "debutYear": 2019,
+          "careerTeamAbbreviations": [
+            "OKC"
+          ]
+        },
+        {
+          "id": 1628970,
+          "displayName": "Miles Bridges",
+          "teamAbbreviation": "CHA",
+          "teamName": "Charlotte Hornets",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 8,
+          "debutYear": 2018,
+          "careerTeamAbbreviations": [
+            "CHA"
+          ]
+        },
+        {
+          "id": 1630540,
+          "displayName": "Miles McBride",
+          "teamAbbreviation": "NYK",
+          "teamName": "New York Knicks",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 5,
+          "debutYear": 2021,
+          "careerTeamAbbreviations": [
+            "NYK"
+          ]
+        },
+        {
+          "id": 1629011,
+          "displayName": "Mitchell Robinson",
+          "teamAbbreviation": "NYK",
+          "teamName": "New York Knicks",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 8,
+          "debutYear": 2018,
+          "careerTeamAbbreviations": [
+            "NYK"
+          ]
+        },
+        {
+          "id": 1630541,
+          "displayName": "Moses Moody",
+          "teamAbbreviation": "GSW",
+          "teamName": "Golden State Warriors",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 5,
+          "debutYear": 2021,
+          "careerTeamAbbreviations": [
+            "GSW"
+          ]
+        },
+        {
+          "id": 1629675,
+          "displayName": "Naz Reid",
+          "teamAbbreviation": "MIN",
+          "teamName": "Minnesota Timberwolves",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 7,
+          "debutYear": 2019,
+          "careerTeamAbbreviations": [
+            "MIN"
+          ]
+        },
+        {
+          "id": 1629651,
+          "displayName": "Nic Claxton",
+          "teamAbbreviation": "BKN",
+          "teamName": "Brooklyn Nets",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 7,
+          "debutYear": 2019,
+          "careerTeamAbbreviations": [
+            "BKN"
+          ]
+        },
+        {
+          "id": 1631107,
+          "displayName": "Nikola Jović",
+          "teamAbbreviation": "MIA",
+          "teamName": "Miami Heat",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 4,
+          "debutYear": 2022,
+          "careerTeamAbbreviations": [
+            "MIA"
+          ]
+        },
+        {
+          "id": 1630172,
+          "displayName": "Patrick Williams",
+          "teamAbbreviation": "CHI",
+          "teamName": "Chicago Bulls",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 6,
+          "debutYear": 2020,
+          "careerTeamAbbreviations": [
+            "CHI"
+          ]
+        },
+        {
+          "id": 1630583,
+          "displayName": "Santi Aldama",
+          "teamAbbreviation": "MEM",
+          "teamName": "Memphis Grizzlies",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 5,
+          "debutYear": 2021,
+          "careerTeamAbbreviations": [
+            "MEM"
+          ]
+        },
+        {
+          "id": 201939,
+          "displayName": "Stephen Curry",
+          "teamAbbreviation": "GSW",
+          "teamName": "Golden State Warriors",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 17,
+          "debutYear": 2009,
+          "careerTeamAbbreviations": [
+            "GSW"
+          ]
+        },
+        {
+          "id": 1630530,
+          "displayName": "Trey Murphy III",
+          "teamAbbreviation": "NOP",
+          "teamName": "New Orleans Pelicans",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 5,
+          "debutYear": 2021,
+          "careerTeamAbbreviations": [
+            "NOP"
+          ]
+        },
+        {
+          "id": 1629639,
+          "displayName": "Tyler Herro",
+          "teamAbbreviation": "MIA",
+          "teamName": "Miami Heat",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 7,
+          "debutYear": 2019,
+          "careerTeamAbbreviations": [
+            "MIA"
+          ]
+        },
+        {
+          "id": 1631117,
+          "displayName": "Walker Kessler",
+          "teamAbbreviation": "UTA",
+          "teamName": "Utah Jazz",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 4,
+          "debutYear": 2022,
+          "careerTeamAbbreviations": [
+            "UTA"
+          ]
+        },
+        {
+          "id": 1629627,
+          "displayName": "Zion Williamson",
+          "teamAbbreviation": "NOP",
+          "teamName": "New Orleans Pelicans",
+          "reasons": [
+            "Veteran has no previous NBA teams; verify this is a true single-team career"
+          ],
+          "seasonsPlayed": 7,
+          "debutYear": 2019,
+          "careerTeamAbbreviations": [
+            "NOP"
+          ]
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "missingDraftInfo": {
+      "total": 0,
+      "truncated": false,
+      "sample": []
+    },
+    "missingCollegeOrPath": {
+      "total": 1,
+      "truncated": false,
+      "sample": [
+        {
+          "id": 1630828,
+          "displayName": "Alex Antetokounmpo",
+          "teamAbbreviation": "MIL",
+          "teamName": "Milwaukee Bucks",
+          "reasons": [
+            "Missing college and pre-NBA path"
+          ]
+        }
+      ]
+    },
+    "incompleteHistoryRecords": {
+      "total": 1348,
+      "truncated": true,
+      "sample": [
+        {
+          "id": 920,
+          "displayName": "A.C. Green",
+          "teamAbbreviation": "LAL",
+          "teamName": "Los Angeles Lakers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 16
+        },
+        {
+          "id": 1920,
+          "displayName": "A.J. Bramlett",
+          "teamAbbreviation": "CLE",
+          "teamName": "Cleveland Cavaliers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "C",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 76672,
+          "displayName": "A.J. English",
+          "teamAbbreviation": "WAS",
+          "teamName": "Washington Wizards",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 2
+        },
+        {
+          "id": 2062,
+          "displayName": "A.J. Guyton",
+          "teamAbbreviation": "CHI",
+          "teamName": "Chicago Bulls",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 3
+        },
+        {
+          "id": 78627,
+          "displayName": "A.J. Wynder",
+          "teamAbbreviation": "BOS",
+          "teamName": "Boston Celtics",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 201166,
+          "displayName": "Aaron Brooks",
+          "teamAbbreviation": "HOU",
+          "teamName": "Houston Rockets",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 11
+        },
+        {
+          "id": 201189,
+          "displayName": "Aaron Gray",
+          "teamAbbreviation": "CHI",
+          "teamName": "Chicago Bulls",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "C",
+          "seasonsPlayed": 7
+        },
+        {
+          "id": 1626151,
+          "displayName": "Aaron Harrison",
+          "teamAbbreviation": "CHA",
+          "teamName": "Charlotte Hornets",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 3
+        },
+        {
+          "id": 1630565,
+          "displayName": "Aaron Henry",
+          "teamAbbreviation": "PHI",
+          "teamName": "Philadelphia 76ers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 1628935,
+          "displayName": "Aaron Jackson",
+          "teamAbbreviation": "HOU",
+          "teamName": "Houston Rockets",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 77115,
+          "displayName": "Aaron James",
+          "teamAbbreviation": "UTA",
+          "teamName": "Utah Jazz",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 5
+        },
+        {
+          "id": 243,
+          "displayName": "Aaron McKie",
+          "teamAbbreviation": "PHI",
+          "teamName": "Philadelphia 76ers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 13
+        },
+        {
+          "id": 101223,
+          "displayName": "Aaron Miles",
+          "teamAbbreviation": "GSW",
+          "teamName": "Golden State Warriors",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 78286,
+          "displayName": "Aaron Swinson",
+          "teamAbbreviation": "PHX",
+          "teamName": "Phoenix Suns",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 1425,
+          "displayName": "Aaron Williams",
+          "teamAbbreviation": "BKN",
+          "teamName": "Brooklyn Nets",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F-C",
+          "seasonsPlayed": 15
+        },
+        {
+          "id": 1627846,
+          "displayName": "Abdel Nader",
+          "teamAbbreviation": "PHX",
+          "teamName": "Phoenix Suns",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 5
+        },
+        {
+          "id": 77126,
+          "displayName": "Abdul Jeelani",
+          "teamAbbreviation": "POR",
+          "teamName": "Portland Trail Blazers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 2
+        },
+        {
+          "id": 768,
+          "displayName": "Acie Earl",
+          "teamAbbreviation": "BOS",
+          "teamName": "Boston Celtics",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F-C",
+          "seasonsPlayed": 4
+        },
+        {
+          "id": 201151,
+          "displayName": "Acie Law",
+          "teamAbbreviation": "ATL",
+          "teamName": "Atlanta Hawks",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 4
+        },
+        {
+          "id": 1641745,
+          "displayName": "Adam Flagler",
+          "teamAbbreviation": "SAS",
+          "teamName": "San Antonio Spurs",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 2
+        },
+        {
+          "id": 2492,
+          "displayName": "Adam Harrington",
+          "teamAbbreviation": "DAL",
+          "teamName": "Dallas Mavericks",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 228,
+          "displayName": "Adam Keefe",
+          "teamAbbreviation": "UTA",
+          "teamName": "Utah Jazz",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 9
+        },
+        {
+          "id": 1629690,
+          "displayName": "Adam Mokoka",
+          "teamAbbreviation": "CHI",
+          "teamName": "Chicago Bulls",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 2
+        },
+        {
+          "id": 200747,
+          "displayName": "Adam Morrison",
+          "teamAbbreviation": "CHA",
+          "teamName": "Charlotte Hornets",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 4
+        },
+        {
+          "id": 1642380,
+          "displayName": "Adama Bal",
+          "teamAbbreviation": "MEM",
+          "teamName": "Memphis Grizzlies",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 1641766,
+          "displayName": "Adama Sanogo",
+          "teamAbbreviation": "CHI",
+          "teamName": "Chicago Bulls",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 2
+        },
+        {
+          "id": 1630278,
+          "displayName": "Ade Murkey",
+          "teamAbbreviation": "SAC",
+          "teamName": "Sacramento Kings",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 1629678,
+          "displayName": "Admiral Schofield",
+          "teamAbbreviation": "ORL",
+          "teamName": "Orlando Magic",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 5
+        },
+        {
+          "id": 77035,
+          "displayName": "Adolph Hoefer",
+          "teamAbbreviation": "BOS",
+          "teamName": "Boston Celtics",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 2
+        },
+        {
+          "id": 76708,
+          "displayName": "Al Ferrari",
+          "teamAbbreviation": "ATL",
+          "teamName": "Atlanta Hawks",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 8
+        },
+        {
+          "id": 76907,
+          "displayName": "Al Guokas",
+          "teamAbbreviation": "DN",
+          "teamName": "Denver Nuggets",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": true,
+          "hasHeight": false,
+          "position": "N/A",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 78372,
+          "displayName": "Al Tucker",
+          "teamAbbreviation": "OKC",
+          "teamName": "Oklahoma City Thunder",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 4
+        },
+        {
+          "id": 78610,
+          "displayName": "Al Wood",
+          "teamAbbreviation": "OKC",
+          "teamName": "Oklahoma City Thunder",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 6
+        },
+        {
+          "id": 1059,
+          "displayName": "Aleksandar Djordjevic",
+          "teamAbbreviation": "POR",
+          "teamName": "Portland Trail Blazers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 1893,
+          "displayName": "Aleksandar Radojevic",
+          "teamAbbreviation": "UTA",
+          "teamName": "Utah Jazz",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "C",
+          "seasonsPlayed": 6
+        },
+        {
+          "id": 1630197,
+          "displayName": "Aleksej Pokusevski",
+          "teamAbbreviation": "CHA",
+          "teamName": "Charlotte Hornets",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 4
+        },
+        {
+          "id": 1629346,
+          "displayName": "Alen Smailagic",
+          "teamAbbreviation": "GSW",
+          "teamName": "Golden State Warriors",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 2
+        },
+        {
+          "id": 203518,
+          "displayName": "Alex Abrines",
+          "teamAbbreviation": "OKC",
+          "teamName": "Oklahoma City Thunder",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 3
+        },
+        {
+          "id": 101165,
+          "displayName": "Alex Acker",
+          "teamAbbreviation": "LAC",
+          "teamName": "Los Angeles Clippers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 4
+        },
+        {
+          "id": 76180,
+          "displayName": "Alex Blackwell",
+          "teamAbbreviation": "LAL",
+          "teamName": "Los Angeles Lakers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 76228,
+          "displayName": "Alex Bradley",
+          "teamAbbreviation": "NYK",
+          "teamName": "New York Knicks",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 1642505,
+          "displayName": "Alex Ducas",
+          "teamAbbreviation": "OKC",
+          "teamName": "Oklahoma City Thunder",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 76673,
+          "displayName": "Alex English",
+          "teamAbbreviation": "DEN",
+          "teamName": "Denver Nuggets",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 15
+        },
+        {
+          "id": 1641788,
+          "displayName": "Alex Fudge",
+          "teamAbbreviation": "DAL",
+          "teamName": "Dallas Mavericks",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 2682,
+          "displayName": "Alex Garcia",
+          "teamAbbreviation": "NOP",
+          "teamName": "New Orleans Pelicans",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G-F",
+          "seasonsPlayed": 2
+        },
+        {
+          "id": 76897,
+          "displayName": "Alex Groza",
+          "teamAbbreviation": "INO",
+          "teamName": "Indianapolis Olympians",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "C",
+          "seasonsPlayed": 2
+        },
+        {
+          "id": 76937,
+          "displayName": "Alex Hannum",
+          "teamAbbreviation": "SAC",
+          "teamName": "Sacramento Kings",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 8
+        },
+        {
+          "id": 203945,
+          "displayName": "Alex Kirk",
+          "teamAbbreviation": "CLE",
+          "teamName": "Cleveland Cavaliers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "C",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 203458,
+          "displayName": "Alex Len",
+          "teamAbbreviation": "NYK",
+          "teamName": "New York Knicks",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "C",
+          "seasonsPlayed": 12
+        },
+        {
+          "id": 1627816,
+          "displayName": "Alex Poythress",
+          "teamAbbreviation": "IND",
+          "teamName": "Indiana Pacers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 3
+        },
+        {
+          "id": 1642024,
+          "displayName": "Alex Reese",
+          "teamAbbreviation": "PHI",
+          "teamName": "Philadelphia 76ers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F-C",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 2637,
+          "displayName": "Alex Scales",
+          "teamAbbreviation": "SAS",
+          "teamName": "San Antonio Spurs",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 1627293,
+          "displayName": "Alex Stepheson",
+          "teamAbbreviation": "LAC",
+          "teamName": "Los Angeles Clippers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 78261,
+          "displayName": "Alex Stivrins",
+          "teamAbbreviation": "PHX",
+          "teamName": "Phoenix Suns",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 8
+        },
+        {
+          "id": 76658,
+          "displayName": "Alexander Ellis",
+          "teamAbbreviation": "LAL",
+          "teamName": "Los Angeles Lakers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 2
+        },
+        {
+          "id": 200792,
+          "displayName": "Alexander Johnson",
+          "teamAbbreviation": "MEM",
+          "teamName": "Memphis Grizzlies",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 4
+        },
+        {
+          "id": 78017,
+          "displayName": "Alexander Rosenberg",
+          "teamAbbreviation": "GSW",
+          "teamName": "Golden State Warriors",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 78421,
+          "displayName": "Alexander Volkov",
+          "teamAbbreviation": "ATL",
+          "teamName": "Atlanta Hawks",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "C",
+          "seasonsPlayed": 3
+        },
+        {
+          "id": 203144,
+          "displayName": "Alexey Shved",
+          "teamAbbreviation": "MIN",
+          "teamName": "Minnesota Timberwolves",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 3
+        },
+        {
+          "id": 201582,
+          "displayName": "Alexis Ajinca",
+          "teamAbbreviation": "NOP",
+          "teamName": "New Orleans Pelicans",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "C",
+          "seasonsPlayed": 10
+        },
+        {
+          "id": 1628035,
+          "displayName": "Alfonzo McKinnie",
+          "teamAbbreviation": "CHI",
+          "teamName": "Chicago Bulls",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 5
+        },
+        {
+          "id": 77076,
+          "displayName": "Alfredrick Hughes",
+          "teamAbbreviation": "SAS",
+          "teamName": "San Antonio Spurs",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 1628993,
+          "displayName": "Alize Johnson",
+          "teamAbbreviation": "MIN",
+          "teamName": "Minnesota Timberwolves",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 5
+        },
+        {
+          "id": 76257,
+          "displayName": "Allan Bristow",
+          "teamAbbreviation": "SAS",
+          "teamName": "San Antonio Spurs",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 10
+        },
+        {
+          "id": 275,
+          "displayName": "Allan Houston",
+          "teamAbbreviation": "NYK",
+          "teamName": "New York Knicks",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 12
+        },
+        {
+          "id": 200810,
+          "displayName": "Allan Ray",
+          "teamAbbreviation": "BOS",
+          "teamName": "Boston Celtics",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 1533,
+          "displayName": "Anthony Johnson",
+          "teamAbbreviation": "IND",
+          "teamName": "Indiana Pacers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 13
+        },
+        {
+          "id": 1641817,
+          "displayName": "Anton Watson",
+          "teamAbbreviation": "LAL",
+          "teamName": "Los Angeles Lakers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 202079,
+          "displayName": "Antonio Anderson",
+          "teamAbbreviation": "OKC",
+          "teamName": "Oklahoma City Thunder",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 1628469,
+          "displayName": "Antonio Blakeney",
+          "teamAbbreviation": "CHI",
+          "teamName": "Chicago Bulls",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 2
+        },
+        {
+          "id": 2766,
+          "displayName": "Antonio Burks",
+          "teamAbbreviation": "MEM",
+          "teamName": "Memphis Grizzlies",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 2
+        },
+        {
+          "id": 1498,
+          "displayName": "Antonio Daniels",
+          "teamAbbreviation": "SAS",
+          "teamName": "San Antonio Spurs",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 14
+        },
+        {
+          "id": 213,
+          "displayName": "Antonio Davis",
+          "teamAbbreviation": "IND",
+          "teamName": "Indiana Pacers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F-C",
+          "seasonsPlayed": 13
+        },
+        {
+          "id": 176,
+          "displayName": "Antonio Harvey",
+          "teamAbbreviation": "LAL",
+          "teamName": "Los Angeles Lakers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F-C",
+          "seasonsPlayed": 10
+        },
+        {
+          "id": 226,
+          "displayName": "Antonio Lang",
+          "teamAbbreviation": "CLE",
+          "teamName": "Cleveland Cavaliers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 6
+        },
+        {
+          "id": 686,
+          "displayName": "Antonio McDyess",
+          "teamAbbreviation": "DET",
+          "teamName": "Detroit Pistons",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F-C",
+          "seasonsPlayed": 16
+        },
+        {
+          "id": 2238,
+          "displayName": "Antonis Fotsis",
+          "teamAbbreviation": "MEM",
+          "teamName": "Memphis Grizzlies",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 1628499,
+          "displayName": "Antonius Cleveland",
+          "teamAbbreviation": "DAL",
+          "teamName": "Dallas Mavericks",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 3
+        },
+        {
+          "id": 1628394,
+          "displayName": "Anžejs Pasečņiks",
+          "teamAbbreviation": "WAS",
+          "teamName": "Washington Wizards",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F-C",
+          "seasonsPlayed": 2
+        },
+        {
+          "id": 76397,
+          "displayName": "Archie Clark",
+          "teamAbbreviation": "PHI",
+          "teamName": "Philadelphia 76ers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 10
+        },
+        {
+          "id": 76546,
+          "displayName": "Archie Dees",
+          "teamAbbreviation": "DET",
+          "teamName": "Detroit Pistons",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 4
+        },
+        {
+          "id": 203462,
+          "displayName": "Archie Goodwin",
+          "teamAbbreviation": "PHX",
+          "teamName": "Phoenix Suns",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 4
+        },
+        {
+          "id": 77485,
+          "displayName": "Ariel Maughan",
+          "teamAbbreviation": "BOM",
+          "teamName": "St. Louis Bombers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 5
+        },
+        {
+          "id": 202620,
+          "displayName": "Arinze Onuaku",
+          "teamAbbreviation": "ORL",
+          "teamName": "Orlando Magic",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F-C",
+          "seasonsPlayed": 4
+        },
+        {
+          "id": 76191,
+          "displayName": "Arlen Bockhorn",
+          "teamAbbreviation": "SAC",
+          "teamName": "Sacramento Kings",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 7
+        },
+        {
+          "id": 76489,
+          "displayName": "Armand Cure",
+          "teamAbbreviation": "PRO",
+          "teamName": "Providence Steamrollers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 1642422,
+          "displayName": "Armel Traore",
+          "teamAbbreviation": "LAL",
+          "teamName": "Los Angeles Lakers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 288,
+          "displayName": "Armen Gilliam",
+          "teamAbbreviation": "BKN",
+          "teamName": "Brooklyn Nets",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 13
+        },
+        {
+          "id": 202356,
+          "displayName": "Armon Johnson",
+          "teamAbbreviation": "POR",
+          "teamName": "Portland Trail Blazers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 2
+        },
+        {
+          "id": 77024,
+          "displayName": "Armond Hill",
+          "teamAbbreviation": "ATL",
+          "teamName": "Atlanta Hawks",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 8
+        },
+        {
+          "id": 1629717,
+          "displayName": "Armoni Brooks",
+          "teamAbbreviation": "BKN",
+          "teamName": "Brooklyn Nets",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 4
+        },
+        {
+          "id": 203102,
+          "displayName": "Arnett Moultrie",
+          "teamAbbreviation": "PHI",
+          "teamName": "Philadelphia 76ers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 2
+        },
+        {
+          "id": 76711,
+          "displayName": "Arnie Ferrin",
+          "teamAbbreviation": "LAL",
+          "teamName": "Los Angeles Lakers",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 3
+        },
+        {
+          "id": 77132,
+          "displayName": "Arnie Johnson",
+          "teamAbbreviation": "SAC",
+          "teamName": "Sacramento Kings",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 5
+        },
+        {
+          "id": 77967,
+          "displayName": "Arnie Risen",
+          "teamAbbreviation": "SAC",
+          "teamName": "Sacramento Kings",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "C",
+          "seasonsPlayed": 10
+        },
+        {
+          "id": 1629083,
+          "displayName": "Arnoldas Kulboka",
+          "teamAbbreviation": "CHA",
+          "teamName": "Charlotte Hornets",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 1
+        },
+        {
+          "id": 203382,
+          "displayName": "Aron Baynes",
+          "teamAbbreviation": "DET",
+          "teamName": "Detroit Pistons",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F-C",
+          "seasonsPlayed": 9
+        },
+        {
+          "id": 201167,
+          "displayName": "Arron Afflalo",
+          "teamAbbreviation": "DEN",
+          "teamName": "Denver Nuggets",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 11
+        },
+        {
+          "id": 76311,
+          "displayName": "Art Burris",
+          "teamAbbreviation": "ATL",
+          "teamName": "Atlanta Hawks",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "F",
+          "seasonsPlayed": 2
+        },
+        {
+          "id": 76956,
+          "displayName": "Art Harris",
+          "teamAbbreviation": "PHX",
+          "teamName": "Phoenix Suns",
+          "reasons": [
+            "Historical record is missing core clue metadata"
+          ],
+          "hasBirthDate": false,
+          "hasHeight": true,
+          "position": "G",
+          "seasonsPlayed": 4
+        }
+      ]
+    }
+  }
+}

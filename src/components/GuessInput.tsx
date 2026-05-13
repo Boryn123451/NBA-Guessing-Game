@@ -171,7 +171,7 @@ export function GuessInput({
                       <PlayerAvatar player={player} />
                       <span className="guess-box__option-copy">
                         <span className="guess-box__option-name">
-                          {player.displayName}
+                          <span className="guess-box__option-name-text">{player.displayName}</span>
                           {isGuessed ? <em className="guess-box__badge">Guessed</em> : null}
                           {isBlocked ? <em className="guess-box__badge">Blocked</em> : null}
                         </span>

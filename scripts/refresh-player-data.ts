@@ -2151,7 +2151,7 @@ function applyExtendedData(
         isUndrafted: false,
       }
     : player.draft
-  const uniqueCareerTeamIds = [...new Set(careerTeamIds.length > 0 ? careerTeamIds : [player.teamId])]
+  const uniqueCareerTeamIds = [...new Set([...careerTeamIds, player.teamId])]
   const careerTeams = uniqueCareerTeamIds
     .map((teamId) => TEAM_BY_ID.get(teamId))
     .filter(isPresent)
@@ -2588,6 +2588,180 @@ async function writeGeneratedPools(
   await writeFile(historyOutputPath, `${JSON.stringify(historyPlayerPool, null, 2)}\n`, 'utf8')
 }
 
+function summarizePlayerIssue(
+  player: PlayerRecord,
+  reasons: string[],
+  extra: Record<string, unknown> = {},
+): Record<string, unknown> {
+  return {
+    id: player.id,
+    displayName: player.displayName,
+    teamAbbreviation: player.teamAbbreviation,
+    teamName: player.teamName,
+    reasons,
+    ...extra,
+  }
+}
+
+function truncateIssues<T>(issues: T[], limit = 100): {
+  total: number
+  truncated: boolean
+  sample: T[]
+} {
+  return {
+    total: issues.length,
+    truncated: issues.length > limit,
+    sample: issues.slice(0, limit),
+  }
+}
+
+function hasLocalImageFallback(
+  imageFallbackManifest: PlayerImageFallbackManifest,
+  playerId: number,
+): boolean {
+  const imagePath = imageFallbackManifest.fallbacks[`${playerId}`]
+  return typeof imagePath === 'string' && imagePath.length > 0 && !/^https?:\/\//i.test(imagePath)
+}
+
+function buildDataHealthReport(
+  season: string,
+  refreshedAt: string,
+  asOfDate: string,
+  currentPool: PlayerPoolData,
+  historyPool: PlayerPoolData,
+  imageFallbackManifest: PlayerImageFallbackManifest,
+): Record<string, unknown> {
+  const currentPlayers = currentPool.players
+  const historyPlayers = historyPool.players
+  const currentMissingOfficialHeadshot = currentPlayers
+    .filter((player) => !player.headshotUrl)
+    .map((player) =>
+      summarizePlayerIssue(player, ['Missing official NBA headshot URL'], {
+        has2kFallback: hasLocalImageFallback(imageFallbackManifest, player.id),
+      }),
+    )
+  const currentMissing2kFallback = currentPlayers
+    .filter((player) => !hasLocalImageFallback(imageFallbackManifest, player.id))
+    .map((player) =>
+      summarizePlayerIssue(player, ['Missing local 2KRatings fallback image'], {
+        hasOfficialHeadshot: Boolean(player.headshotUrl),
+      }),
+    )
+  const currentMissingPlayableImage = currentPlayers
+    .filter((player) => !player.headshotUrl && !hasLocalImageFallback(imageFallbackManifest, player.id))
+    .map((player) =>
+      summarizePlayerIssue(player, ['Missing both official NBA headshot and local 2KRatings fallback']),
+    )
+  const previousTeamInconsistencies = currentPlayers
+    .filter(
+      (player) =>
+        !player.career.careerTeamIds.includes(player.teamId) ||
+        player.career.previousTeamIds.includes(player.teamId) ||
+        player.career.previousTeamIds.length !== player.career.previousTeamNames.length ||
+        player.career.previousTeamIds.length !== player.career.previousTeamAbbreviations.length,
+    )
+    .map((player) =>
+      summarizePlayerIssue(player, ['Career team and previous team fields are internally inconsistent'], {
+        careerTeamIds: player.career.careerTeamIds,
+        previousTeamIds: player.career.previousTeamIds,
+      }),
+    )
+  const singleTeamVeteranAudit = currentPlayers
+    .filter(
+      (player) =>
+        player.career.previousTeamIds.length === 0 &&
+        player.career.seasonsPlayed !== null &&
+        player.career.seasonsPlayed > 3 &&
+        player.career.debutYear !== null &&
+        player.career.debutYear < Number(season.slice(0, 4)),
+    )
+    .map((player) =>
+      summarizePlayerIssue(player, ['Veteran has no previous NBA teams; verify this is a true single-team career'], {
+        seasonsPlayed: player.career.seasonsPlayed,
+        debutYear: player.career.debutYear,
+        careerTeamAbbreviations: player.career.careerTeamAbbreviations,
+      }),
+    )
+  const missingDraftInfo = currentPlayers
+    .filter((player) => !player.draft.isUndrafted && player.draft.year === null)
+    .map((player) => summarizePlayerIssue(player, ['Missing draft year and not marked undrafted']))
+  const missingCollegeOrPath = currentPlayers
+    .filter((player) => !player.college && !player.career.preNbaPath)
+    .map((player) => summarizePlayerIssue(player, ['Missing college and pre-NBA path']))
+  const incompleteHistoryRecords = historyPlayers
+    .filter(
+      (player) =>
+        !player.isCurrentPlayer &&
+        (!player.birthDate ||
+          player.heightInInches === null ||
+          player.position === 'N/A' ||
+          player.career.seasonsPlayed === null),
+    )
+    .map((player) =>
+      summarizePlayerIssue(player, ['Historical record is missing core clue metadata'], {
+        hasBirthDate: Boolean(player.birthDate),
+        hasHeight: player.heightInInches !== null,
+        position: player.position,
+        seasonsPlayed: player.career.seasonsPlayed,
+      }),
+    )
+
+  return {
+    schemaVersion: 1,
+    generatedAt: refreshedAt,
+    season,
+    asOfDate,
+    totals: {
+      currentPlayers: currentPlayers.length,
+      historyPlayers: historyPlayers.length,
+      local2kFallbackImages: Object.keys(imageFallbackManifest.fallbacks).length,
+    },
+    eligibility: {
+      rosterPlayerCount: currentPool.eligibility.rosterPlayerCount,
+      eligiblePlayerCount: currentPool.eligibility.eligiblePlayerCount,
+      activeTenDayContracts: currentPool.excludedTenDayPlayers,
+      eliminatedPlayoffTeams: currentPool.eligibility.excludedEliminatedPlayoffTeams ?? [],
+      excludedEliminatedPlayoffPlayerCount:
+        currentPool.eligibility.excludedEliminatedPlayoffPlayerCount ?? 0,
+    },
+    images: {
+      currentMissingOfficialHeadshot: truncateIssues(currentMissingOfficialHeadshot),
+      currentMissing2kFallback: truncateIssues(currentMissing2kFallback),
+      currentMissingPlayableImage: truncateIssues(currentMissingPlayableImage),
+    },
+    careerTeams: {
+      previousTeamInconsistencies: truncateIssues(previousTeamInconsistencies),
+      singleTeamVeteranAudit: truncateIssues(singleTeamVeteranAudit),
+    },
+    metadata: {
+      missingDraftInfo: truncateIssues(missingDraftInfo),
+      missingCollegeOrPath: truncateIssues(missingCollegeOrPath),
+      incompleteHistoryRecords: truncateIssues(incompleteHistoryRecords),
+    },
+  }
+}
+
+async function writeDataHealthReport(
+  reportPath: string,
+  season: string,
+  refreshedAt: string,
+  asOfDate: string,
+  currentPool: PlayerPoolData,
+  historyPool: PlayerPoolData,
+  imageFallbackManifest: PlayerImageFallbackManifest,
+): Promise<void> {
+  const report = buildDataHealthReport(
+    season,
+    refreshedAt,
+    asOfDate,
+    currentPool,
+    historyPool,
+    imageFallbackManifest,
+  )
+
+  await writeFile(reportPath, `${JSON.stringify(report, null, 2)}\n`, 'utf8')
+}
+
 async function buildImageFallbackManifest(
   players: PlayerRecord[],
   refreshedAt: string,
@@ -2744,6 +2918,7 @@ async function main(): Promise<void> {
   const outputPath = path.join(outputDirectory, 'player-pool.json')
   const historyOutputPath = path.join(outputDirectory, 'history-player-pool.json')
   const imageFallbackPath = path.join(outputDirectory, 'player-image-fallbacks.json')
+  const dataHealthReportPath = path.join(outputDirectory, 'data-health-report.json')
   const enrichmentStatusPath = path.join(cacheDirectory, 'enrichment-status.json')
   const existingPool = await readCachedJson<PlayerPoolData>(outputPath)
   const existingHistoryPool = await readCachedJson<PlayerPoolData>(historyOutputPath)
@@ -2781,6 +2956,15 @@ async function main(): Promise<void> {
     )
     await mkdir(outputDirectory, { recursive: true })
     await writeFile(imageFallbackPath, `${JSON.stringify(imageFallbackManifest, null, 2)}\n`, 'utf8')
+    await writeDataHealthReport(
+      dataHealthReportPath,
+      season,
+      refreshedAt,
+      asOfDate,
+      existingPool,
+      existingHistoryPool ?? existingPool,
+      imageFallbackManifest,
+    )
     console.log(
       `Built ${Object.keys(imageFallbackManifest.fallbacks).length} 2KRatings fallback images at ${imageFallbackPath}.`,
     )
@@ -3373,35 +3557,46 @@ async function main(): Promise<void> {
     publicDirectory,
     true,
   )
+  const currentPlayerPoolData = buildPlayerPoolData(
+    season,
+    refreshedAt,
+    asOfDate,
+    rosterPlayerCount,
+    eligiblePlayers.length,
+    activeTenDayPlayers,
+    eliminatedPlayoffTeams,
+    eliminatedPlayoffPlayerCount,
+    eligiblePlayers,
+    usingExistingPoolFallback,
+    allStarYear,
+  )
+  const historyPlayerPoolData = buildHistoryPlayerPoolData(
+    season,
+    refreshedAt,
+    asOfDate,
+    historicalRowsForPool.length,
+    activeTenDayPlayers,
+    historyPlayers,
+    allStarYear,
+  )
 
   await writeGeneratedPools(
     outputDirectory,
     outputPath,
     historyOutputPath,
-    buildPlayerPoolData(
-      season,
-      refreshedAt,
-      asOfDate,
-      rosterPlayerCount,
-      eligiblePlayers.length,
-      activeTenDayPlayers,
-      eliminatedPlayoffTeams,
-      eliminatedPlayoffPlayerCount,
-      eligiblePlayers,
-      usingExistingPoolFallback,
-      allStarYear,
-    ),
-    buildHistoryPlayerPoolData(
-      season,
-      refreshedAt,
-      asOfDate,
-      historicalRowsForPool.length,
-      activeTenDayPlayers,
-      historyPlayers,
-      allStarYear,
-    ),
+    currentPlayerPoolData,
+    historyPlayerPoolData,
   )
   await writeFile(imageFallbackPath, `${JSON.stringify(imageFallbackManifest, null, 2)}\n`, 'utf8')
+  await writeDataHealthReport(
+    dataHealthReportPath,
+    season,
+    refreshedAt,
+    asOfDate,
+    currentPlayerPoolData,
+    historyPlayerPoolData,
+    imageFallbackManifest,
+  )
   flushFailedRequestSummary()
 
   console.log(

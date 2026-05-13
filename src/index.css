@@ -1964,13 +1964,32 @@ button:hover {
 
 .guess-box__option-player {
   display: flex;
+  flex: 1 1 auto;
   gap: 0.8rem;
   align-items: center;
+  min-width: 0;
 }
 
 .guess-box__option-copy {
   display: grid;
   gap: 0.18rem;
+  min-width: 0;
+}
+
+.guess-box__option-name {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.28rem 0.5rem;
+  align-items: center;
+  min-width: 0;
+  font-weight: 700;
+  line-height: 1.15;
+  word-break: normal;
+}
+
+.guess-box__option-name-text {
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 .toast-stack {
@@ -2058,6 +2077,28 @@ button:hover {
   .workspace.is-mobile .guess-box__results {
     position: static;
     margin-top: 0.75rem;
+  }
+
+  .workspace.is-mobile .guess-box__option {
+    align-items: flex-start;
+    padding: 0.85rem;
+  }
+
+  .workspace.is-mobile .guess-box__option-player {
+    width: 100%;
+    gap: 0.7rem;
+  }
+
+  .workspace.is-mobile .guess-box__option-name {
+    gap: 0.3rem 0.45rem;
+  }
+
+  .workspace.is-mobile .guess-box__option-name-text,
+  .workspace.is-mobile .clue-grid__player-name,
+  .workspace.is-mobile .mystery-panel__copy h2 {
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: none;
   }
 
   .workspace.is-mobile .clue-grid__header,
