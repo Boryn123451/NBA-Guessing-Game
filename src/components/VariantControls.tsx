@@ -220,7 +220,7 @@ export function VariantControls({
           </div>
           <div className="variant-controls__summary">
             <span className="variant-controls__summary-copy">
-              Era filters use the normalized entry class year for both the answer pool and the search list.
+              Era filters use active NBA seasons, so a player can appear in every decade his career touched.
             </span>
             {locked ? (
               <strong>Era locks after the first guess.</strong>

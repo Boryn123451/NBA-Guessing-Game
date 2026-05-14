@@ -26,7 +26,7 @@ import {
 } from '../lib/nba/daily'
 import {
   ENTRY_DECADE_DEFINITIONS,
-  getPlayerEntryDecadeId,
+  playerPlayedInDecade,
 } from '../lib/nba/decades'
 import { compareDraftGuess } from '../lib/nba/draftMode'
 import {
@@ -784,7 +784,7 @@ export function useGameSession() {
     },
     ...ENTRY_DECADE_DEFINITIONS.map((definition) => {
       const count = historyBasePlayers.filter(
-        (player) => getPlayerEntryDecadeId(player) === definition.id,
+        (player) => playerPlayedInDecade(player, definition.id),
       ).length
 
       return {

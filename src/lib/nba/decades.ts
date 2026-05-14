@@ -62,7 +62,61 @@ export function getPlayerEntryDecadeId(player: PlayerRecord): EntryDecadeId | nu
   )
 }
 
-export function filterPlayersByEntryDecade(
+function getDecadeIdForYear(year: number): EntryDecadeId | null {
+  return (
+    ENTRY_DECADE_DEFINITIONS.find(
+      (definition) => year >= definition.startYear && year <= definition.endYear,
+    )?.id ?? null
+  )
+}
+
+function getPlayerSeasonStartRange(player: PlayerRecord): [number, number] | null {
+  const startYear = player.career.debutYear ?? getPlayerEntryDraftYear(player)
+  const endYear = player.career.finalSeasonYear ?? startYear
+
+  if (startYear === null || endYear === null) {
+    return null
+  }
+
+  return [startYear, Math.max(startYear, endYear)]
+}
+
+export function getPlayerActiveDecadeIds(player: PlayerRecord): EntryDecadeId[] {
+  const range = getPlayerSeasonStartRange(player)
+
+  if (range === null) {
+    return []
+  }
+
+  const [startYear, endYear] = range
+  const decadeIds = new Set<EntryDecadeId>()
+
+  for (let seasonStartYear = startYear; seasonStartYear <= endYear; seasonStartYear += 1) {
+    const startDecadeId = getDecadeIdForYear(seasonStartYear)
+    const endDecadeId = getDecadeIdForYear(seasonStartYear + 1)
+
+    if (startDecadeId) {
+      decadeIds.add(startDecadeId)
+    }
+
+    if (endDecadeId) {
+      decadeIds.add(endDecadeId)
+    }
+  }
+
+  return ENTRY_DECADE_DEFINITIONS
+    .map((definition) => definition.id)
+    .filter((decadeId) => decadeIds.has(decadeId))
+}
+
+export function playerPlayedInDecade(
+  player: PlayerRecord,
+  decadeId: EntryDecadeId,
+): boolean {
+  return getPlayerActiveDecadeIds(player).includes(decadeId)
+}
+
+export function filterPlayersByActiveDecade(
   players: PlayerRecord[],
   decadeId: EntryDecadeId | null,
 ): PlayerRecord[] {
@@ -70,5 +124,12 @@ export function filterPlayersByEntryDecade(
     return players
   }
 
-  return players.filter((player) => getPlayerEntryDecadeId(player) === decadeId)
+  return players.filter((player) => playerPlayedInDecade(player, decadeId))
+}
+
+export function filterPlayersByEntryDecade(
+  players: PlayerRecord[],
+  decadeId: EntryDecadeId | null,
+): PlayerRecord[] {
+  return filterPlayersByActiveDecade(players, decadeId)
 }

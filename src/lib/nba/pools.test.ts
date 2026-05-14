@@ -192,10 +192,10 @@ describe('player pools', () => {
     ).toEqual([32])
   })
 
-  it('keeps answer and guess pools inside the selected entry decade', () => {
-    const nineties = buildPlayerRecord({
+  it('keeps answer and guess pools inside the selected active era', () => {
+    const ninetiesAndTwoThousands = buildPlayerRecord({
       id: 41,
-      displayName: 'Nineties Star',
+      displayName: 'Nineties And Two Thousands Star',
       isCurrentPlayer: false,
       entryDraftYear: 1996,
       entryDraftYearSource: 'draft',
@@ -203,10 +203,16 @@ describe('player pools', () => {
         ...buildPlayerRecord().draft,
         year: 1996,
       },
+      career: {
+        ...buildPlayerRecord().career,
+        debutYear: 1996,
+        finalSeasonYear: 2003,
+        seasonsPlayed: 8,
+      },
     })
-    const twoThousands = buildPlayerRecord({
+    const twoThousandsOnly = buildPlayerRecord({
       id: 42,
-      displayName: 'Two Thousands Star',
+      displayName: 'Two Thousands Only Star',
       isCurrentPlayer: false,
       entryDraftYear: 2003,
       entryDraftYearSource: 'draft',
@@ -214,11 +220,17 @@ describe('player pools', () => {
         ...buildPlayerRecord().draft,
         year: 2003,
       },
+      career: {
+        ...buildPlayerRecord().career,
+        debutYear: 2003,
+        finalSeasonYear: 2008,
+        seasonsPlayed: 6,
+      },
     })
 
     expect(
       getPlayablePlayerPool(
-        [nineties, twoThousands],
+        [ninetiesAndTwoThousands, twoThousandsOnly],
         {
           ...variant,
           playerPoolScope: 'history',
@@ -227,5 +239,17 @@ describe('player pools', () => {
         'impossible',
       ).map((player) => player.id),
     ).toEqual([41])
+
+    expect(
+      getPlayablePlayerPool(
+        [ninetiesAndTwoThousands, twoThousandsOnly],
+        {
+          ...variant,
+          playerPoolScope: 'history',
+          entryDecadeId: '2000s',
+        },
+        'impossible',
+      ).map((player) => player.id),
+    ).toEqual([41, 42])
   })
 })

@@ -1,4 +1,4 @@
-import { filterPlayersByEntryDecade } from './decades'
+import { filterPlayersByActiveDecade } from './decades'
 import { filterPlayersForEvent } from './events'
 import { filterHistoricPlayersForDifficulty } from './historicFilters'
 import type {
@@ -75,7 +75,7 @@ export function getPlayablePlayerPool(
   const themedPlayers = players.filter((player) => matchesTheme(player, variant.themeId))
   const eventFilteredPlayers = filterPlayersForEvent(themedPlayers, variant.eventId)
   const clueModeFilteredPlayers = filterPlayersForClueMode(eventFilteredPlayers, variant)
-  const decadeFilteredPlayers = filterPlayersByEntryDecade(
+  const decadeFilteredPlayers = filterPlayersByActiveDecade(
     clueModeFilteredPlayers,
     variant.entryDecadeId ?? null,
   )
